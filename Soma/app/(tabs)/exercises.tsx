@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+
 
 export default function ExercisesScreen() {
   return (
@@ -31,3 +31,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+import { View, Text, StyleSheet } from "react-native";
