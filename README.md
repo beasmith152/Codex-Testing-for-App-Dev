@@ -67,3 +67,34 @@ The UI is built to feel calm and welcoming — minimal, warm, and organic — st
 ---
 
 ## 🗂️ Folder Structure (Planned)
+Soma/ ├── assets/ # Logos, icons, patterns, gifs ├── src/ │ ├── screens/ # Home, Dashboard, Exercise, Calendar │ ├── components/ # Reusable UI (Buttons, MoodSelector, Timer) │ ├── data/ # Local JSON files for exercises/moods │ ├── hooks/ # Custom logic (timers, state) │ └── theme/ # Colors, fonts, styles ├── App.js └── README.md --- ## 🚀 Installation (for React Native)
+bash
+# Clone the repo
+git clone https://github.com/<your-username>/Soma.git
+
+# Navigate into project
+cd Soma
+
+# Install dependencies
+npm install
+
+# Start development
+npx expo start
+
+💡 Vision Statement
+
+“Soma is for those who forget to breathe.
+Each check-in is a small reminder: you’re here, and that’s enough.”
+
+👩‍💻 Creator
+
+Bea Smith
+Visual Communication Designer @ Eastern Washington University
+Exploring the fusion of design, technology, and emotional wellness.
+
+📁 Resources
+
+Figma UI Prototype
+
+Moodboard & Concept
+ (add link to Milanote or Notion later)
