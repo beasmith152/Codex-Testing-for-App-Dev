@@ -1,6 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 import MoodSelector from "../../src/components/MoodSelector";
 
+
+
+
 export default function HomeScreen() {
   return (
     <View style={styles.container}>

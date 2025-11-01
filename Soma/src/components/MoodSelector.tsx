@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { router } from "expo-router";
-
+import { useMood } from "../context/MoodContext";  // 👈 add this import
 
 const moods = [
   { label: "😊", name: "Happy" },
@@ -14,6 +14,7 @@ const moods = [
 
 export default function MoodSelector() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const { setMood } = useMood();  // 👈 this line gives access to global setter
 
   return (
     <View style={styles.container}>
@@ -28,9 +29,10 @@ export default function MoodSelector() {
               selectedMood === mood.name && styles.selected,
             ]}
             onPress={() => {
-  setSelectedMood(mood.name);
-  router.push("/exercise-flow");
-}}
+              setSelectedMood(mood.name);
+              setMood(mood.name); // 👈 this updates the global context
+              router.push("/exercise-flow");
+            }}
           >
             <Text style={styles.emoji}>{mood.label}</Text>
             <Text

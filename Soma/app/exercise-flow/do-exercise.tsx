@@ -2,12 +2,26 @@ import { useEffect } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import Timer from "../../src/components/Timer";
+import { saveSession } from "../../src/hooks/useSessionStorage";
+import { useMood } from "../../src/context/MoodContext";
 
 export default function DoExercise() {
   const { duration, gif } = useLocalSearchParams();
 
+  const { mood } = useMood(); // get the current mood
+
   const handleStop = () => router.replace("/exercise-flow");
-  const handleComplete = () => router.replace("/exercise-flow/complete");
+  const handleComplete = async () => {
+  const session = {
+    mood: mood || "Unknown",
+    exercise: Number(duration) === 30 ? "30-Second Breath" : "1-Minute Grounding",
+    duration: Number(duration),
+    date: new Date().toISOString(),
+  };
+
+  await saveSession(session);
+  router.replace("/exercise-flow/complete");
+};
 
   return (
     <View style={styles.container}>
