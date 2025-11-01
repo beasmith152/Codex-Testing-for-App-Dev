@@ -1,4 +1,5 @@
 
+import Timer from "../../src/components/Timer";
 
 export default function ExercisesScreen() {
   return (
@@ -7,6 +8,7 @@ export default function ExercisesScreen() {
       <Text style={styles.subtitle}>
         Choose a grounding practice to reconnect with your body.
       </Text>
+      <Timer initialSeconds={60} />
     </View>
   );
 }
