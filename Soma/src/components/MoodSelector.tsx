@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,9 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
+  TouchableWithoutFeedback,
+  Platform,
+  Vibration,
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../context/MoodContext";
@@ -21,77 +24,154 @@ const moods = [
 
 export default function MoodSelector() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [confirmedMood, setConfirmedMood] = useState<string | null>(null);
   const { setMood } = useMood();
-  const screenWidth = Dimensions.get("window").width;
 
-  // 👇 slightly wider buttons (better text fit) and more spacing
-  const totalSpacing = 36; // total horizontal gap space
+  const screenWidth = Dimensions.get("window").width;
+  const totalSpacing = 80; // extra padding around row
   const buttonWidth = (screenWidth - totalSpacing) / moods.length;
 
-  const animations = useRef(moods.map(() => new Animated.Value(0))).current;
+  const liftAnimations = useRef(moods.map(() => new Animated.Value(0))).current;
+  const fadeAnimations = useRef(moods.map(() => new Animated.Value(1))).current;
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  const pulseOpacity = useRef(new Animated.Value(0)).current;
+  const messageFade = useRef(new Animated.Value(0)).current;
 
-  const handlePressIn = (index: number) => {
-    Animated.spring(animations[index], {
-      toValue: -8,
+  useEffect(() => {
+    moods.forEach((_, i) => {
+      if (selectedMood === moods[i].name) {
+        Animated.spring(liftAnimations[i], {
+          toValue: -10,
+          friction: 4,
+          tension: 60,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(fadeAnimations[i], {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        Animated.spring(liftAnimations[i], {
+          toValue: 0,
+          friction: 5,
+          tension: 70,
+          useNativeDriver: true,
+        }).start();
+        Animated.timing(fadeAnimations[i], {
+          toValue: selectedMood ? 0.6 : 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      }
+    });
+
+    Animated.timing(messageFade, {
+      toValue: selectedMood ? 1 : 0,
+      duration: 400,
       useNativeDriver: true,
     }).start();
+  }, [selectedMood]);
+
+  const triggerPulse = () => {
+    pulseScale.setValue(1);
+    pulseOpacity.setValue(0.6);
+    Animated.parallel([
+      Animated.timing(pulseScale, {
+        toValue: 1.8,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+      Animated.timing(pulseOpacity, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
-  const handlePressOut = (index: number, moodName: string) => {
-    Animated.spring(animations[index], {
-      toValue: 0,
-      friction: 5,
-      tension: 80,
-      useNativeDriver: true,
-    }).start(() => {
+  const handlePress = (moodName: string) => {
+    if (selectedMood === moodName) {
+      triggerPulse();
+      if (Platform.OS !== "web") Vibration.vibrate(50);
+      setConfirmedMood(moodName);
+      setTimeout(() => router.push("/exercise-flow"), 600);
+    } else {
       setSelectedMood(moodName);
       setMood(moodName);
-      router.push("/exercise-flow");
-    });
+      if (Platform.OS !== "web") Vibration.vibrate(30);
+    }
+  };
+
+  const handleOutsidePress = () => {
+    if (selectedMood) {
+      setSelectedMood(null);
+      setConfirmedMood(null);
+      setMood(null);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>How are you feeling today?</Text>
+    <TouchableWithoutFeedback onPress={handleOutsidePress}>
+      <View style={styles.container}>
+        <Text style={styles.title}>How are you feeling today?</Text>
 
-      <View style={styles.row}>
-        {moods.map((mood, index) => (
-          <Animated.View
-            key={mood.name}
-            style={{
-              transform: [{ translateY: animations[index] }],
-            }}
-          >
-            <Pressable
-              style={[
-                styles.moodButton,
-                { width: buttonWidth },
-                selectedMood === mood.name && styles.selected,
-              ]}
-              onPressIn={() => handlePressIn(index)}
-              onPressOut={() => handlePressOut(index, mood.name)}
-            >
-              <Text style={styles.emoji}>{mood.label}</Text>
-              <Text
-                style={[
-                  styles.moodLabel,
-                  selectedMood === mood.name && styles.selectedLabel,
-                ]}
-                numberOfLines={1} // 👈 ensures no wrapping
+        <View style={styles.row}>
+          {moods.map((mood, index) => {
+            const isSelected = selectedMood === mood.name;
+            return (
+              <Animated.View
+                key={mood.name}
+                style={{
+                  transform: [{ translateY: liftAnimations[index] }],
+                  opacity: fadeAnimations[index],
+                }}
               >
-                {mood.name}
-              </Text>
-            </Pressable>
-          </Animated.View>
-        ))}
-      </View>
+                <Pressable
+                  style={[
+                    styles.moodButton,
+                    { width: buttonWidth },
+                    isSelected && styles.selected,
+                  ]}
+                  onPress={() => handlePress(mood.name)}
+                >
+                  {isSelected && (
+                    <Animated.View
+                      style={[
+                        styles.pulse,
+                        {
+                          transform: [{ scale: pulseScale }],
+                          opacity: pulseOpacity,
+                        },
+                      ]}
+                    />
+                  )}
+                  <Text style={styles.emoji}>{mood.label}</Text>
+                  <Text
+                    style={[
+                      styles.moodLabel,
+                      isSelected && styles.selectedLabel,
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {mood.name}
+                  </Text>
+                </Pressable>
+              </Animated.View>
+            );
+          })}
+        </View>
 
-      {selectedMood && (
-        <Text style={styles.confirm}>
-          You’re feeling <Text style={styles.moodName}>{selectedMood}</Text> 🌿
-        </Text>
-      )}
-    </View>
+        <Animated.View style={{ opacity: messageFade }}>
+          {selectedMood && (
+            <Text style={styles.confirm}>
+              Tap <Text style={styles.moodName}>{selectedMood}</Text> again to
+              begin 🌿
+            </Text>
+          )}
+        </Animated.View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -100,56 +180,58 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F6EDE3",
     flex: 1,
-    paddingVertical: 20,
+    paddingVertical: 30,
     paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
     color: "#403F3A",
     fontWeight: "700",
-    marginBottom: 20,
+    marginBottom: 32,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    marginBottom: 24,
-    paddingHorizontal: 8,
+    marginBottom: 28,
+    paddingHorizontal: 16, // 🌿 added back to keep nice edge spacing
   },
   moodButton: {
-    height: 85, // slightly taller for breathing room
+    height: 95,
     backgroundColor: "#EAD8CA",
-    borderRadius: 16,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 3, // slightly more spacing between each
+    marginHorizontal: 6,
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
   },
-  emoji: {
-    fontSize: 28,
+  pulse: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#FFD97D",
+    borderRadius: 18,
   },
-  moodLabel: {
-    fontSize: 13,
-    color: "#403F3A",
-    marginTop: 4,
-  },
+  emoji: { fontSize: 28 },
+  moodLabel: { fontSize: 13, color: "#403F3A", marginTop: 4 },
   selected: {
     backgroundColor: "#EFAF2E",
+    shadowColor: "#EFAF2E",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
   },
-  selectedLabel: {
-    color: "#F6EDE3",
-    fontWeight: "700",
-  },
+  selectedLabel: { color: "#F6EDE3", fontWeight: "700" },
   confirm: {
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 24,
     color: "#507050",
+    textAlign: "center",
+    paddingHorizontal: 16,
   },
-  moodName: {
-    fontWeight: "700",
-  },
+  moodName: { fontWeight: "700" },
 });
