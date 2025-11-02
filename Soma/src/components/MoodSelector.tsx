@@ -1,7 +1,14 @@
-import { useState } from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  Animated,
+} from "react-native";
 import { router } from "expo-router";
-import { useMood } from "../context/MoodContext";  // 👈 add this import
+import { useMood } from "../context/MoodContext";
 
 const moods = [
   { label: "😊", name: "Happy" },
@@ -14,36 +21,68 @@ const moods = [
 
 export default function MoodSelector() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const { setMood } = useMood();  // 👈 this line gives access to global setter
+  const { setMood } = useMood();
+  const screenWidth = Dimensions.get("window").width;
+
+  // 👇 slightly wider buttons (better text fit) and more spacing
+  const totalSpacing = 36; // total horizontal gap space
+  const buttonWidth = (screenWidth - totalSpacing) / moods.length;
+
+  const animations = useRef(moods.map(() => new Animated.Value(0))).current;
+
+  const handlePressIn = (index: number) => {
+    Animated.spring(animations[index], {
+      toValue: -8,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = (index: number, moodName: string) => {
+    Animated.spring(animations[index], {
+      toValue: 0,
+      friction: 5,
+      tension: 80,
+      useNativeDriver: true,
+    }).start(() => {
+      setSelectedMood(moodName);
+      setMood(moodName);
+      router.push("/exercise-flow");
+    });
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>How are you feeling today?</Text>
 
-      <View style={styles.grid}>
-        {moods.map((mood) => (
-          <Pressable
+      <View style={styles.row}>
+        {moods.map((mood, index) => (
+          <Animated.View
             key={mood.name}
-            style={[
-              styles.moodButton,
-              selectedMood === mood.name && styles.selected,
-            ]}
-            onPress={() => {
-              setSelectedMood(mood.name);
-              setMood(mood.name); // 👈 this updates the global context
-              router.push("/exercise-flow");
+            style={{
+              transform: [{ translateY: animations[index] }],
             }}
           >
-            <Text style={styles.emoji}>{mood.label}</Text>
-            <Text
+            <Pressable
               style={[
-                styles.moodLabel,
-                selectedMood === mood.name && styles.selectedLabel,
+                styles.moodButton,
+                { width: buttonWidth },
+                selectedMood === mood.name && styles.selected,
               ]}
+              onPressIn={() => handlePressIn(index)}
+              onPressOut={() => handlePressOut(index, mood.name)}
             >
-              {mood.name}
-            </Text>
-          </Pressable>
+              <Text style={styles.emoji}>{mood.label}</Text>
+              <Text
+                style={[
+                  styles.moodLabel,
+                  selectedMood === mood.name && styles.selectedLabel,
+                ]}
+                numberOfLines={1} // 👈 ensures no wrapping
+              >
+                {mood.name}
+              </Text>
+            </Pressable>
+          </Animated.View>
         ))}
       </View>
 
@@ -60,35 +99,41 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "#F6EDE3",
-    paddingVertical: 20,
     flex: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
     color: "#403F3A",
     fontWeight: "700",
-    marginBottom: 16,
+    marginBottom: 20,
   },
-  grid: {
+  row: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 24,
+    paddingHorizontal: 8,
   },
   moodButton: {
-    width: 90,
-    height: 90,
+    height: 85, // slightly taller for breathing room
     backgroundColor: "#EAD8CA",
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
-    margin: 8,
+    marginHorizontal: 3, // slightly more spacing between each
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   emoji: {
     fontSize: 28,
   },
   moodLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#403F3A",
     marginTop: 4,
   },

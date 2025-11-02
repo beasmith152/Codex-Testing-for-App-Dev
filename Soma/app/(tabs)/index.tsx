@@ -7,8 +7,7 @@ import MoodSelector from "../../src/components/MoodSelector";
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Soma 🌿</Text>
-      <Text style={styles.subtitle}>Feel grounded again.</Text>
+      <Text style={styles.title}>Welcome, How are you?</Text>
        <MoodSelector />
     </View>
   );
