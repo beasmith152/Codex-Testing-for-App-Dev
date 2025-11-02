@@ -28,7 +28,7 @@ export default function MoodSelector() {
   const { setMood } = useMood();
 
   const screenWidth = Dimensions.get("window").width;
-  const totalSpacing = 80; // extra padding around row
+  const totalSpacing = 80;
   const buttonWidth = (screenWidth - totalSpacing) / moods.length;
 
   const liftAnimations = useRef(moods.map(() => new Animated.Value(0))).current;
@@ -92,11 +92,14 @@ export default function MoodSelector() {
 
   const handlePress = (moodName: string) => {
     if (selectedMood === moodName) {
+      // Confirm mood
       triggerPulse();
       if (Platform.OS !== "web") Vibration.vibrate(50);
       setConfirmedMood(moodName);
-      setTimeout(() => router.push("/exercise-flow"), 600);
+      // ✅ route into the (tabs) structure so bottom nav stays visible
+      setTimeout(() => router.push("/(tabs)/exercise-flow"), 600);
     } else {
+      // Select mood
       setSelectedMood(moodName);
       setMood(moodName);
       if (Platform.OS !== "web") Vibration.vibrate(30);
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginBottom: 28,
-    paddingHorizontal: 16, // 🌿 added back to keep nice edge spacing
+    paddingHorizontal: 16,
   },
   moodButton: {
     height: 95,

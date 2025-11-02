@@ -1,16 +1,15 @@
-import { Tabs } from 'expo-router';
-import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
-import { HapticTab } from '@/components/haptic-tab';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors } from '@/constants/theme';
+import { Tabs } from "expo-router";
+import React, { useRef, useEffect } from "react";
+import { View, StyleSheet, Animated, Easing } from "react-native";
+import { HapticTab } from "@/components/haptic-tab";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const activeColor = '#403F3A'; // dark brown highlight
-  const inactiveColor = '#9B8F87'; // soft muted brown
-  const bgColor = '#F6EDE3'; // Soma beige background
+  const activeColor = "#403F3A"; // dark brown highlight
+  const inactiveColor = "#9B8F87"; // soft muted brown
+  const bgColor = "#F6EDE3"; // Soma beige background
 
   return (
     <Tabs
@@ -20,27 +19,29 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: bgColor,
-          borderTopColor: 'transparent',
+          borderTopColor: "transparent",
           height: 70,
           paddingBottom: 10,
           paddingTop: 6,
           elevation: 0,
         },
         tabBarIcon: ({ focused }) => {
-          let iconName = 'home-outline'; // default icon
+          let iconName = "home-outline";
 
           switch (route.name) {
-            case 'index':
-              iconName = focused ? 'home' : 'home-outline';
+            case "index":
+              iconName = focused ? "home" : "home-outline";
               break;
-            case 'dashboard':
-              iconName = focused ? 'chart-bar' : 'chart-bar';
+            case "dashboard":
+              iconName = focused ? "chart-bar" : "chart-bar";
               break;
-            case 'calendar':
-              iconName = focused ? 'calendar-month' : 'calendar-month-outline';
+            case "calendar":
+              iconName = focused
+                ? "calendar-month"
+                : "calendar-month-outline";
               break;
             default:
-              iconName = 'circle-outline';
+              return null;
           }
 
           const color = focused ? activeColor : inactiveColor;
@@ -79,22 +80,48 @@ export default function TabLayout() {
         },
       })}
     >
+      {/* 🌿 Core Tabs */}
+      <Tabs.Screen name="calendar" options={{ title: "Calendar" }} />
+      <Tabs.Screen name="index" options={{ title: "Home" }} />
+      <Tabs.Screen name="dashboard" options={{ title: "Dashboard" }} />
+
+      {/* 🌿 Exercise Flow */}
       <Tabs.Screen
-        name="calendar"
+        name="exercise-flow/index"
         options={{
-          title: 'Calendar',
+          href: null, // not visible in tab nav
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: bgColor,
+            borderTopColor: "transparent",
+            height: 70,
+            paddingBottom: 10,
+            paddingTop: 6,
+            elevation: 0,
+          },
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="exercise-flow/do-exercise"
         options={{
-          title: 'Home',
+          href: null,
+          headerShown: false,
+          tabBarStyle: { display: "none" }, // 👈 auto-hide during timer
         }}
       />
       <Tabs.Screen
-        name="dashboard"
+        name="exercise-flow/complete"
         options={{
-          title: 'Dashboard',
+          href: null,
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: bgColor,
+            borderTopColor: "transparent",
+            height: 70,
+            paddingBottom: 10,
+            paddingTop: 6,
+            elevation: 0,
+          },
         }}
       />
     </Tabs>
@@ -103,16 +130,16 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   iconWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
   activeDot: {
-    position: 'absolute',
+    position: "absolute",
     bottom: -6,
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#403F3A',
+    backgroundColor: "#403F3A",
   },
 });

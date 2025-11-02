@@ -1,6 +1,15 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
-import { View, Text, StyleSheet, Modal, Pressable, Animated, Easing } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  Pressable,
+  Animated,
+  Easing,
+  ScrollView,
+} from "react-native";
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
 
@@ -28,7 +37,7 @@ export default function CalendarScreen() {
   const [stats, setStats] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [dayData, setDayData] = useState<any[]>([]);
-  const [fadeAnim] = useState(new Animated.Value(0)); // 🌿 animation value
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   useFocusEffect(
     useCallback(() => {
@@ -36,7 +45,6 @@ export default function CalendarScreen() {
         const data = await getMoodStats();
         setStats(data);
 
-        // 🌿 fade-in animation when stats load
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 1200,
@@ -57,19 +65,45 @@ export default function CalendarScreen() {
     );
   }
 
-  // Create calendar markings
+  // ✅ Fix UTC offset by forcing the date to local midnight
+  const fixUTCOffset = (dateString: string) => {
+    const [year, month, day] = dateString.split("-").map(Number);
+    const utcDate = new Date(Date.UTC(year, month - 1, day));
+    // Adjust to local time without shifting the day
+    const localDate = new Date(
+      utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
+    );
+    return localDate;
+  };
+
+  // ✅ Normalize stored & clicked dates to consistent local YYYY-MM-DD
+  const toLocalKey = (dateString: string) => {
+    const d = fixUTCOffset(dateString);
+    return (
+      d.getFullYear() +
+      "-" +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(d.getDate()).padStart(2, "0")
+    );
+  };
+
+  // ✅ Create calendar markings
   const markedDates: Record<string, any> = {};
   Object.entries(stats.byDay).forEach(([day, sessions]: any) => {
+    const localKey = toLocalKey(day);
     const avgMood = sessions[Math.floor(sessions.length / 2)].mood || "Neutral";
-    markedDates[day] = {
+    markedDates[localKey] = {
       marked: true,
       dotColor: moodColors[avgMood] || "#E0E0E0",
     };
   });
 
+  // ✅ Handle day tap
   const handleDayPress = (day: any) => {
-    const sessions = stats.byDay[day.dateString] || [];
-    setSelectedDay(day.dateString);
+    const localKey = toLocalKey(day.dateString);
+    const sessions = stats.byDay[localKey] || [];
+    setSelectedDay(localKey);
     setDayData(sessions);
   };
 
@@ -77,7 +111,7 @@ export default function CalendarScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Mood Chart</Text>
 
-      {/* summary cards */}
+      {/* Summary cards */}
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>{stats.totalExercises}</Text>
@@ -93,7 +127,6 @@ export default function CalendarScreen() {
         </View>
       </View>
 
-      {/* 🌿 supportive message (animated + full width) */}
       <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim }]}>
         {getMoodMessage(stats.avgMood)}
       </Animated.Text>
@@ -113,28 +146,42 @@ export default function CalendarScreen() {
         }}
       />
 
-      {/* day summary modal */}
+      {/* Scrollable modal */}
       <Modal visible={!!selectedDay} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>
-              {new Date(selectedDay!).toDateString()}
+              {selectedDay &&
+                fixUTCOffset(selectedDay).toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
             </Text>
 
-            {dayData.length === 0 ? (
-              <Text style={styles.modalText}>No sessions recorded 🌿</Text>
-            ) : (
-              dayData.map((s, i) => (
-                <View key={i} style={styles.modalCard}>
-                  <Text style={styles.modalText}>
-                    Mood: {s.mood} | {s.exercise}
-                  </Text>
-                  <Text style={styles.modalSubText}>
-                    Duration: {s.duration}s
-                  </Text>
-                </View>
-              ))
-            )}
+            <ScrollView
+              contentContainerStyle={{
+                alignItems: "center",
+                paddingBottom: 20,
+              }}
+              showsVerticalScrollIndicator={false}
+            >
+              {dayData.length === 0 ? (
+                <Text style={styles.modalText}>No sessions recorded 🌿</Text>
+              ) : (
+                dayData.map((s, i) => (
+                  <View key={i} style={styles.modalCard}>
+                    <Text style={styles.modalText}>
+                      Mood: {s.mood} | {s.exercise}
+                    </Text>
+                    <Text style={styles.modalSubText}>
+                      Duration: {s.duration}s
+                    </Text>
+                  </View>
+                ))
+              )}
+            </ScrollView>
 
             <Pressable
               onPress={() => setSelectedDay(null)}
@@ -181,7 +228,6 @@ const styles = StyleSheet.create({
     color: "#403F3A",
   },
   statLabel: { color: "#507050", fontSize: 13 },
-  // 🌿 wider mood message
   moodMessageFull: {
     marginBottom: 16,
     paddingHorizontal: 24,
@@ -202,6 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 20,
     width: "85%",
+    maxHeight: "80%",
     alignItems: "center",
   },
   modalTitle: {
@@ -210,10 +257,17 @@ const styles = StyleSheet.create({
     color: "#403F3A",
     marginBottom: 12,
   },
+  modalCard: {
+    backgroundColor: "#F6EDE3",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 8,
+    width: "90%",
+  },
   modalText: { color: "#403F3A", fontSize: 15, marginBottom: 4 },
   modalSubText: { color: "#507050", fontSize: 13 },
   modalButton: {
-    marginTop: 14,
+    marginTop: 10,
     backgroundColor: "#EFAF2E",
     paddingHorizontal: 20,
     paddingVertical: 8,
