@@ -16,8 +16,8 @@ export const unstable_settings = {
   headerShown: false,
 };
 
-// 🧠 All exercises with definitions + vibe + concept
-const exerciseLibrary = {
+// ✅ Exported so it can be imported elsewhere (like dashboard.tsx)
+export const exerciseLibrary = {
   Stressed: {
     micro: {
       label: "Box Breathing",
@@ -172,7 +172,6 @@ export default function ExerciseChoice() {
               styles.card,
               pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 },
             ]}
-            // ✅ updated navigation path
             onPress={() =>
               router.push({
                 pathname: "/(tabs)/exercise-flow/PreExerciseScreen",

@@ -4,9 +4,17 @@ export async function getMoodStats() {
   const sessions = await getSessions();
   if (!sessions || sessions.length === 0) return null;
 
+  // ✅ sort sessions by date so newest is last
+  const sortedSessions = [...sessions].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  // ✅ track most recent exercise
+  const recentExercise = sortedSessions[sortedSessions.length - 1]?.exercise || null;
+
   // convert to LOCAL date objects (fixes UTC shift issue)
   const byDay: Record<string, any[]> = {};
-  sessions.forEach((s) => {
+  sortedSessions.forEach((s) => {
     const local = new Date(s.date);
     const day =
       local.getFullYear() +
@@ -31,7 +39,7 @@ export async function getMoodStats() {
   };
   let totalMoodScore = 0;
 
-  // ✅ NEW: calculate daily averages (each day counts equally)
+  // ✅ daily averages (each day counts equally)
   Object.values(byDay).forEach((sessions) => {
     let dayScore = 0;
     sessions.forEach((s) => {
@@ -43,7 +51,7 @@ export async function getMoodStats() {
     totalMoodScore += dayAvg;
   });
 
-  // ✅ NEW: divide by number of days instead of total sessions
+  // ✅ average by day count
   const avgMoodScore = totalMoodScore / Object.keys(byDay).length;
 
   let avgMood = "Neutral";
@@ -58,6 +66,7 @@ export async function getMoodStats() {
     totalTime,
     avgMood,
     byDay,
+    recentExercise, // ✅ NEW field
   };
 }
 
@@ -68,5 +77,5 @@ export const moodColors: Record<string, string> = {
   Sad: "#90CAF9",
   Stressed: "#FF8A65",
   Anxious: "#CE93D8",
-  Neutral: "#E0E0E0"
+  Neutral: "#E0E0E0",
 };

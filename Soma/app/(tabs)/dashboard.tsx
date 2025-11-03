@@ -1,51 +1,30 @@
-import { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
+  Image,
   Pressable,
   ScrollView,
   Animated,
   Easing,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { getSessions, clearSessions } from "../../src/hooks/useSessionStorage";
+import { router } from "expo-router";
 import { getMoodStats } from "../../src/hooks/useMoodStats";
+import { exerciseLibrary } from "./exercise-flow"; // ✅ make sure this import path matches your folder
+import { moodColors } from "../../src/hooks/useMoodStats";
 
-// 🌿 Supportive mood message
-function getMoodMessage(mood: string) {
-  switch (mood) {
-    case "Happy":
-      return "You’re radiating good energy today ✨ Keep it flowing!";
-    case "Calm":
-      return "Peaceful and steady — keep honoring that balance 🌿";
-    case "Neutral":
-      return "You’re grounded. Some days are just about being present.";
-    case "Sad":
-      return "Gentle reminder: feelings ebb and flow. You’re doing fine 💛";
-    case "Stressed":
-      return "Take a deep breath — even small pauses make a difference 💨";
-    case "Anxious":
-      return "Slow and steady, one breath at a time. You’re safe here 🤍";
-    default:
-      return "Checking in with yourself is what matters most 💚";
-  }
-}
-
-export default function DashboardScreen() {
-  const [sessions, setSessions] = useState([]);
+export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useFocusEffect(
     useCallback(() => {
-      const loadData = async () => {
-        const data = await getSessions();
-        const moodData = await getMoodStats();
-        setSessions(data.reverse());
-        setStats(moodData);
+      const loadStats = async () => {
+        const data = await getMoodStats();
+        setStats(data);
 
-        // 🌿 Fade-in animation for message
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 1200,
@@ -53,166 +32,200 @@ export default function DashboardScreen() {
           useNativeDriver: true,
         }).start();
       };
-      loadData();
+      loadStats();
     }, [])
   );
 
+  if (!stats) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Loading Dashboard...</Text>
+      </View>
+    );
+  }
+
+  // ✅ Select “Exercise of the Day”
+  let exerciseOfTheDay: any = null;
+
+  if (stats?.recentExercise) {
+    // Try to find the recorded exercise in your library (case-insensitive)
+    const searchName = stats.recentExercise.toLowerCase();
+    for (const category of Object.values(exerciseLibrary)) {
+      for (const variant of Object.values(category)) {
+        if (variant.label.toLowerCase() === searchName) {
+          exerciseOfTheDay = variant;
+          break;
+        }
+      }
+      if (exerciseOfTheDay) break;
+    }
+  }
+
+  // ✅ fallback: pick a random exercise if none matched
+  if (!exerciseOfTheDay) {
+    const categories = Object.values(exerciseLibrary);
+    const randomCategory =
+      categories[Math.floor(Math.random() * categories.length)];
+    const randomVariant =
+      Object.values(randomCategory)[
+        Math.floor(Math.random() * Object.values(randomCategory).length)
+      ];
+    exerciseOfTheDay = randomVariant;
+  }
+
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      style={{ backgroundColor: "#F6EDE3" }}
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>Dashboard </Text>
-    
-
-      {/* 🌿 Top stats section */}
-      {stats && (
-        <>
-          <View style={styles.statsRow}>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>{stats.totalExercises}</Text>
-              <Text style={styles.statLabel}>Exercises</Text>
-            </View>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
-  {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
-</Text>
-              <Text style={styles.statLabel}>Time Spent</Text>
-            </View>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>{stats.avgMood}</Text>
-              <Text style={styles.statLabel}>Avg Mood</Text>
-            </View>
-          </View>
-
-          {/* 💬 Animated supportive message */}
-          <Animated.Text style={[styles.moodMessage, { opacity: fadeAnim }]}>
-            {getMoodMessage(stats.avgMood)}
-          </Animated.Text>
-        </>
-      )}
-
-      {/* 🌿 Session list */}
-      {sessions.length === 0 ? (
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>
-            Mood data visualization coming soon 🌿
+      {/* Summary Section */}
+      <Text style={styles.title}>Your Activity Summary</Text>
+      <View style={styles.statsRow}>
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>{stats.totalExercises}</Text>
+          <Text style={styles.statLabel}>Exercises</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>
+            {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
           </Text>
-          <Text style={styles.empty}>No sessions yet — start one today!</Text>
+          <Text style={styles.statLabel}>Time Spent</Text>
         </View>
-      ) : (
-        <View style={styles.sessionList}>
-          {sessions.map((s, i) => (
-            <View key={i} style={styles.card}>
-              <Text style={styles.cardText}>
-                {new Date(s.date).toLocaleString()}
-              </Text>
-              <Text style={styles.cardText}>
-                Mood: <Text style={styles.bold}>{s.mood}</Text>
-              </Text>
-              <Text style={styles.cardText}>
-                Exercise: <Text style={styles.bold}>{s.exercise}</Text>
-              </Text>
-              <Text style={styles.cardText}>Duration: {s.duration}s</Text>
-            </View>
-          ))}
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>{stats.avgMood}</Text>
+          <Text style={styles.statLabel}>Avg Mood</Text>
+        </View>
+      </View>
 
-          <Pressable style={styles.clearButton} onPress={clearSessions}>
-            <Text style={styles.clearText}>Clear History</Text>
+      {/* 🌿 Last Completed Section */}
+      <Animated.View style={[styles.exerciseCard, { opacity: fadeAnim }]}>
+        <Text style={styles.sectionHeader}>Last Completed</Text>
+
+        {exerciseOfTheDay ? (
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/(tabs)/exercise-flow/do-exercise",
+                params: {
+                  id: exerciseOfTheDay.label,
+                  duration: exerciseOfTheDay.duration,
+                  gif: exerciseOfTheDay.gif,
+                  label: exerciseOfTheDay.label,
+                  definition: exerciseOfTheDay.definition,
+                  vibe: exerciseOfTheDay.vibe,
+                  concept: exerciseOfTheDay.concept,
+                },
+              })
+            }
+          >
+            <View style={styles.cardContent}>
+              <Image
+                source={{ uri: exerciseOfTheDay.gif }}
+                style={styles.exerciseImage}
+              />
+              <View style={styles.overlay}>
+                <Text style={styles.exerciseLabel}>
+                  {exerciseOfTheDay.label}
+                </Text>
+                <Text style={styles.exerciseVibe}>
+                  {exerciseOfTheDay.vibe}
+                </Text>
+                <Text style={styles.exerciseDef}>
+                  {exerciseOfTheDay.definition}
+                </Text>
+              </View>
+            </View>
           </Pressable>
-        </View>
-      )}
+        ) : (
+          <Text style={styles.noExerciseText}>
+            You haven’t completed any exercises yet 🌿
+          </Text>
+        )}
+      </Animated.View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: "#F6EDE3",
+  },
+  scrollContent: {
     alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 24,
-    paddingBottom: 80,
+    paddingTop: 80,
+    paddingBottom: 100,
   },
   title: {
     fontSize: 26,
     color: "#403F3A",
     fontWeight: "700",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 15,
-    color: "#403F3A",
-    marginBottom: 24,
+    marginBottom: 20,
   },
   statsRow: {
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
-    marginBottom: 16,
+    marginBottom: 24,
   },
-  statCard: {
+  statCard: { alignItems: "center", width: "30%" },
+  statNumber: { fontSize: 18, fontWeight: "700", color: "#403F3A" },
+  statLabel: { color: "#507050", fontSize: 13 },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#403F3A",
+    marginBottom: 12,
+  },
+  exerciseCard: {
+    width: "90%",
+    backgroundColor: "#EAD8CA",
+    borderRadius: 16,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  cardContent: {
+    position: "relative",
     alignItems: "center",
-    width: "30%",
   },
-  statNumber: {
+  exerciseImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 12,
+  },
+  overlay: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "rgba(64,63,58,0.7)",
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    padding: 10,
+  },
+  exerciseLabel: {
+    color: "#fff",
     fontSize: 18,
     fontWeight: "700",
-    color: "#403F3A",
+    marginBottom: 4,
   },
-  statLabel: {
-    color: "#507050",
+  exerciseVibe: {
+    color: "#EFAF2E",
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  exerciseDef: {
+    color: "#FFF",
     fontSize: 13,
   },
-  moodMessage: {
-    fontSize: 14,
-    color: "#507050",
-    textAlign: "center",
-    fontStyle: "italic",
-    marginBottom: 24,
-    paddingHorizontal: 24,
-    lineHeight: 20,
-  },
-  placeholder: {
-    borderWidth: 1,
-    borderColor: "#EFAF2E",
-    borderRadius: 16,
-    padding: 20,
-    width: "90%",
-    alignItems: "center",
-  },
-  placeholderText: {
-    color: "#507050",
-    fontSize: 14,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  empty: {
-    color: "#507050",
-    marginTop: 4,
-    fontStyle: "italic",
-  },
-  sessionList: {
-    width: "100%",
-    alignItems: "center",
-  },
-  card: {
-    backgroundColor: "#EAD8CA",
-    padding: 10,
-    borderRadius: 12,
-    marginVertical: 6,
-    width: "90%",
-  },
-  cardText: { color: "#403F3A" },
-  bold: { fontWeight: "700" },
-  clearButton: {
-    marginTop: 20,
-    backgroundColor: "#EFAF2E",
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 60,
-  },
-  clearText: {
+  noExerciseText: {
     color: "#403F3A",
-    fontWeight: "700",
+    fontSize: 15,
+    fontStyle: "italic",
+    textAlign: "center",
+    marginVertical: 10,
   },
 });
