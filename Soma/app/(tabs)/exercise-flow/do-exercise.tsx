@@ -20,29 +20,38 @@ export const unstable_settings = {
 
 export default function DoExercise() {
   const insets = useSafeAreaInsets();
-  const { id, duration, gif, label, definition, vibe, concept } =
-    useLocalSearchParams();
-  const parsedDuration = Number(duration);
+  const params = useLocalSearchParams();
   const { mood } = useMood();
+
+  // ✅ Normalize all params (handles string[] cases)
+  const normalize = (v: any, fallback = "") =>
+    Array.isArray(v) ? v[0] ?? fallback : v ?? fallback;
+
+  const id = normalize(params.id, "exercise");
+  const exerciseTitle = normalize(params.exerciseTitle, params.label || "Exercise"); // ✅ main title
+  const gif = normalize(params.gif);
+  const definition = normalize(params.definition);
+  const vibe = normalize(params.vibe);
+  const concept = normalize(params.concept);
+  const parsedDuration = Number(normalize(params.duration, "60")) || 60;
 
   const timerRef = useRef<{ stop: () => void } | null>(null);
 
+  // Unique key ensures timer resets per exercise
   const timerKey = useMemo(
-    () => `${id || "exercise"}-${parsedDuration}-${Date.now()}`,
+    () => `${id}-${parsedDuration}-${Date.now()}`,
     [id, parsedDuration]
   );
 
   const handleStop = () => {
-    if (timerRef.current?.stop) {
-      timerRef.current.stop();
-    }
+    if (timerRef.current?.stop) timerRef.current.stop();
     router.replace("/(tabs)/exercise-flow");
   };
 
   const handleComplete = async () => {
     const session = {
       mood: mood || "Unknown",
-      exercise: label || "Unknown Exercise",
+      exercise: exerciseTitle,
       duration: parsedDuration,
       date: new Date().toISOString(),
     };
@@ -63,22 +72,34 @@ export default function DoExercise() {
       >
         <View style={styles.centerWrapper}>
           {/* ✅ Exercise Title */}
-          <Text style={styles.exerciseTitle}>{label || "Exercise"}</Text>
+          <Text style={styles.exerciseTitle}>{exerciseTitle}</Text>
 
           {/* 🌿 Context Info */}
           <View style={styles.infoBox}>
             <Text style={styles.sectionTitle}>Definition</Text>
-            <Text style={styles.sectionText}>{definition}</Text>
+            <Text style={styles.sectionText}>
+              {definition || "No definition provided."}
+            </Text>
 
             <Text style={styles.sectionTitle}>Vibe</Text>
-            <Text style={styles.sectionText}>{vibe}</Text>
+            <Text style={styles.sectionText}>
+              {vibe || "No vibe description provided."}
+            </Text>
 
             <Text style={styles.sectionTitle}>What to Do</Text>
-            <Text style={styles.sectionText}>{concept}</Text>
+            <Text style={styles.sectionText}>
+              {concept || "No instructions available."}
+            </Text>
           </View>
 
           {/* 🌿 Exercise Visual */}
-          <Image source={{ uri: gif as string }} style={styles.gif} />
+          {gif ? (
+            <Image source={{ uri: gif }} style={styles.gif} />
+          ) : (
+            <View style={[styles.gif, { justifyContent: "center" }]}>
+              <Text style={{ color: "#403F3A" }}>No image provided.</Text>
+            </View>
+          )}
 
           {/* 🌿 Timer */}
           <Timer
@@ -99,20 +120,17 @@ export default function DoExercise() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F6EDE3",
-  },
+  container: { flex: 1, backgroundColor: "#F6EDE3" },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: "center", // ✅ centers vertically
-    alignItems: "center", // ✅ centers horizontally
+    justifyContent: "center", // vertically centered
+    alignItems: "center", // horizontally centered
     paddingHorizontal: 24,
     paddingVertical: 40,
   },
   centerWrapper: {
     width: "100%",
-    maxWidth: 380, // ✅ keeps layout neat on wide screens
+    maxWidth: 380,
     alignItems: "center",
   },
   exerciseTitle: {
@@ -121,12 +139,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginBottom: 8,
     textAlign: "center",
-  },
-  title: {
-    fontSize: 20,
-    color: "#507050",
-    fontWeight: "600",
-    marginBottom: 16,
   },
   infoBox: {
     backgroundColor: "#EAD8CA",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Pressable,
+  ImageBackground,
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../../src/context/MoodContext";
@@ -30,20 +31,83 @@ const exerciseList = [
   { label: "Baseline", mood: "Baseline" },
 ];
 
+// 🌿 Exercise of the Day Library (with all context)
+const exerciseLibrary = [
+  {
+    id: "stressed-micro-box-breathing",
+    label: "Box Breathing",
+    vibe: "Too much pressure or racing thoughts.",
+    definition: "Feeling tight, overwhelmed, or tense.",
+    concept:
+      "Inhale for 4 seconds, hold for 4, exhale for 4, and pause for 4. Repeat slowly.",
+    gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+    mood: "Stressed",
+    duration: 30,
+  },
+  {
+    id: "restless-micro-shake-out",
+    label: "Shake Out",
+    vibe: "Can’t sit still — need to discharge energy.",
+    definition: "Feeling fidgety or full of buzzing energy.",
+    concept:
+      "Shake arms, hands, and legs to release energy while keeping your breath steady.",
+    gif: "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
+    mood: "Restless",
+    duration: 30,
+  },
+  {
+    id: "drained-micro-spine-stretch",
+    label: "Spine Stretch",
+    vibe: "Low energy, needing to recharge gently.",
+    definition: "Feeling heavy, tired, or unmotivated.",
+    concept:
+      "Sit upright, gently arch back, roll shoulders, and stretch your neck slowly.",
+    gif: "https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif",
+    mood: "Drained",
+    duration: 30,
+  },
+  {
+    id: "distracted-regular-54321",
+    label: "5-4-3-2-1 Grounding",
+    vibe: "Hard to focus or stay in the moment.",
+    definition: "Feeling scattered, distracted, or foggy.",
+    concept:
+      "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.",
+    gif: "https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif",
+    mood: "Distracted",
+    duration: 60,
+  },
+  {
+    id: "baseline-regular-belly-breath",
+    label: "Belly / Diaphragmatic Breath",
+    vibe: "Calm and centered.",
+    definition: "Feeling neutral or steady — maintaining your baseline.",
+    concept:
+      "Place your hand on your belly, inhale so it rises, then exhale slowly to relax your body.",
+    gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+    mood: "Baseline",
+    duration: 60,
+  },
+];
+
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const { setMood } = useMood();
 
-  // ✅ Filter both moods + exercises
   const filteredExercises = exerciseList.filter((ex) =>
     ex.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const exerciseOfTheDay = useMemo(() => {
+    const dayIndex = new Date().getDate() % exerciseLibrary.length;
+    return exerciseLibrary[dayIndex];
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, how are you?</Text>
 
-      {/* 🔍 Search Bar Container */}
+      {/* 🔍 Search Bar */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchBar}
@@ -94,8 +158,49 @@ export default function HomeScreen() {
         </View>
       )}
 
-      {/* 🌿 Mood Selector */}
-      <MoodSelector />
+      {/* 🌿 Mood Selector + Exercise of the Day (stacked) */}
+      <View style={styles.bottomStack}>
+        <MoodSelector />
+
+        <View style={styles.exerciseContainer}>
+          <Text style={styles.dailyHeader}>Exercise of the Day</Text>
+
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/(tabs)/exercise-flow/do-exercise",
+                params: {
+                  id: exerciseOfTheDay.id,
+                  exerciseTitle: exerciseOfTheDay.label,
+                  duration: String(exerciseOfTheDay.duration),
+                  gif: exerciseOfTheDay.gif,
+                  definition: exerciseOfTheDay.definition,
+                  vibe: exerciseOfTheDay.vibe,
+                  concept: exerciseOfTheDay.concept,
+                },
+              })
+            }
+          >
+            <ImageBackground
+              source={{ uri: exerciseOfTheDay.gif }}
+              style={styles.exerciseImage}
+              imageStyle={{ borderRadius: 16 }}
+            >
+              <View style={styles.exerciseOverlay}>
+                <Text style={styles.exerciseTitle}>
+                  {exerciseOfTheDay.label}
+                </Text>
+                <Text style={styles.exerciseVibe}>
+                  {exerciseOfTheDay.vibe}
+                </Text>
+                <Text style={styles.exerciseDefinition}>
+                  {exerciseOfTheDay.definition}
+                </Text>
+              </View>
+            </ImageBackground>
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 }
@@ -116,10 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
-  searchContainer: {
-    position: "relative",
-    width: "100%",
-  },
+  searchContainer: { position: "relative", width: "100%" },
   searchBar: {
     width: "100%",
     backgroundColor: "#EAD8CA",
@@ -141,14 +243,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 4,
   },
-  clearText: {
-    fontSize: 20,
-    color: "#403F3A",
-    fontWeight: "700",
-  },
+  clearText: { fontSize: 20, color: "#403F3A", fontWeight: "700" },
   overlay: {
     position: "absolute",
-    top: 150, // sits just under search bar
+    top: 150,
     left: 24,
     right: 24,
     backgroundColor: "#EAD8CA",
@@ -160,9 +258,7 @@ const styles = StyleSheet.create({
     zIndex: 50,
     maxHeight: 220,
   },
-  resultsContainer: {
-    paddingVertical: 10,
-  },
+  resultsContainer: { paddingVertical: 10 },
   resultCard: {
     backgroundColor: "#EAD8CA",
     paddingVertical: 10,
@@ -170,18 +266,55 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 6,
   },
-  resultLabel: {
-    fontSize: 16,
+  resultLabel: { fontSize: 16, fontWeight: "700", color: "#403F3A" },
+  resultSub: { fontSize: 13, color: "#507050" },
+  noResults: { textAlign: "center", color: "#403F3A", fontStyle: "italic" },
+
+  // 🧩 Updated layout for proper spacing
+  bottomStack: {
+    width: "100%",
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  exerciseContainer: {
+    width: "100%",
+    alignItems: "left",
+    marginTop: 0, // 👈 This actually controls spacing below the MoodSelector now
+    marginBottom: 50,
+  },
+  dailyHeader: {
+    fontSize: 20,
     fontWeight: "700",
     color: "#403F3A",
+    marginBottom: 12,
+    textAlign: "left",
   },
-  resultSub: {
-    fontSize: 13,
-    color: "#507050",
+  exerciseImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 16,
+    overflow: "hidden",
+    justifyContent: "flex-end",
   },
-  noResults: {
-    textAlign: "center",
-    color: "#403F3A",
+  exerciseOverlay: {
+    backgroundColor: "rgba(0,0,0,0.45)",
+    padding: 12,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+  },
+  exerciseTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#FFF",
+    marginBottom: 4,
+  },
+  exerciseVibe: {
+    fontSize: 14,
     fontStyle: "italic",
+    color: "#EAD8CA",
+    marginBottom: 2,
   },
+  exerciseDefinition: { fontSize: 13, color: "#F6EDE3" },
 });
