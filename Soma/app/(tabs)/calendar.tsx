@@ -118,7 +118,9 @@ export default function CalendarScreen() {
           <Text style={styles.statLabel}>Exercises</Text>
         </View>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{stats.totalTime}s</Text>
+          <Text style={styles.statNumber}>
+  {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
+</Text>
           <Text style={styles.statLabel}>Time Spent</Text>
         </View>
         <View style={styles.statCard}>

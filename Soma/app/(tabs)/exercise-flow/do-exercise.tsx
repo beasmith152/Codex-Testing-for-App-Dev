@@ -1,5 +1,12 @@
 import { useEffect } from "react";
-import { View, Text, Image, Pressable, StyleSheet, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
 import Timer from "../../../src/components/Timer";
@@ -13,16 +20,23 @@ export const unstable_settings = {
 
 export default function DoExercise() {
   const insets = useSafeAreaInsets();
-  const { duration, gif } = useLocalSearchParams();
+  const { id, duration, gif } = useLocalSearchParams();
   const parsedDuration = Number(duration); // ✅ ensure numeric
   const { mood } = useMood();
 
-  const handleStop = () => router.replace("/(tabs)/exercise-flow");
+  // ✅ generate a unique key for the Timer so it always resets
+  const timerKey = `${id || "exercise"}-${parsedDuration}`;
+
+  const handleStop = () => {
+    // go back cleanly to exercise selection
+    router.replace("/(tabs)/exercise-flow");
+  };
 
   const handleComplete = async () => {
     const session = {
       mood: mood || "Unknown",
-      exercise: parsedDuration === 30 ? "30-Second Breath" : "1-Minute Grounding",
+      exercise:
+        parsedDuration === 30 ? "30-Second Breath" : "1-Minute Grounding",
       duration: parsedDuration,
       date: new Date().toISOString(),
     };
@@ -30,6 +44,13 @@ export default function DoExercise() {
     await saveSession(session);
     router.replace("/(tabs)/exercise-flow/complete"); // ✅ stays inside (tabs)
   };
+
+  // ✅ cleanup any intervals if Timer sets them
+  useEffect(() => {
+    return () => {
+      if (global?.activeTimer) clearInterval(global.activeTimer);
+    };
+  }, []);
 
   return (
     <SafeAreaView
@@ -42,8 +63,8 @@ export default function DoExercise() {
 
       <Image source={{ uri: gif as string }} style={styles.gif} />
 
-      {/* ✅ Timer now counts down properly */}
-      <Timer initialSeconds={parsedDuration} onComplete={handleComplete} />
+      {/* ✅ Timer remounts on new exercise selection */}
+      <Timer key={timerKey} initialSeconds={parsedDuration} onComplete={handleComplete} />
 
       <Pressable style={styles.dislike} onPress={handleStop}>
         <Text style={styles.dislikeText}>I don’t like this</Text>
