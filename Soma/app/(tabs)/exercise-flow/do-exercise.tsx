@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useRef, useMemo } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
@@ -13,44 +14,41 @@ import Timer from "../../../src/components/Timer";
 import { saveSession } from "../../../src/hooks/useSessionStorage";
 import { useMood } from "../../../src/context/MoodContext";
 
-// 👇 Hide header (no top bar)
 export const unstable_settings = {
   headerShown: false,
 };
 
 export default function DoExercise() {
   const insets = useSafeAreaInsets();
-  const { id, duration, gif } = useLocalSearchParams();
-  const parsedDuration = Number(duration); // ✅ ensure numeric
+  const { id, duration, gif, label, definition, vibe, concept } =
+    useLocalSearchParams();
+  const parsedDuration = Number(duration);
   const { mood } = useMood();
 
-  // ✅ generate a unique key for the Timer so it always resets
-  const timerKey = `${id || "exercise"}-${parsedDuration}`;
+  const timerRef = useRef<{ stop: () => void } | null>(null);
+
+  const timerKey = useMemo(
+    () => `${id || "exercise"}-${parsedDuration}-${Date.now()}`,
+    [id, parsedDuration]
+  );
 
   const handleStop = () => {
-    // go back cleanly to exercise selection
+    if (timerRef.current?.stop) {
+      timerRef.current.stop();
+    }
     router.replace("/(tabs)/exercise-flow");
   };
 
   const handleComplete = async () => {
     const session = {
       mood: mood || "Unknown",
-      exercise:
-        parsedDuration === 30 ? "30-Second Breath" : "1-Minute Grounding",
+      exercise: label || "Unknown Exercise",
       duration: parsedDuration,
       date: new Date().toISOString(),
     };
-
     await saveSession(session);
-    router.replace("/(tabs)/exercise-flow/complete"); // ✅ stays inside (tabs)
+    router.replace("/(tabs)/exercise-flow/complete");
   };
-
-  // ✅ cleanup any intervals if Timer sets them
-  useEffect(() => {
-    return () => {
-      if (global?.activeTimer) clearInterval(global.activeTimer);
-    };
-  }, []);
 
   return (
     <SafeAreaView
@@ -59,16 +57,43 @@ export default function DoExercise() {
         { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
       ]}
     >
-      <Text style={styles.title}>Follow along 🌬️</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.centerWrapper}>
+          {/* ✅ Exercise Title */}
+          <Text style={styles.exerciseTitle}>{label || "Exercise"}</Text>
 
-      <Image source={{ uri: gif as string }} style={styles.gif} />
+          {/* 🌿 Context Info */}
+          <View style={styles.infoBox}>
+            <Text style={styles.sectionTitle}>Definition</Text>
+            <Text style={styles.sectionText}>{definition}</Text>
 
-      {/* ✅ Timer remounts on new exercise selection */}
-      <Timer key={timerKey} initialSeconds={parsedDuration} onComplete={handleComplete} />
+            <Text style={styles.sectionTitle}>Vibe</Text>
+            <Text style={styles.sectionText}>{vibe}</Text>
 
-      <Pressable style={styles.dislike} onPress={handleStop}>
-        <Text style={styles.dislikeText}>I don’t like this</Text>
-      </Pressable>
+            <Text style={styles.sectionTitle}>What to Do</Text>
+            <Text style={styles.sectionText}>{concept}</Text>
+          </View>
+
+          {/* 🌿 Exercise Visual */}
+          <Image source={{ uri: gif as string }} style={styles.gif} />
+
+          {/* 🌿 Timer */}
+          <Timer
+            key={timerKey}
+            ref={timerRef}
+            initialSeconds={parsedDuration}
+            onComplete={handleComplete}
+          />
+
+          {/* 🌿 Exit Button */}
+          <Pressable style={styles.dislike} onPress={handleStop}>
+            <Text style={styles.dislikeText}>I don’t like this</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -77,15 +102,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F6EDE3",
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center", // ✅ centers vertically
+    alignItems: "center", // ✅ centers horizontally
     paddingHorizontal: 24,
+    paddingVertical: 40,
+  },
+  centerWrapper: {
+    width: "100%",
+    maxWidth: 380, // ✅ keeps layout neat on wide screens
+    alignItems: "center",
+  },
+  exerciseTitle: {
+    fontSize: 28,
+    color: "#403F3A",
+    fontWeight: "800",
+    marginBottom: 8,
+    textAlign: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
+    color: "#507050",
+    fontWeight: "600",
+    marginBottom: 16,
+  },
+  infoBox: {
+    backgroundColor: "#EAD8CA",
+    borderRadius: 16,
+    padding: 16,
+    width: "100%",
+    marginBottom: 24,
+  },
+  sectionTitle: {
     color: "#403F3A",
     fontWeight: "700",
-    marginBottom: 16,
+    marginBottom: 4,
+    marginTop: 8,
+  },
+  sectionText: {
+    color: "#507050",
+    fontSize: 14,
+    lineHeight: 20,
   },
   gif: {
     width: 260,
@@ -102,7 +161,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
-    marginTop: 28,
+    marginTop: 20,
   },
   dislikeText: {
     color: "#403F3A",
