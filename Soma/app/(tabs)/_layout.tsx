@@ -87,6 +87,21 @@ export default function TabLayout() {
 
       {/* 🌿 Exercise Flow */}
       <Tabs.Screen
+        name="exercise-flow/PreExerciseScreen"
+        options={{
+          href: null, // not visible in tab nav
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: bgColor,
+            borderTopColor: "transparent",
+            height: 70,
+            paddingBottom: 10,
+            paddingTop: 6,
+            elevation: 0,
+          },
+        }}
+      />
+      <Tabs.Screen
         name="exercise-flow/index"
         options={{
           href: null, // not visible in tab nav
@@ -125,6 +140,7 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    
   );
 }
 

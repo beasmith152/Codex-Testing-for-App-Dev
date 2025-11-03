@@ -172,14 +172,15 @@ export default function ExerciseChoice() {
               styles.card,
               pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 },
             ]}
+            // ✅ updated navigation path
             onPress={() =>
               router.push({
-                pathname: "/(tabs)/exercise-flow/do-exercise",
+                pathname: "/(tabs)/exercise-flow/PreExerciseScreen",
                 params: {
                   id: `${mappedMood}-${type}`,
                   duration: ex.duration,
                   gif: ex.gif,
-                  label: ex.label, // ✅ added label param
+                  label: ex.label,
                   definition: ex.definition,
                   vibe: ex.vibe,
                   concept: ex.concept,
