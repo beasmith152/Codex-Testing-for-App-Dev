@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
+import CircularProgress from "../../src/components/CircularProgress"; // ✅ import circular tracker
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -69,14 +70,12 @@ export default function CalendarScreen() {
   const fixUTCOffset = (dateString: string) => {
     const [year, month, day] = dateString.split("-").map(Number);
     const utcDate = new Date(Date.UTC(year, month - 1, day));
-    // Adjust to local time without shifting the day
     const localDate = new Date(
       utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
     );
     return localDate;
   };
 
-  // ✅ Normalize stored & clicked dates to consistent local YYYY-MM-DD
   const toLocalKey = (dateString: string) => {
     const d = fixUTCOffset(dateString);
     return (
@@ -88,7 +87,6 @@ export default function CalendarScreen() {
     );
   };
 
-  // ✅ Create calendar markings
   const markedDates: Record<string, any> = {};
   Object.entries(stats.byDay).forEach(([day, sessions]: any) => {
     const localKey = toLocalKey(day);
@@ -99,7 +97,6 @@ export default function CalendarScreen() {
     };
   });
 
-  // ✅ Handle day tap
   const handleDayPress = (day: any) => {
     const localKey = toLocalKey(day.dateString);
     const sessions = stats.byDay[localKey] || [];
@@ -107,48 +104,66 @@ export default function CalendarScreen() {
     setDayData(sessions);
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mood Chart</Text>
+  // 🧮 Progress data for circular tracker (1 full circle = 60 min)
+  const totalMinutes = Math.floor(stats.totalTime / 60);
+  const progress = Math.min((totalMinutes / 60) * 100, 100);
 
-      {/* Summary cards */}
-      <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{stats.totalExercises}</Text>
-          <Text style={styles.statLabel}>Exercises</Text>
+  return (
+    <ScrollView
+      style={styles.scrollContainer}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.innerContainer}>
+        <Text style={styles.title}>Mood Chart</Text>
+
+        {/* Summary cards */}
+        <View style={styles.statsRow}>
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>{stats.totalExercises}</Text>
+            <Text style={styles.statLabel}>Exercises</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>
+              {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
+            </Text>
+            <Text style={styles.statLabel}>Time Spent</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statNumber}>{stats.avgMood}</Text>
+            <Text style={styles.statLabel}>Avg Mood</Text>
+          </View>
         </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>
-  {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
-</Text>
-          <Text style={styles.statLabel}>Time Spent</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{stats.avgMood}</Text>
-          <Text style={styles.statLabel}>Avg Mood</Text>
+
+        <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim }]}>
+          {getMoodMessage(stats.avgMood)}
+        </Animated.Text>
+
+        {/* 🗓️ Calendar */}
+        <Calendar
+          markedDates={markedDates}
+          onDayPress={handleDayPress}
+          style={styles.calendar}
+          theme={{
+            backgroundColor: "#F6EDE3",
+            calendarBackground: "#F6EDE3",
+            textSectionTitleColor: "#403F3A",
+            selectedDayBackgroundColor: "#EFAF2E",
+            todayTextColor: "#EFAF2E",
+            dayTextColor: "#403F3A",
+            monthTextColor: "#403F3A",
+            arrowColor: "#403F3A",
+          }}
+        />
+
+        {/* 🌿 Circular progress BELOW calendar */}
+        <View style={styles.progressContainer}>
+          <Text style={styles.progressHeader}>Time spent maintaining peace!</Text>
+          <CircularProgress progress={progress} totalMinutes={totalMinutes} />
         </View>
       </View>
 
-      <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim }]}>
-        {getMoodMessage(stats.avgMood)}
-      </Animated.Text>
-
-      <Calendar
-        markedDates={markedDates}
-        onDayPress={handleDayPress}
-        theme={{
-          backgroundColor: "#F6EDE3",
-          calendarBackground: "#F6EDE3",
-          textSectionTitleColor: "#403F3A",
-          selectedDayBackgroundColor: "#EFAF2E",
-          todayTextColor: "#EFAF2E",
-          dayTextColor: "#403F3A",
-          monthTextColor: "#403F3A",
-          arrowColor: "#403F3A",
-        }}
-      />
-
-      {/* Scrollable modal */}
+      {/* 🌙 Scrollable modal */}
       <Modal visible={!!selectedDay} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
@@ -194,23 +209,30 @@ export default function CalendarScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
     backgroundColor: "#F6EDE3",
+  },
+  scrollContent: {
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 40,
+    paddingTop: 60,
+    paddingBottom: 20, // 🧭 prevents clipping at bottom
+  },
+  innerContainer: {
+    width: "100%",
+    alignItems: "center",
   },
   title: {
     fontSize: 26,
     color: "#403F3A",
     fontWeight: "700",
-    marginBottom: 8,
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 15,
@@ -238,6 +260,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontStyle: "italic",
     lineHeight: 20,
+  },
+  calendar: {
+    width: "95%",
+    marginBottom: 24, // adds space before progress tracker
+  },
+  progressContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 30,
+  },
+  progressHeader: {
+    fontSize: 15,
+    color: "#507050",
+    fontWeight: "600",
+    marginBottom: 8,
   },
   modalOverlay: {
     flex: 1,
