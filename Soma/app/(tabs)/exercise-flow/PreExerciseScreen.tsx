@@ -1,10 +1,17 @@
 import { useLocalSearchParams, router } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable, Animated, Image } from "react-native";
 
 export default function PreExerciseScreen() {
-  const fadeAnim = new Animated.Value(0);
-  const { id, label, gif, definition, vibe, concept, duration } = useLocalSearchParams();
+  // keep Animated.Value stable across renders
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // grab all params including the runId from the choice screen
+  const params = useLocalSearchParams();
+  const { id, label, gif, definition, vibe, concept, duration } = params as Record<string, string>;
+
+  // ensure we always have a unique runId for this flow (forward if provided)
+  const runId = useMemo(() => (params.runId as string) || String(Date.now()), [params.runId]);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -12,12 +19,21 @@ export default function PreExerciseScreen() {
       duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [fadeAnim]);
 
   const handleContinue = () => {
     router.replace({
       pathname: "/(tabs)/exercise-flow/do-exercise",
-      params: { id, label, gif, definition, vibe, concept, duration },
+      params: {
+        id,
+        label,
+        gif,
+        definition,
+        vibe,
+        concept,
+        duration, // already string from upstream
+        runId,    // ← pass through to force Timer remount
+      },
     });
   };
 

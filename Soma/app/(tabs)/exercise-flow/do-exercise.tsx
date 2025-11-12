@@ -23,24 +23,26 @@ export default function DoExercise() {
   const params = useLocalSearchParams();
   const { mood } = useMood();
 
-  // ✅ Normalize all params (handles string[] cases)
-  const normalize = (v: any, fallback = "") =>
-    Array.isArray(v) ? v[0] ?? fallback : v ?? fallback;
+  // Normalize handle (string | string[]) values
+  const norm = (v: any, fallback = "") =>
+    Array.isArray(v) ? (v[0] ?? fallback) : (v ?? fallback);
 
-  const id = normalize(params.id, "exercise");
-  const exerciseTitle = normalize(params.exerciseTitle, params.label || "Exercise"); // ✅ main title
-  const gif = normalize(params.gif);
-  const definition = normalize(params.definition);
-  const vibe = normalize(params.vibe);
-  const concept = normalize(params.concept);
-  const parsedDuration = Number(normalize(params.duration, "60")) || 60;
+  const id = norm(params.id, "exercise");
+  const label = norm(params.label, "Exercise");
+  const exerciseTitle = norm(params.exerciseTitle, label);
+  const gif = norm(params.gif);
+  const definition = norm(params.definition);
+  const vibe = norm(params.vibe);
+  const concept = norm(params.concept);
+  const runId = norm(params.runId, "default"); // stable run id from PreExerciseScreen
+  const parsedDuration = Number(norm(params.duration, "60")) || 60;
 
   const timerRef = useRef<{ stop: () => void } | null>(null);
 
-  // Unique key ensures timer resets per exercise
+  // Use runId to force a true remount when re-selecting the same exercise
   const timerKey = useMemo(
-    () => `${id}-${parsedDuration}-${Date.now()}`,
-    [id, parsedDuration]
+    () => `${id}-${parsedDuration}-${runId}`,
+    [id, parsedDuration, runId]
   );
 
   const handleStop = () => {
@@ -49,12 +51,25 @@ export default function DoExercise() {
   };
 
   const handleComplete = async () => {
+    // ⏱️ stamp with local-time day key + numeric ts (prevents UTC “yesterday” bug)
+    const now = new Date();
+    const ts = now.getTime();
+    const dateLocalKey = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("-");
+
     const session = {
       mood: mood || "Unknown",
       exercise: exerciseTitle,
       duration: parsedDuration,
-      date: new Date().toISOString(),
+      // keep all three for compatibility with older readers
+      ts,
+      dateLocalKey,
+      dateISO: now.toISOString(),
     };
+
     await saveSession(session);
     router.replace("/(tabs)/exercise-flow/complete");
   };
@@ -71,10 +86,10 @@ export default function DoExercise() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.centerWrapper}>
-          {/* ✅ Exercise Title */}
+          {/* Title */}
           <Text style={styles.exerciseTitle}>{exerciseTitle}</Text>
 
-          {/* 🌿 Context Info */}
+          {/* Context */}
           <View style={styles.infoBox}>
             <Text style={styles.sectionTitle}>Definition</Text>
             <Text style={styles.sectionText}>
@@ -92,7 +107,7 @@ export default function DoExercise() {
             </Text>
           </View>
 
-          {/* 🌿 Exercise Visual */}
+          {/* Visual */}
           {gif ? (
             <Image source={{ uri: gif }} style={styles.gif} />
           ) : (
@@ -101,15 +116,15 @@ export default function DoExercise() {
             </View>
           )}
 
-          {/* 🌿 Timer */}
+          {/* Timer */}
           <Timer
-            key={timerKey}
+            key={timerKey} // forces remount/reset when runId changes
             ref={timerRef}
             initialSeconds={parsedDuration}
             onComplete={handleComplete}
           />
 
-          {/* 🌿 Exit Button */}
+          {/* Exit */}
           <Pressable style={styles.dislike} onPress={handleStop}>
             <Text style={styles.dislikeText}>I don’t like this</Text>
           </Pressable>
@@ -123,8 +138,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F6EDE3" },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: "center", // vertically centered
-    alignItems: "center", // horizontally centered
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 24,
     paddingVertical: 40,
   },

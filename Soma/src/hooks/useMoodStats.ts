@@ -1,32 +1,54 @@
 import { getSessions } from "./useSessionStorage";
 
+// local helper to build a YYYY-MM-DD key in *local* time
+function makeLocalDayKey(d: Date) {
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, "0"),
+    String(d.getDate()).padStart(2, "0"),
+  ].join("-");
+}
+
 export async function getMoodStats() {
   const sessions = await getSessions();
   if (!sessions || sessions.length === 0) return null;
 
-  // ✅ sort sessions by date so newest is last
-  const sortedSessions = [...sessions].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
+  // ✅ Normalize legacy + new sessions
+  const norm = sessions.map((s: any) => {
+    const ts =
+      typeof s.ts === "number"
+        ? s.ts
+        : s.dateISO
+        ? Date.parse(s.dateISO)
+        : s.date
+        ? Date.parse(s.date)
+        : Date.now();
 
-  // ✅ track most recent exercise
-  const recentExercise = sortedSessions[sortedSessions.length - 1]?.exercise || null;
+    const dateLocalKey =
+      s.dateLocalKey ?? makeLocalDayKey(new Date(ts));
 
-  // convert to LOCAL date objects (fixes UTC shift issue)
-  const byDay: Record<string, any[]> = {};
-  sortedSessions.forEach((s) => {
-    const local = new Date(s.date);
-    const day =
-      local.getFullYear() +
-      "-" +
-      String(local.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(local.getDate()).padStart(2, "0"); // YYYY-MM-DD (local time)
-    if (!byDay[day]) byDay[day] = [];
-    byDay[day].push(s);
+    return {
+      ...s,
+      ts,
+      dateLocalKey,
+    };
   });
 
-  // calculate totals
+  // ✅ Sort by time (oldest → newest)
+  const sorted = norm.sort((a: any, b: any) => a.ts - b.ts);
+
+  // ✅ Most recent exercise label
+  const recentExercise = sorted.length ? sorted[sorted.length - 1].exercise ?? null : null;
+
+  // ✅ Group by local day key (no UTC shift)
+  const byDay: Record<string, any[]> = {};
+  for (const s of sorted) {
+    const key = s.dateLocalKey;
+    if (!byDay[key]) byDay[key] = [];
+    byDay[key].push(s);
+  }
+
+  // ✅ Totals + daily-averaged mood score
   let totalExercises = 0;
   let totalTime = 0;
   const moodWeights: Record<string, number> = {
@@ -39,20 +61,18 @@ export async function getMoodStats() {
   };
   let totalMoodScore = 0;
 
-  // ✅ daily averages (each day counts equally)
-  Object.values(byDay).forEach((sessions) => {
+  Object.values(byDay).forEach((daySessions) => {
     let dayScore = 0;
-    sessions.forEach((s) => {
+    daySessions.forEach((s: any) => {
       totalExercises++;
-      totalTime += s.duration;
-      dayScore += moodWeights[s.mood] || 3;
+      totalTime += Number(s.duration) || 0;
+      dayScore += moodWeights[s.mood] ?? 3;
     });
-    const dayAvg = dayScore / sessions.length;
-    totalMoodScore += dayAvg;
+    totalMoodScore += dayScore / daySessions.length; // daily average
   });
 
-  // ✅ average by day count
-  const avgMoodScore = totalMoodScore / Object.keys(byDay).length;
+  const dayCount = Object.keys(byDay).length || 1;
+  const avgMoodScore = totalMoodScore / dayCount;
 
   let avgMood = "Neutral";
   if (avgMoodScore >= 4) avgMood = "Happy";
@@ -66,11 +86,11 @@ export async function getMoodStats() {
     totalTime,
     avgMood,
     byDay,
-    recentExercise, // ✅ NEW field
+    recentExercise, // ✅ used by dashboard "Go to exercise"
   };
 }
 
-// 👇 this must be OUTSIDE the function — top level only
+// 👇 keep at top level
 export const moodColors: Record<string, string> = {
   Happy: "#FFD166",
   Calm: "#A5D6A7",

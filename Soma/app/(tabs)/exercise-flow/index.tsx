@@ -177,20 +177,20 @@ export default function ExerciseChoice() {
                 pathname: "/(tabs)/exercise-flow/PreExerciseScreen",
                 params: {
                   id: `${mappedMood}-${type}`,
-                  duration: ex.duration,
+                  duration: String(ex.duration),     // ← stringify for params
                   gif: ex.gif,
                   label: ex.label,
                   definition: ex.definition,
                   vibe: ex.vibe,
                   concept: ex.concept,
+                  runId: String(Date.now()),         // ← NEW: unique per tap
                 },
               })
             }
           >
             <Image source={{ uri: ex.gif }} style={styles.preview} />
             <Text style={styles.label}>
-              {type === "micro" ? "Micro Exercise" : "Regular Exercise"}:{" "}
-              {ex.label}
+              {type === "micro" ? "Micro Exercise" : "Regular Exercise"}: {ex.label}
             </Text>
             <Text style={styles.concept}>{ex.concept}</Text>
             <Text style={styles.duration}>{ex.duration} seconds</Text>
@@ -206,10 +206,7 @@ export default function ExerciseChoice() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#F6EDE3",
-  },
+  safeArea: { flex: 1, backgroundColor: "#F6EDE3" },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
@@ -236,12 +233,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  preview: {
-    width: "100%",
-    height: 160,
-    borderRadius: 12,
-    marginBottom: 10,
-  },
+  preview: { width: "100%", height: 160, borderRadius: 12, marginBottom: 10 },
   label: {
     fontSize: 18,
     fontWeight: "700",
@@ -249,20 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     textAlign: "center",
   },
-  concept: {
-    fontSize: 14,
-    color: "#403F3A",
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  duration: {
-    color: "#507050",
-    fontSize: 13,
-    marginBottom: 6,
-  },
-  link: {
-    color: "#507050",
-    fontSize: 13,
-    textDecorationLine: "underline",
-  },
+  concept: { fontSize: 14, color: "#403F3A", marginBottom: 8, textAlign: "center" },
+  duration: { color: "#507050", fontSize: 13, marginBottom: 6 },
+  link: { color: "#507050", fontSize: 13, textDecorationLine: "underline" },
 });
