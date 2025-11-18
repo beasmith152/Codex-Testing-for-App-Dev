@@ -74,15 +74,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: 180,
-    height: 80,
-    marginBottom: 6,
+    width: 230,
+    height: 170,
+    marginTop: 20,
+    marginBottom: 0,
   },
   tagline: {
     fontSize: 16,
     color: "#3E3E3E",
     fontWeight: "600",
-    marginBottom: 12,
+    marginBottom: 20,
   },
   dotsRow: {
     flexDirection: "row",
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   message: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#403F3A",
     textAlign: "center",
     fontStyle: "italic",
@@ -110,8 +111,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonText: {
-    color: "#403F3A",
+    color: "#ffffffff",
     fontWeight: "700",
-    fontSize: 15,
+    fontSize: 18,
   },
 });

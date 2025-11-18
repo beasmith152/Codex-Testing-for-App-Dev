@@ -117,7 +117,7 @@ export default function MoodSelector() {
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
-        <Text style={styles.title}>How are you feeling today?</Text>
+        <Text style={styles.title}>Moods</Text>
 
         <View style={styles.row}>
           {moods.map((mood, index) => {
@@ -180,17 +180,19 @@ export default function MoodSelector() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignItems: "",
     backgroundColor: "#F6EDE3",
     flex: 1,
-    paddingVertical: 30,
+    paddingVertical: 10,
     paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
-    color: "#403F3A",
+    color: "#1B3100",
     fontWeight: "700",
-    marginBottom: 32,
+    marginBottom: 20,
+    marginLeft:40,
+    textAlign: "left"
   },
   row: {
     flexDirection: "row",
@@ -198,40 +200,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginBottom: 28,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
   },
   moodButton: {
-    height: 95,
-    backgroundColor: "#EAD8CA",
-    borderRadius: 18,
+    height: 48,
+    backgroundColor: "#dfcec1ff",
+    borderRadius: 68,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 6,
     overflow: "hidden",
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.95,
+    shadowRadius: 10,
+    shadowOffset: { width: 3, height: 10 },
   },
   pulse: {
     position: "absolute",
     width: "100%",
     height: "100%",
-    backgroundColor: "#FFD97D",
+    backgroundColor: "#efb120ff",
     borderRadius: 18,
   },
-  emoji: { fontSize: 28 },
-  moodLabel: { fontSize: 13, color: "#403F3A", marginTop: 4 },
+  emoji: { fontSize: 36, marginBottom: 0, paddingBottom: 0 },
+  moodLabel: { fontSize: 13, color: "#403F3A", marginTop: 4, display: "none" },
   selected: {
-    backgroundColor: "#EFAF2E",
-    shadowColor: "#EFAF2E",
-    shadowOpacity: 0.35,
+    backgroundColor: "#b6ad9dff",
+    shadowColor: "#343332ff",
+    shadowOpacity: 0.95,
     shadowRadius: 10,
   },
   selectedLabel: { color: "#F6EDE3", fontWeight: "700" },
   confirm: {
-    fontSize: 16,
-    marginTop: 24,
+    fontSize: 18,
+    marginTop: 4,
     color: "#507050",
     textAlign: "center",
     paddingHorizontal: 16,

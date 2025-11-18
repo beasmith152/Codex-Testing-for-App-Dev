@@ -210,15 +210,15 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 30,
-    alignItems: "center",
+     paddingTop: 70,
+    alignItems: "",
   },
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#403F3A",
+    color: "#1B3100",
     marginBottom: 24,
-    textAlign: "center",
+    textAlign: "left",
   },
   card: {
     backgroundColor: "#EAD8CA",

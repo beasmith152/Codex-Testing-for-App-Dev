@@ -17,7 +17,7 @@ export default function Complete() {
         { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
       ]}
     >
-      <Text style={styles.title}>Good job! 🎉</Text>
+      <Text style={styles.title}>Great Job!</Text>
       <Text style={styles.subtitle}>Take a moment to notice how you feel.</Text>
 
       {/* ✅ Fixed route path so it correctly returns to Home */}
@@ -42,23 +42,23 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   title: {
-    fontSize: 30,
+    fontSize: 60,
     fontWeight: "700",
-    color: "#403F3A",
-    marginBottom: 10,
+    color: "#1B3100",
+    marginBottom: 15,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#507050",
+    fontSize: 24,
+    color: "#362214ff",
     marginBottom: 28,
     textAlign: "center",
     paddingHorizontal: 20,
   },
   primaryButton: {
-    backgroundColor: "#EFAF2E",
+    backgroundColor: "#c18c24ff",
     paddingVertical: 12,
     paddingHorizontal: 28,
-    borderRadius: 10,
+    borderRadius: 15,
     marginBottom: 14,
     shadowColor: "#000",
     shadowOpacity: 0.15,
@@ -71,13 +71,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   secondaryButton: {
-    backgroundColor: "#EAD8CA",
+    backgroundColor: "#fcc53aff",
     paddingVertical: 12,
     paddingHorizontal: 28,
     borderRadius: 10,
   },
   secondaryText: {
-    color: "#403F3A",
+    color: "#ffffffff",
     fontWeight: "600",
     fontSize: 15,
   },

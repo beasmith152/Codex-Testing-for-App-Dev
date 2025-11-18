@@ -135,13 +135,13 @@ export default function DoExercise() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F6EDE3" },
+  container: { flex: 1, backgroundColor: "#F6EDE3", },
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
-    paddingVertical: 40,
+    paddingVertical: 0,
   },
   centerWrapper: {
     width: "100%",
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     color: "#403F3A",
     fontWeight: "800",
     marginBottom: 8,
+    paddingTop: 60,
     textAlign: "center",
   },
   infoBox: {
@@ -184,14 +185,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   dislike: {
-    backgroundColor: "#EAD8CA",
+    backgroundColor: "#fdc52aff",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 0,
   },
   dislikeText: {
-    color: "#403F3A",
+    color: "#ffffffff",
     fontWeight: "700",
     fontSize: 15,
   },

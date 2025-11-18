@@ -80,7 +80,7 @@ export default function Dashboard() {
       showsVerticalScrollIndicator={false}
     >
       {/* Summary Section */}
-      <Text style={styles.title}>Your Activity Summary</Text>
+      <Text style={styles.title}>Dashboard</Text>
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>{stats.totalExercises}</Text>
@@ -153,15 +153,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6EDE3",
   },
   scrollContent: {
-    alignItems: "center",
-    paddingTop: 80,
+    paddingTop: 120,
     paddingBottom: 100,
   },
   title: {
     fontSize: 26,
-    color: "#403F3A",
+    color: "#1B3100",
     fontWeight: "700",
     marginBottom: 20,
+    marginLeft: 24,
   },
   statsRow: {
     flexDirection: "row",
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
+    marginLeft:20,
   },
   cardContent: {
     position: "relative",

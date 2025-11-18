@@ -221,18 +221,19 @@ const styles = StyleSheet.create({
   scrollContent: {
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 60,
+    paddingTop: 120,
     paddingBottom: 20, // 🧭 prevents clipping at bottom
   },
   innerContainer: {
     width: "100%",
-    alignItems: "center",
+    alignItems: "",
   },
   title: {
     fontSize: 26,
-    color: "#403F3A",
+    color: "#1B3100",
     fontWeight: "700",
     marginBottom: 16,
+    marginLeft: 24,
   },
   subtitle: {
     fontSize: 15,
@@ -253,7 +254,8 @@ const styles = StyleSheet.create({
   },
   statLabel: { color: "#507050", fontSize: 13 },
   moodMessageFull: {
-    marginBottom: 16,
+    marginBottom: 6,
+    marginTop: 10,
     paddingHorizontal: 24,
     fontSize: 14,
     color: "#507050",
@@ -264,6 +266,7 @@ const styles = StyleSheet.create({
   calendar: {
     width: "95%",
     marginBottom: 24, // adds space before progress tracker
+    marginLeft: 10,
   },
   progressContainer: {
     alignItems: "center",
@@ -274,7 +277,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#507050",
     fontWeight: "600",
-    marginBottom: 8,
+    marginBottom: 24,
   },
   modalOverlay: {
     flex: 1,
