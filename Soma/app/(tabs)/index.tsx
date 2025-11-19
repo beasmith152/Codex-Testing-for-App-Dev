@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: "",
     justifyContent: "flex-start",
     paddingHorizontal: 24,
-    paddingTop: 70,
+    paddingTop: 40,
   },
   logo: {
     width: 100,
