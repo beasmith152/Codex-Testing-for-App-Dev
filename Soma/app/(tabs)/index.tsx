@@ -7,11 +7,13 @@ import {
   ScrollView,
   Pressable,
   ImageBackground,
-  Image
+  Image,
+  SafeAreaView
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../../src/context/MoodContext";
 import MoodSelector from "../../src/components/MoodSelector";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -94,6 +96,7 @@ const exerciseLibrary = [
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const { setMood } = useMood();
+  const insets = useSafeAreaInsets();
 
   const filteredExercises = exerciseList.filter((ex) =>
     ex.label.toLowerCase().includes(searchQuery.toLowerCase())
@@ -105,6 +108,13 @@ export default function HomeScreen() {
   }, []);
 
   return (
+    
+    <SafeAreaView style={[styles.safeArea, { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" }]}>
+       <ImageBackground
+      source={require("../../assets/images/soma-bg.png")}
+      style={{ flex: 1 }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
+    >
     <View style={styles.container}>
           <Image
                source={require("../../assets/images/soma-logo.png")}
@@ -208,13 +218,16 @@ export default function HomeScreen() {
         </View>
       </View>
     </View>
+    </ImageBackground>
+    </SafeAreaView>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F6EDE3",
+    backgroundColor: "transparent",
     alignItems: "",
     justifyContent: "flex-start",
     paddingHorizontal: 24,
@@ -331,4 +344,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   exerciseDefinition: { fontSize: 13, color: "#F6EDE3" },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
 });

@@ -9,7 +9,8 @@ import {
   Animated,
   Easing,
   ScrollView,
-  Image 
+  Image,
+  ImageBackground,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
@@ -110,10 +111,16 @@ export default function CalendarScreen() {
   const progress = Math.min((totalMinutes / 60) * 100, 100);
 
   return (
+     
     <ScrollView
       style={styles.scrollContainer}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
+    >
+       <ImageBackground
+      source={require("../../assets/images/soma-bg.png")}
+      style={{ flex: 1 }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40 }}
     >
       <View style={styles.innerContainer}>
         <Image
@@ -151,14 +158,15 @@ export default function CalendarScreen() {
           onDayPress={handleDayPress}
           style={styles.calendar}
           theme={{
-            backgroundColor: "#F6EDE3",
-            calendarBackground: "#F6EDE3",
+            backgroundColor: "transparent",
+            calendarBackground: "transparent",
             textSectionTitleColor: "#403F3A",
             selectedDayBackgroundColor: "#EFAF2E",
             todayTextColor: "#EFAF2E",
             dayTextColor: "#403F3A",
             monthTextColor: "#403F3A",
             arrowColor: "#403F3A",
+            borderRadius: 10,
           }}
         />
 
@@ -215,6 +223,7 @@ export default function CalendarScreen() {
           </View>
         </View>
       </Modal>
+      </ImageBackground>
     </ScrollView>
   );
 }
@@ -280,6 +289,7 @@ const styles = StyleSheet.create({
     width: "95%",
     marginBottom: 24, // adds space before progress tracker
     marginLeft: 10,
+    borderRadius: 10,
   },
   progressContainer: {
     alignItems: "center",
@@ -287,7 +297,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   progressHeader: {
-    fontSize: 15,
+    fontSize: 18,
     color: "#507050",
     fontWeight: "600",
     marginBottom: 24,
@@ -313,13 +323,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modalCard: {
-    backgroundColor: "#F6EDE3",
+    backgroundColor: "transparent",
     borderRadius: 10,
     padding: 10,
     marginBottom: 8,
     width: "90%",
   },
-  modalText: { color: "#403F3A", fontSize: 15, marginBottom: 4 },
+  modalText: { color: "#403F3A", fontSize: 18, marginBottom: 4 },
   modalSubText: { color: "#507050", fontSize: 13 },
   modalButton: {
     marginTop: 10,

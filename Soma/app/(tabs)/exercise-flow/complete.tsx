@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image, ImageBackground, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
@@ -17,6 +17,7 @@ export default function Complete() {
         { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
       ]}
     >
+      
       <Text style={styles.title}>Great Job!</Text>
       <Text style={styles.subtitle}>Take a moment to notice how you feel.</Text>
 

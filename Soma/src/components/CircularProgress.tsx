@@ -15,7 +15,7 @@ export default function CircularProgress({
   strokeWidth = 12,
   progress,
   totalMinutes,
-  color = "#F4A300",
+  color = "#ffb92eff",
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -25,7 +25,7 @@ export default function CircularProgress({
     <View style={[styles.container, { width: size, height: size }]}>
       <Svg width={size} height={size} style={{ position: "absolute" }}>
         <Circle
-          stroke="#EAD8CA"
+          stroke="#ffffffff"
           fill="none"
           cx={size / 2}
           cy={size / 2}
@@ -58,12 +58,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   minutesText: {
-    fontSize: 26,
+    fontSize: 30,
     fontWeight: "700",
     color: "#403F3A",
   },
   label: {
-    fontSize: 14,
+    fontSize: 18,
     color: "#507050",
     marginTop: -4,
   },

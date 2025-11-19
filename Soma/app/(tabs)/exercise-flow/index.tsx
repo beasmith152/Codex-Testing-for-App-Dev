@@ -3,6 +3,7 @@ import {
   Text,
   Pressable,
   Image,
+  ImageBackground,
   StyleSheet,
   ScrollView,
   SafeAreaView,
@@ -161,12 +162,19 @@ const capitalizedMood =
   normalizedMood.charAt(0).toUpperCase() + normalizedMood.slice(1);
 
   return (
+     
     <SafeAreaView
       style={[
         styles.safeArea,
         { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
       ]}
     >
+      <ImageBackground
+      source={require("../../../assets/images/soma-bg.png")}
+      style={{ flex: 1 }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
+    >
+
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -220,12 +228,14 @@ const capitalizedMood =
           </Pressable>
         ))}
       </ScrollView>
+       </ImageBackground>
     </SafeAreaView>
+   
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F6EDE3" },
+  safeArea: { flex: 1, backgroundColor: "transparent" },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,

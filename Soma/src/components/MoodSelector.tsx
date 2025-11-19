@@ -181,7 +181,7 @@ export default function MoodSelector() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "",
-    backgroundColor: "#F6EDE3",
+    backgroundColor: "transparent",
     flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 24,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   moodButton: {
     height: 48,
-    backgroundColor: "#dfcec1ff",
+    backgroundColor: "#ffffffff",
     borderRadius: 68,
     alignItems: "center",
     justifyContent: "center",

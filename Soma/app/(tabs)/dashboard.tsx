@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  ImageBackground,
   Pressable,
   ScrollView,
   Animated,
@@ -79,6 +80,11 @@ export default function Dashboard() {
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
+      <ImageBackground
+      source={require("../../assets/images/soma-bg.png")}
+      style={{ flex: 1 }}
+      imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40, height: '100%'  }}
+    >
       {/* Summary Section */}
        <Image
                      source={require("../../assets/images/soma-logo.png")}
@@ -148,7 +154,9 @@ export default function Dashboard() {
           </Text>
         )}
       </Animated.View>
+       </ImageBackground>
     </ScrollView>
+   
   );
 }
 
