@@ -154,6 +154,20 @@ export default function Dashboard() {
           </Text>
         )}
       </Animated.View>
+          {/* Settings CTA (below Last Completed) */}
+      <View style={styles.settingsRow}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.settingsButton,
+            pressed && { opacity: 0.85 },
+          ]}
+          onPress={() => router.push("/settings")}
+          accessibilityRole="button"
+          accessibilityLabel="Open settings"
+        >
+          <Text style={styles.settingsText}>Settings</Text>
+        </Pressable>
+      </View>
        </ImageBackground>
     </ScrollView>
    
@@ -208,6 +222,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
     marginLeft:20,
+    marginBottom: 110,
   },
   cardContent: {
     position: "relative",
@@ -248,5 +263,25 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     textAlign: "center",
     marginVertical: 10,
+  },
+  settingsRow: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 18,
+    marginBottom: 36,
+  },
+  settingsButton: {
+    width: "90%",
+    backgroundColor: "#1B3100",
+    borderColor: "#1B3100",
+    borderWidth: 1,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  settingsText: {
+    color: "#ffffffff",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

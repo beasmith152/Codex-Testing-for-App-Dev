@@ -27,6 +27,7 @@ const fallbackBg = colorScheme === "dark" ? "#F6EDE3" : "#F6EDE3";
     <Stack>
       <Stack.Screen name="welcome" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
     </Stack>
   </View>
