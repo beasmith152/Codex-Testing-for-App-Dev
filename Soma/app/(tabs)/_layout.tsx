@@ -13,7 +13,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={({ route }) => ({
+      initialRouteName="index" screenOptions={({ route }) => ({
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
