@@ -173,14 +173,16 @@ const capitalizedMood =
       >
         <Text style={styles.title}>
           {mood
-            ? `${mood.charAt(0).toUpperCase() + mood.slice(1)} Exercises 🌿`
-            : "Pick your practice 🌿"}
+            ? `${mood.charAt(0).toUpperCase() + mood.slice(1)} Exercises `
+            : "Pick your practice "}
         </Text>
-        <Text style={styles.title2}>
-  {mood
-    ? `${emoji}`
-    : "Pick your practice 🌿"}
-</Text>
+       {mood ? (
+  <View style={styles.emojiFrame} accessibilityLabel={`${capitalizedMood} emoji`}>
+    <Text style={styles.emojiText}>{emoji}</Text>
+  </View>
+) : (
+  <Text style={styles.title2}>Pick your practice 🌿</Text>
+)}
 
         {Object.entries(moodExercises).map(([type, ex]) => (
           <Pressable
@@ -231,15 +233,35 @@ const styles = StyleSheet.create({
     alignItems: "",
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: "700",
     color: "#1B3100",
     marginBottom: 24,
     textAlign: "left",
   },
-  title2: { fontSize: 60, marginBottom: 18, paddingBottom: 0, textAlign: "center" },
+ emojiFrame: {
+  width: 72,
+  height: 72,
+  borderRadius: 36,
+  backgroundColor: "#fafafaff", // dark circle color — change to match theme
+  alignSelf: "center",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 18,
+  // subtle elevation / shadow
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.48,
+  shadowRadius: 8,
+  elevation: 4,
+},
+emojiText: {
+  fontSize: 34,
+  color: "#FFFFFF", // white emoji for contrast
+  lineHeight: 36,
+},
   card: {
-    backgroundColor: "#EAD8CA",
+    backgroundColor: "#fff6f0ff",
     borderRadius: 20,
     padding: 16,
     marginBottom: 20,
