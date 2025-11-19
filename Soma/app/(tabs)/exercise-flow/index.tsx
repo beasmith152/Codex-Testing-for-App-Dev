@@ -15,7 +15,15 @@ import { useMood } from "../../../src/context/MoodContext";
 export const unstable_settings = {
   headerShown: false,
 };
-
+const moodEmojiMap: Record<string, string> = {
+  happy: "😊",
+  calm: "😌",
+  tired: "😴",
+  sad: "😔",
+  stressed: "😤",
+  anxious: "😣",
+  baseline: "🙂", // fallback for neutral baseline
+};
 // ✅ Exported so it can be imported elsewhere (like dashboard.tsx)
 export const exerciseLibrary = {
   Stressed: {
@@ -145,8 +153,12 @@ export default function ExerciseChoice() {
   const { mood } = useMood();
 
   const normalizedMood = mood?.toLowerCase() || "baseline";
-  const mappedMood = moodToExerciseGroup[normalizedMood] || "Baseline";
-  const moodExercises = exerciseLibrary[mappedMood];
+const mappedMood = moodToExerciseGroup[normalizedMood] || "Baseline";
+const moodExercises = exerciseLibrary[mappedMood];
+
+const emoji = moodEmojiMap[normalizedMood] ?? "🌿";
+const capitalizedMood =
+  normalizedMood.charAt(0).toUpperCase() + normalizedMood.slice(1);
 
   return (
     <SafeAreaView
@@ -164,6 +176,11 @@ export default function ExerciseChoice() {
             ? `${mood.charAt(0).toUpperCase() + mood.slice(1)} Exercises 🌿`
             : "Pick your practice 🌿"}
         </Text>
+        <Text style={styles.title2}>
+  {mood
+    ? `${emoji}`
+    : "Pick your practice 🌿"}
+</Text>
 
         {Object.entries(moodExercises).map(([type, ex]) => (
           <Pressable
@@ -220,6 +237,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     textAlign: "left",
   },
+  title2: { fontSize: 60, marginBottom: 18, paddingBottom: 0, textAlign: "center" },
   card: {
     backgroundColor: "#EAD8CA",
     borderRadius: 20,

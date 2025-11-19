@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
   ScrollView,
+  Image 
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
@@ -115,6 +116,11 @@ export default function CalendarScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.innerContainer}>
+        <Image
+                           source={require("../../assets/images/soma-logo.png")}
+                            style={styles.logo}
+                            resizeMode="contain"
+                          />
         <Text style={styles.title}>Mood Chart</Text>
 
         {/* Summary cards */}
@@ -218,10 +224,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F6EDE3",
   },
+   logo: {
+    width: 100,
+    height: 65,
+    marginTop:0,
+    marginBottom: 15,
+    marginLeft: 20,
+  },
   scrollContent: {
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 120,
+    paddingTop: 70,
     paddingBottom: 20, // 🧭 prevents clipping at bottom
   },
   innerContainer: {

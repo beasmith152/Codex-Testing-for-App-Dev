@@ -80,6 +80,11 @@ export default function Dashboard() {
       showsVerticalScrollIndicator={false}
     >
       {/* Summary Section */}
+       <Image
+                     source={require("../../assets/images/soma-logo.png")}
+                      style={styles.logo}
+                      resizeMode="contain"
+                    />
       <Text style={styles.title}>Dashboard</Text>
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
@@ -152,8 +157,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F6EDE3",
   },
+   logo: {
+    width: 100,
+    height: 65,
+    marginTop:0,
+    marginBottom: 15,
+    marginLeft: 20,
+  },
   scrollContent: {
-    paddingTop: 120,
+    paddingTop: 70,
     paddingBottom: 100,
   },
   title: {

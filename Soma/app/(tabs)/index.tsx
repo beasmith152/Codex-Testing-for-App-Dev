@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   ImageBackground,
+  Image
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../../src/context/MoodContext";
@@ -105,6 +106,11 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+          <Image
+               source={require("../../assets/images/soma-logo.png")}
+                style={styles.logo}
+                resizeMode="contain"
+              />
       <Text style={styles.title}>Welcome, how are you?</Text>
 
       {/* 🔍 Search Bar */}
@@ -212,7 +218,13 @@ const styles = StyleSheet.create({
     alignItems: "",
     justifyContent: "flex-start",
     paddingHorizontal: 24,
-    paddingTop: 120,
+    paddingTop: 70,
+  },
+  logo: {
+    width: 100,
+    height: 65,
+    marginTop:0,
+    marginBottom: 1,
   },
   title: {
     fontSize: 23,
