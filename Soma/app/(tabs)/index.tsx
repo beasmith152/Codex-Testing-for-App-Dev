@@ -43,7 +43,7 @@ const exerciseLibrary = [
     definition: "Feeling tight, overwhelmed, or tense.",
     concept:
       "Inhale for 4 seconds, hold for 4, exhale for 4, and pause for 4. Repeat slowly.",
-    gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+    gif: "https://boxbreathingexercise.com/wp-content/uploads/2025/09/5-4-5-4-Box-Breathing.gif",
     mood: "Stressed",
     duration: 30,
   },
@@ -54,7 +54,7 @@ const exerciseLibrary = [
     definition: "Feeling fidgety or full of buzzing energy.",
     concept:
       "Shake arms, hands, and legs to release energy while keeping your breath steady.",
-    gif: "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
+    gif: "https://static.wixstatic.com/media/95de45_57bfe9af1af54a3aa65830212e25dfe8~mv2.gif",
     mood: "Restless",
     duration: 30,
   },
@@ -65,7 +65,7 @@ const exerciseLibrary = [
     definition: "Feeling heavy, tired, or unmotivated.",
     concept:
       "Sit upright, gently arch back, roll shoulders, and stretch your neck slowly.",
-    gif: "https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif",
+    gif: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/11/400x400_SEATED-BACK_PAIN_STRETCHES_FOR_SENIORS_Seated_Ceiling_Reach_Stretch.gif",
     mood: "Drained",
     duration: 30,
   },
@@ -76,7 +76,7 @@ const exerciseLibrary = [
     definition: "Feeling scattered, distracted, or foggy.",
     concept:
       "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.",
-    gif: "https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif",
+    gif: "https://veteranbenefitsaustralia.com/wp-content/uploads/2023/10/6.gif",
     mood: "Distracted",
     duration: 60,
   },
@@ -87,7 +87,7 @@ const exerciseLibrary = [
     definition: "Feeling neutral or steady — maintaining your baseline.",
     concept:
       "Place your hand on your belly, inhale so it rises, then exhale slowly to relax your body.",
-    gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+    gif: "https://drconniedepinho.org/wp-content/uploads/2024/01/image.gif",
     mood: "Baseline",
     duration: 60,
   },

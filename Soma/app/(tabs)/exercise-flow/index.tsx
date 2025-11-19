@@ -35,7 +35,7 @@ export const exerciseLibrary = {
       concept:
         "Inhale for 4s, hold for 4s, exhale for 4s, pause for 4s. Repeat 2–3 cycles slowly.",
       duration: 30,
-      gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+      gif: "https://boxbreathingexercise.com/wp-content/uploads/2025/09/5-4-5-4-Box-Breathing.gif",
       link: "https://missionconnectionhealthcare.com/mental-health/anxiety/breathwork-and-grounding-techniques/",
     },
     regular: {
@@ -45,7 +45,7 @@ export const exerciseLibrary = {
       concept:
         "Make fists, hold tight for 3–5 seconds, then release and notice the tension leaving your body.",
       duration: 60,
-      gif: "https://media.giphy.com/media/8YutMatqkTfSE/giphy.gif",
+      gif: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/db159c46-651f-4d6d-8a47-7bcfbe2c4f09/d6x0r2x-4c4ba06e-f607-45a0-b77b-2d526cb07f42.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9kYjE1OWM0Ni02NTFmLTRkNmQtOGE0Ny03YmNmYmUyYzRmMDkvZDZ4MHIyeC00YzRiYTA2ZS1mNjA3LTQ1YTAtYjc3Yi0yZDUyNmNiMDdmNDIuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.43uLXV2aRRvBh5Cd5BNIyk82NXEJ9TvGkkBxoCEEigo",
       link: "https://en.wikipedia.org/wiki/Progressive_muscle_relaxation",
     },
   },
@@ -57,7 +57,7 @@ export const exerciseLibrary = {
       concept:
         "Shake arms, hands, and legs to let kinetic energy move through. Keep breathing steadily.",
       duration: 30,
-      gif: "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
+      gif: "https://static.wixstatic.com/media/95de45_57bfe9af1af54a3aa65830212e25dfe8~mv2.gif",
       link: "https://rickhanson.com/somatic-exercises-for-anxiety/",
     },
     regular: {
@@ -67,7 +67,7 @@ export const exerciseLibrary = {
       concept:
         "Press your feet firmly into the ground, wiggle your toes, and feel the weight settle.",
       duration: 60,
-      gif: "https://media.giphy.com/media/l4pTfx2qLszoacZRS/giphy.gif",
+      gif: "https://dropinblog.com/uploaded/blogs/34239387/files/PF_Exercises/Plantar_Fasciitis_1.gif",
       link: "https://therapywisdom.com/somatic-exercises-anxiety-thai/",
     },
   },
@@ -79,7 +79,7 @@ export const exerciseLibrary = {
       concept:
         "Sit upright, gently arch back, roll shoulders up and down, then stretch your neck slowly.",
       duration: 30,
-      gif: "https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif",
+      gif: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/11/400x400_SEATED-BACK_PAIN_STRETCHES_FOR_SENIORS_Seated_Ceiling_Reach_Stretch.gif",
       link: "https://www.hopkinsmedicine.org/office-of-well-being/connection-support/somatic-self-care",
     },
     regular: {
@@ -89,7 +89,7 @@ export const exerciseLibrary = {
       concept:
         "Wrap your arms around yourself, squeeze gently, breathe deeply, and soften your shoulders.",
       duration: 60,
-      gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+      gif: "https://media.post.rvohealth.io/wp-content/uploads/sites/2/2021/01/GRT-2.01.BearHugStretch.gif",
       link: "https://rickhanson.com/somatic-exercises-for-anxiety/",
     },
   },
@@ -101,7 +101,7 @@ export const exerciseLibrary = {
       concept:
         "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste — reconnect to your senses.",
       duration: 30,
-      gif: "https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif",
+      gif: "https://veteranbenefitsaustralia.com/wp-content/uploads/2023/10/6.gif",
       link: "https://missionconnectionhealthcare.com/mental-health/anxiety/breathwork-and-grounding-techniques/",
     },
     regular: {
@@ -111,7 +111,7 @@ export const exerciseLibrary = {
       concept:
         "Close eyes, gently place palms over them, then open slowly and take in your surroundings calmly.",
       duration: 60,
-      gif: "https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif",
+      gif: "https://media.happiesthealth.com/2022/10/3_palming.gif",
       link: "https://life-care-wellness.com/5-somatic-experiencing-techniques-that-anyone-can-use-to-stay-grounded/",
     },
   },
@@ -123,7 +123,7 @@ export const exerciseLibrary = {
       concept:
         "Place your hand on your belly. Inhale so it rises, then exhale slowly to relax your body.",
       duration: 30,
-      gif: "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+      gif: "https://drconniedepinho.org/wp-content/uploads/2024/01/image.gif",
       link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10741869/",
     },
     regular: {
@@ -133,7 +133,7 @@ export const exerciseLibrary = {
       concept:
         "Bring awareness from feet to head. Notice tension and gently release each area as you breathe.",
       duration: 60,
-      gif: "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
+      gif: "https://miro.medium.com/1*mbP9PCrVgPiESgElVE12Xw.gif",
       link: "https://www.yogawithrachelmarie.com/post/somatic-grounding-exercises",
     },
   },
