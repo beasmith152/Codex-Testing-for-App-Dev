@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import { useMood } from "../../src/context/MoodContext";
 import MoodSelector from "../../src/components/MoodSelector";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -33,6 +34,8 @@ const exerciseList = [
   { label: "Distracted", mood: "Distracted" },
   { label: "Baseline", mood: "Baseline" },
 ];
+
+
 
 // 🌿 Exercise of the Day Library (with all context)
 const exerciseLibrary = [
@@ -98,6 +101,20 @@ export default function HomeScreen() {
   const { setMood } = useMood();
   const insets = useSafeAreaInsets();
 
+  const [profileUri, setProfileUri] = useState<string | null>(null);
+
+useEffect(() => {
+  (async () => {
+    try {
+      const saved = await AsyncStorage.getItem("profilePicUri");
+      if (saved) setProfileUri(saved);
+    } catch (e) {
+      // ignore load errors for now
+      console.warn("Could not load profile URI:", e);
+    }
+  })();
+}, []);
+
   const filteredExercises = exerciseList.filter((ex) =>
     ex.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -115,6 +132,15 @@ export default function HomeScreen() {
       style={{ flex: 1 }}
       imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
     >
+       <View style={styles.avatarWrap}>
+    {profileUri ? (
+      <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
+    ) : (
+      <View style={[styles.avatarSmall, styles.avatarFallback]}>
+        <Text style={styles.avatarEmoji}>🙂</Text>
+      </View>
+    )}
+  </View>
     <View style={styles.container}>
           <Image
                source={require("../../assets/images/soma-logo.png")}
@@ -235,7 +261,7 @@ const styles = StyleSheet.create({
     alignItems: "",
     justifyContent: "flex-start",
     paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingTop: 0,
   },
   logo: {
     width: 100,
@@ -272,6 +298,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 4,
   },
+  avatarWrap: {
+  marginRight: 24,
+  marginTop: 36,
+  position: "relative",
+  alignContent: "center",
+  justifyContent: "center",
+  alignItems: "flex-end",
+},
+avatarSmall: {
+  width: 44,
+  height: 44,
+  borderRadius: 22,
+  backgroundColor: "#E0DAD6",
+  overflow: "hidden",
+},
+avatarFallback: {
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#E07A5F",
+},
+avatarEmoji: {
+  fontSize: 20,
+},
      dotsRow: {
     flexDirection: "row",
     marginBottom: 0,
@@ -319,13 +368,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 25,
+    marginTop: 0,
   },
   exerciseContainer: {
     width: "100%",
     alignItems: "left",
     marginTop: 0, // 👈 This actually controls spacing below the MoodSelector now
-    marginBottom: 50,
+    marginBottom: 35,
   },
   dailyHeader: {
     fontSize: 20,

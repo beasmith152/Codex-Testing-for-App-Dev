@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
 import CircularProgress from "../../src/components/CircularProgress"; // ✅ import circular tracker
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -41,6 +42,19 @@ export default function CalendarScreen() {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [dayData, setDayData] = useState<any[]>([]);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const [profileUri, setProfileUri] = useState<string | null>(null);
+
+useEffect(() => {
+  (async () => {
+    try {
+      const saved = await AsyncStorage.getItem("profilePicUri");
+      if (saved) setProfileUri(saved);
+    } catch (e) {
+      // ignore load errors for now
+      console.warn("Could not load profile URI:", e);
+    }
+  })();
+}, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -123,6 +137,15 @@ export default function CalendarScreen() {
       imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40 }}
     >
       <View style={styles.innerContainer}>
+          <View style={styles.avatarWrap}>
+            {profileUri ? (
+              <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
+            ) : (
+              <View style={[styles.avatarSmall, styles.avatarFallback]}>
+                <Text style={styles.avatarEmoji}>🙂</Text>
+              </View>
+            )}
+          </View>
         <Image
                            source={require("../../assets/images/soma-logo.png")}
                             style={styles.logo}
@@ -249,7 +272,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 70,
+    paddingTop: 0,
     paddingBottom: 20, // 🧭 prevents clipping at bottom
   },
   innerContainer: {
@@ -360,4 +383,27 @@ const styles = StyleSheet.create({
     color: "#403F3A",
     fontWeight: "700",
   },
+    avatarWrap: {
+  marginRight: 24,
+  marginTop: 36,
+  position: "relative",
+  alignContent: "center",
+  justifyContent: "center",
+  alignItems: "flex-end",
+},
+avatarSmall: {
+  width: 44,
+  height: 44,
+  borderRadius: 22,
+  backgroundColor: "#E0DAD6",
+  overflow: "hidden",
+},
+avatarFallback: {
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#E07A5F",
+},
+avatarEmoji: {
+  fontSize: 20,
+},
 });

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,10 +15,93 @@ import { router } from "expo-router";
 import { getMoodStats } from "../../src/hooks/useMoodStats";
 import { exerciseLibrary } from "./exercise-flow"; // ✅ make sure this import path matches your folder
 import { moodColors } from "../../src/hooks/useMoodStats";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
   const [fadeAnim] = useState(new Animated.Value(0));
+
+// Profile picture state (persisted locally for now)
+  const [profileUri, setProfileUri] = useState<string | null>(null);
+
+  // load persisted profile URI when screen mounts
+  useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem("profilePicUri");
+        if (saved) setProfileUri(saved);
+      } catch (e) {
+        // ignore load errors for now
+      }
+    })();
+  }, []);
+  
+  // Stub: replace this with your backend upload logic when ready
+  const uploadProfilePic = async (localUri: string) => {
+    // Example: POST the file to your server and return remote URL
+    // const form = new FormData();
+    // form.append('file', { uri: localUri, name: 'avatar.jpg', type: 'image/jpeg' } as any)
+    // await fetch('/api/upload', { method: 'POST', body: form })
+    await new Promise((r) => setTimeout(r, 700)); // simulate latency
+    return { success: true, remoteUrl: localUri }; // currently just echo local one
+  };
+
+  const pickImage = async () => {
+  try {
+    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // permission object shape varies by version: check both fields
+    if (perm?.status === "denied" || (typeof (perm as any)?.granted === "boolean" && !(perm as any).granted)) {
+      alert("Permission required to choose a profile picture.");
+      return;
+    }
+
+    // Safely resolve a mediaTypes constant without throwing if properties are missing
+    const anyPicker = ImagePicker as any;
+    const pickerMediaTypes =
+      (anyPicker.MediaTypeOptions && anyPicker.MediaTypeOptions.Images) ||
+      (anyPicker.MediaType && anyPicker.MediaType.Images) ||
+      undefined;
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      // only pass mediaTypes when we resolved one — otherwise omit it for maximum compatibility
+      ...(pickerMediaTypes ? { mediaTypes: pickerMediaTypes } : {}),
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+    });
+
+    // Normalize result shape:
+    // new: { canceled: boolean, assets: [{ uri, ... }] }
+    // old: { cancelled: boolean, uri }
+    let uri: string | undefined;
+    if ("canceled" in result) {
+      if (result.canceled) return; // user cancelled
+      uri = result.assets?.[0]?.uri;
+    } else if ((result as any).cancelled === false && (result as any).uri) {
+      uri = (result as any).uri;
+    } else if (Array.isArray((result as any).assets) && (result as any).assets[0]) {
+      uri = (result as any).assets[0].uri;
+    }
+
+    if (!uri) return; // cancelled or unexpected shape
+
+    setProfileUri(uri);
+
+    // persist locally (wrap in try/catch)
+    try {
+      await AsyncStorage.setItem("profilePicUri", uri);
+    } catch (e) {
+      console.warn("Unable to persist profile URI:", e);
+    }
+
+    // call upload stub (replace with actual API)
+    await uploadProfilePic(uri);
+  } catch (e) {
+    console.warn("Image pick error", e);
+    alert("Could not select image. Try again.");
+  }
+};
 
   useFocusEffect(
     useCallback(() => {
@@ -86,11 +169,30 @@ export default function Dashboard() {
       imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40, height: '100%'  }}
     >
       {/* Summary Section */}
-       <Image
-                     source={require("../../assets/images/soma-logo.png")}
-                      style={styles.logo}
-                      resizeMode="contain"
-                    />
+        <Image
+        source={require("../../assets/images/soma-logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+
+      <Pressable
+        style={styles.profileContainer}
+        onPress={pickImage}
+        accessibilityRole="button"
+        accessibilityLabel="Edit profile picture"
+      >
+        {profileUri ? (
+          <Image source={{ uri: profileUri }} style={styles.avatar} />
+        ) : (
+          <View style={[styles.avatar, styles.avatarFallback]}>
+            <Text style={styles.avatarEmoji}>🙂</Text>
+          </View>
+        )}
+        <View style={styles.editBadge}>
+          <Text style={styles.editText}>✏️</Text>
+        </View>
+      </Pressable>
+
       <Text style={styles.title}>Dashboard</Text>
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
@@ -222,7 +324,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },
     marginLeft:20,
-    marginBottom: 110,
+    marginBottom: 50,
   },
   cardContent: {
     position: "relative",
@@ -267,7 +369,7 @@ const styles = StyleSheet.create({
   settingsRow: {
     width: "100%",
     alignItems: "center",
-    marginTop: 18,
+    marginTop: 0,
     marginBottom: 36,
   },
   settingsButton: {
@@ -283,5 +385,47 @@ const styles = StyleSheet.create({
     color: "#ffffffff",
     fontWeight: "700",
     fontSize: 16,
+  },
+   profileContainer: {
+    alignSelf: "flex-start",
+    marginLeft: 0,
+    marginBottom: 8,
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 130,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 68,
+    backgroundColor: "#E0DAD6",
+    overflow: "hidden",
+  },
+  avatarFallback: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#E07A5F",
+  },
+  avatarEmoji: {
+    fontSize: 30,
+  },
+  editBadge: {
+    position: "absolute",
+    right: -4,
+    bottom: -4,
+    backgroundColor: "#1B3100",
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#fff",
+  },
+  editText: {
+    color: "#fff",
+    fontSize: 12,
+    lineHeight: 14,
   },
 });
