@@ -152,6 +152,12 @@ export default function CalendarScreen() {
           {getMoodMessage(stats.avgMood)}
         </Animated.Text>
 
+          <View style={styles.dotsRow}>
+                  {["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"].map((c, i) => (
+                    <View key={i} style={[styles.dot, { backgroundColor: c }]} />
+                  ))}
+                </View>
+
         {/* 🗓️ Calendar */}
         <Calendar
           markedDates={markedDates}
@@ -261,6 +267,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#403F3A",
     marginBottom: 24,
+  },
+   dotsRow: {
+    flexDirection: "row",
+    marginBottom: 12,
+    marginTop: 12,
+    justifyContent: "center",
+  },
+  dot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginHorizontal: 5,
   },
   statsRow: {
     flexDirection: "row",

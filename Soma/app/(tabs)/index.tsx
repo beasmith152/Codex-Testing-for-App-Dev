@@ -173,7 +173,11 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
       )}
-
+<View style={styles.dotsRow}>
+                  {["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"].map((c, i) => (
+                    <View key={i} style={[styles.dot, { backgroundColor: c }]} />
+                  ))}
+                </View>
       {/* 🌿 Mood Selector + Exercise of the Day (stacked) */}
       <View style={styles.bottomStack}>
         <MoodSelector />
@@ -267,6 +271,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 4,
+  },
+     dotsRow: {
+    flexDirection: "row",
+    marginBottom: 0,
+    marginTop: 24,
+    justifyContent: "center",
+  },
+  dot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginHorizontal: 5,
   },
   clearText: { fontSize: 20, color: "#403F3A", fontWeight: "700" },
   overlay: {
