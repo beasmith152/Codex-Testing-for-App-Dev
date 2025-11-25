@@ -9,7 +9,7 @@ import { router } from "expo-router";
  * - true  => welcome always shows (no AsyncStorage) — good for styling/testing
  * - false => welcome shows once (uses AsyncStorage.hasSeenWelcome)
  */
-const TEST_MODE = true;
+const TEST_MODE = false;
 
 export default function Welcome() {
   const [checking, setChecking] = useState(true);
