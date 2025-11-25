@@ -1,6 +1,8 @@
-import { View, Text, Pressable, StyleSheet, Image, ImageBackground, SafeAreaView } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image, ImageBackground, Dimensions, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import React, { useRef, useState, useEffect } from "react";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 // 👇 Hide top header (keeps bottom tabs visible)
 export const unstable_settings = {
@@ -9,7 +11,20 @@ export const unstable_settings = {
 
 export default function Complete() {
   const insets = useSafeAreaInsets();
+  const confetti = useRef<any>(null);
+  const [showConfetti, setShowConfetti] = useState(true);
+  const { width } = Dimensions.get("window");
 
+    useEffect(() => {
+    // small delay to ensure layout is ready, then mount confetti so it reliably plays
+    const startTimer = setTimeout(() => setShowConfetti(true), 80);
+    // stop after ~4s
+    const stopTimer = setTimeout(() => setShowConfetti(false), 4080);
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(stopTimer);
+    };
+  }, []);
   return (
     <SafeAreaView
       style={[
@@ -17,12 +32,24 @@ export default function Complete() {
         { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
       ]}
     >
-      
+        {showConfetti && (
+    <ConfettiCannon
+      ref={confetti}
+      key={String(showConfetti)} // forces mount when toggled
+      count={140}
+      origin={{ x: width / 2, y: 0 }}
+      fadeOut={true}
+      fallSpeed={3000}
+      colors={["#E07A5F", "#F6EDE3", "#403F3A", "#c18c24ff"]}
+    />
+  )}
+
       <Text style={styles.title}>Great Job!</Text>
       <Text style={styles.subtitle}>Take a moment to notice how you feel.</Text>
 
       {/* ✅ Fixed route path so it correctly returns to Home */}
       
+       
 
       <Pressable
         style={styles.secondaryButton}
