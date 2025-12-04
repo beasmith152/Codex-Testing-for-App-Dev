@@ -148,8 +148,7 @@ export default function SignInScreen() {
               </Pressable>
 
               <Text style={styles.note}>
-                Note: This is a UI-only Sign In screen. Replace the `signIn`
-                stub with your backend auth call and persist tokens when ready.
+                Note: This feature is not yet implemented. Will be available in future updates.
               </Text>
             </View>
           </ScrollView>

@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+  const HIDE_SIGNUP = true;
+  const HIDE_SIGNIN = true;
 export default function SettingsScreen() {
   const onSignup = () => {
     // navigate to the signup flow (create this screen later)
@@ -83,23 +84,30 @@ export default function SettingsScreen() {
   <Text style={styles.backText}>←</Text>
 </Pressable>
         <Text style={styles.title}>Settings</Text>
-
+{!HIDE_SIGNUP && (
         <Pressable style={styles.primary} onPress={onSignup}>
           <Text style={styles.primaryText}>Create account</Text>
         </Pressable>
-
+)}
+{!HIDE_SIGNIN && (
         <Pressable style={styles.secondary} onPress={onLogout}>
           <Text style={styles.secondaryText}>Log out</Text>
         </Pressable>
+)}
+{!HIDE_SIGNIN && (
+        <Pressable style={styles.primary} onPress={onSignin}>
+          <Text style={styles.primaryText}>Sign in</Text>
+        </Pressable>
+)}
 
         <Pressable style={styles.destructive} onPress={onDeleteAccount}>
           <Text style={styles.destructiveText}>Delete account</Text>
         </Pressable>
+        <Text style={styles.note}>
+                        Note: All the data is currently stored locally on your device. Deleting your account will remove all data associated with it from this device. Account function coming soon.
+                      </Text>
 
-        <Text style={styles.hint}>
-          Notes: "Create account" should navigate into your full signup flow.
-          "Log out" and "Delete account" must call your auth/backend logic.
-        </Text>
+       
         </ImageBackground>
       </View>
     </SafeAreaView>
@@ -167,4 +175,11 @@ backText: {
   lineHeight: 20,
   fontWeight: "700",
 },
+  note: {
+    marginTop: 14,
+    color: "#80776F",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "center",
+  },
 });

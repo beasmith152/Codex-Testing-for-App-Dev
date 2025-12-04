@@ -10,6 +10,8 @@ import { router } from "expo-router";
  * - false => welcome shows once (uses AsyncStorage.hasSeenWelcome)
  */
 const TEST_MODE = false;
+  const HIDE_SIGNUP = true;
+  const HIDE_SIGNIN = true;
 
 export default function Welcome() {
   const [checking, setChecking] = useState(true);
@@ -66,7 +68,7 @@ export default function Welcome() {
           ))}
         </View>
 
-        <Pressable
+        {!HIDE_SIGNUP && (<Pressable
   style={({ pressed }) => [
     styles.signupButton,
     pressed && { opacity: 0.85 },
@@ -77,11 +79,13 @@ export default function Welcome() {
 >
   <Text style={styles.signupText}>Create account</Text>
 </Pressable>
-
+        )}
+        {!HIDE_SIGNUP && !HIDE_SIGNIN && (
 <Text style={styles.body2}>
           Already have an account?
         </Text>
-
+        )}
+ {!HIDE_SIGNIN && (
         <Pressable
   style={({ pressed }) => [
     styles.accountButton,
@@ -93,11 +97,12 @@ export default function Welcome() {
 >
   <Text style={styles.accountText}>Sign In</Text>
 </Pressable>
-
+  )}
+  {!HIDE_SIGNIN && !HIDE_SIGNUP && (
 <Text style={styles.body3}>
           OR
         </Text>
-
+  )}
         <Pressable style={styles.button} onPress={() => onContinue()}>
           <Text style={styles.buttonText}>Touch here {"\n"} to get Started!</Text>
         </Pressable>
@@ -117,7 +122,9 @@ export default function Welcome() {
             </Text>
           </Pressable>
         )}
-      
+      <Text style={styles.note}>
+                             All data will be currently stored locally on your device. Account function coming soon. Thank you for your patience!
+                            </Text>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -174,7 +181,7 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "#1B3100", fontWeight: "700", fontSize: 16, textAlign: "center" },
   tertiary: {
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#fcc53aff",
   },
   tertiaryText: {
     color: "#403F3A",
@@ -227,5 +234,12 @@ accountText: {
     height: 14,
     borderRadius: 7,
     marginHorizontal: 5,
+  },
+  note: {
+    marginTop: 14,
+    color: "#80776F",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "center",
   },
 });

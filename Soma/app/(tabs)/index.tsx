@@ -132,15 +132,20 @@ useEffect(() => {
       style={{ flex: 1 }}
       imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
     >
-       <View style={styles.avatarWrap}>
-    {profileUri ? (
-      <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
-    ) : (
-      <View style={[styles.avatarSmall, styles.avatarFallback]}>
-        <Text style={styles.avatarEmoji}>🙂</Text>
-      </View>
-    )}
-  </View>
+       <Pressable
+  style={styles.avatarWrap}
+  onPress={() => router.push("/(tabs)/dashboard")}
+  accessibilityRole="button"
+  accessibilityLabel="Open dashboard"
+>
+  {profileUri ? (
+    <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
+  ) : (
+    <View style={[styles.avatarSmall, styles.avatarFallback]}>
+      <Text style={styles.avatarEmoji}>🙂</Text>
+    </View>
+  )}
+</Pressable>
     <View style={styles.container}>
           <Image
                source={require("../../assets/images/soma-logo.png")}

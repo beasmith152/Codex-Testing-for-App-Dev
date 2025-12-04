@@ -123,7 +123,7 @@ export default function Dashboard() {
   if (!stats) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Loading Dashboard...</Text>
+        <Text style={styles.title2}>Complete your first exercise to unlock your dashboard</Text>
       </View>
     );
   }
@@ -192,7 +192,9 @@ export default function Dashboard() {
           <Text style={styles.editText}>✏️</Text>
         </View>
       </Pressable>
-
+<Text style={styles.note}>
+                        Change profile picture by tapping on the avatar.
+                      </Text>
       <Text style={styles.title}>Dashboard</Text>
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
@@ -291,6 +293,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingTop: 70,
     paddingBottom: 100,
+    height: '110%',
   },
   title: {
     fontSize: 26,
@@ -427,5 +430,28 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     lineHeight: 14,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#F6EDE3",
+  },
+  title2: {
+    fontSize: 26,
+    color: "#1B3100",
+    fontWeight: "700",
+    marginBottom: 20,
+    textAlign: "center",
+    width: "80%",
+    alignSelf: "center",
+    position: "absolute",
+    top: "40%",
+  },
+  note: {
+    marginTop: 14,
+    color: "#80776F",
+    fontSize: 10,
+    lineHeight: 18,
+    textAlign: "center",
+    marginBottom: 20,
   },
 });

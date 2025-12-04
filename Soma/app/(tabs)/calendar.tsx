@@ -16,6 +16,7 @@ import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
 import CircularProgress from "../../src/components/CircularProgress"; // ✅ import circular tracker
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -76,8 +77,8 @@ useEffect(() => {
   if (!stats) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Calendar 🗓️</Text>
-        <Text style={styles.subtitle}>No data yet — start a session!</Text>
+        <Text style={styles.title2}>Mood Tracker</Text>
+        <Text style={styles.subtitle}>No data yet — start a session and come back to track your progress!</Text>
       </View>
     );
   }
@@ -137,15 +138,20 @@ useEffect(() => {
       imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40 }}
     >
       <View style={styles.innerContainer}>
-          <View style={styles.avatarWrap}>
-            {profileUri ? (
-              <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
-            ) : (
-              <View style={[styles.avatarSmall, styles.avatarFallback]}>
-                <Text style={styles.avatarEmoji}>🙂</Text>
-              </View>
-            )}
-          </View>
+          <Pressable
+  style={styles.avatarWrap}
+  onPress={() => router.push("/(tabs)/dashboard")}
+  accessibilityRole="button"
+  accessibilityLabel="Open dashboard"
+>
+  {profileUri ? (
+    <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
+  ) : (
+    <View style={[styles.avatarSmall, styles.avatarFallback]}>
+      <Text style={styles.avatarEmoji}>🙂</Text>
+    </View>
+  )}
+</Pressable>
         <Image
                            source={require("../../assets/images/soma-logo.png")}
                             style={styles.logo}
@@ -277,7 +283,6 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     width: "100%",
-    alignItems: "",
   },
   title: {
     fontSize: 26,
@@ -406,4 +411,25 @@ avatarFallback: {
 avatarEmoji: {
   fontSize: 20,
 },
+container: {
+  flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F6EDE3",
+  },
+  title2:{
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#1B3100",
+    marginBottom: 16,
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#403F3A",
+    marginBottom: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    width: "80%",
+  },
 });

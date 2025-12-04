@@ -176,8 +176,7 @@ export default function SignupScreen() {
             </Pressable>
 
             <Text style={styles.note}>
-              Note: This is a UI-only signup for now. Replace `createAccount`
-              with your backend call and persist auth tokens when ready.
+              Note: This feature is not yet implemented. Will be available in future updates.
             </Text>
           </View>
         </ScrollView>
