@@ -33,24 +33,24 @@ The UI is built to feel calm and welcoming — minimal, warm, and organic — st
 ### **Phase 1 — Setup & Layout (Current)**
 - [x] Figma prototype completed  
 - [x] GitHub repo created  
-- [ ] Initialize Android build (React Native or Jetpack Compose)  
-- [ ] Implement base navigation (Home, Dashboard, Exercises, Calendar)  
-- [ ] Build static UI from Figma components  
+- [x] Initialize Android build (React Native or Jetpack Compose)  
+- [x] Implement base navigation (Home, Dashboard, Exercises, Calendar)  
+- [x] Build static UI from Figma components  
 
 ### **Phase 2 — Functionality**
-- [ ] Add local JSON for moods + exercises  
-- [ ] Implement exercise timer logic  
-- [ ] Add user state persistence (AsyncStorage or RoomDB)  
-- [ ] Connect mood data to dashboard charts  
+- [x] Add local JSON for moods + exercises  
+- [x] Implement exercise timer logic  
+- [x] Add user state persistence (AsyncStorage or RoomDB)  
+- [x] Connect mood data to dashboard charts  
 
 ### **Phase 3 — Feedback & Experience**
-- [ ] Add haptic + sound feedback for exercises  
-- [ ] Enable favorites + history tracking  
-- [ ] Enhance transitions between screens (fade or slide)  
+- [x] Add haptic + sound feedback for exercises  
+- [x] Enable favorites + history tracking  
+- [x] Enhance transitions between screens (fade or slide)  
 
 ### **Phase 4 — Future Expansion**
-- [ ] Cloud sync for progress  
-- [ ] Multi-language support  
+- [x] Cloud sync for progress  
+- [x] Multi-language support  
 - [ ] Publish Android Beta  
 
 ---
