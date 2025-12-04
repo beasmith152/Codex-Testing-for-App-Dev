@@ -15,6 +15,7 @@ import { useMood } from "../../src/context/MoodContext";
 import MoodSelector from "../../src/components/MoodSelector";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from 'expo-font';
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -100,9 +101,11 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const { setMood } = useMood();
   const insets = useSafeAreaInsets();
-
+  const [fontsLoaded] = useFonts({
+  Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
+});
   const [profileUri, setProfileUri] = useState<string | null>(null);
-
+  
 useEffect(() => {
   (async () => {
     try {
@@ -275,11 +278,11 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
   title: {
-    fontSize: 23,
+    fontSize: 24,
     color: "#1B3100",
-    fontWeight: "700",
-    marginBottom: 10,
+    marginBottom: 0,
     textAlign: "left",
+    fontFamily: 'Biro',
   },
   searchContainer: { position: "relative", width: "100%" },
   searchBar: {
@@ -382,7 +385,7 @@ avatarEmoji: {
     marginBottom: 35,
   },
   dailyHeader: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     color: "#403F3A",
     marginBottom: 12,

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet, Image, ImageBackground, SafeAreaView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { useFonts } from 'expo-font';
 
 /**
  * TEST_MODE:
@@ -14,7 +15,11 @@ const TEST_MODE = false;
   const HIDE_SIGNIN = true;
 
 export default function Welcome() {
+  const [fontsLoaded] = useFonts({
+  Plante: require("../assets/fonts/Plante.ttf"), // <-- update path if different
+});
   const [checking, setChecking] = useState(true);
+
 
   useEffect(() => {
     if (TEST_MODE) {
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop:0,
     marginBottom: 1,
   },
-  title: { fontSize: 26, fontWeight: "400", marginBottom: 8, color: "#1B3100" },
+  title: { fontSize: 26, fontWeight: "400", marginBottom: 8, color: "#1B3100", fontFamily: 'Plante' },
   body: {
     fontSize: 16,
     color: "#1B3100",

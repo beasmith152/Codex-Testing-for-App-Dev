@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import React, { useRef, useState, useEffect } from "react";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { useFonts } from 'expo-font';
 
 // 👇 Hide top header (keeps bottom tabs visible)
 export const unstable_settings = {
@@ -14,6 +15,9 @@ export default function Complete() {
   const confetti = useRef<any>(null);
   const [showConfetti, setShowConfetti] = useState(true);
   const { width } = Dimensions.get("window");
+  const [fontsLoaded] = useFonts({
+  Plante: require("../../../assets/fonts/Plante.ttf"), Biro: require("../../../assets/fonts/biro.otf")   // <-- update path if different
+});
 
     useEffect(() => {
     // small delay to ensure layout is ready, then mount confetti so it reliably plays
@@ -70,17 +74,20 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   title: {
-    fontSize: 60,
-    fontWeight: "700",
+    fontSize: 48,
     color: "#1B3100",
     marginBottom: 15,
+    fontFamily: 'Plante',
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 24,
     color: "#362214ff",
-    marginBottom: 28,
+    marginBottom: 38,
     textAlign: "center",
     paddingHorizontal: 20,
+    fontFamily: 'Biro',
+    
   },
   primaryButton: {
     backgroundColor: "#c18c24ff",

@@ -1,11 +1,13 @@
 import { useLocalSearchParams, router } from "expo-router";
 import React, { useEffect, useRef, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable, Animated, Image } from "react-native";
-
+import { useFonts } from 'expo-font';
 export default function PreExerciseScreen() {
   // keep Animated.Value stable across renders
   const fadeAnim = useRef(new Animated.Value(0)).current;
-
+const [fontsLoaded] = useFonts({
+  Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
+});
   // grab all params including the runId from the choice screen
   const params = useLocalSearchParams();
   const { id, label, gif, definition, vibe, concept, duration } = params as Record<string, string>;

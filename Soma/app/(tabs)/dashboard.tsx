@@ -17,11 +17,14 @@ import { exerciseLibrary } from "./exercise-flow"; // ✅ make sure this import 
 import { moodColors } from "../../src/hooks/useMoodStats";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import { useFonts } from 'expo-font';
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
   const [fadeAnim] = useState(new Animated.Value(0));
-
+ const [fontsLoaded] = useFonts({
+  Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
+});
 // Profile picture state (persisted locally for now)
   const [profileUri, setProfileUri] = useState<string | null>(null);
 
@@ -298,9 +301,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     color: "#1B3100",
-    fontWeight: "700",
+    fontFamily: "Plante",
     marginBottom: 20,
-    marginLeft: 24,
+    textAlign: "center",
   },
   statsRow: {
     flexDirection: "row",

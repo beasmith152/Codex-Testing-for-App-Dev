@@ -17,6 +17,7 @@ import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
 import CircularProgress from "../../src/components/CircularProgress"; // ✅ import circular tracker
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { useFonts } from 'expo-font';
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -44,7 +45,9 @@ export default function CalendarScreen() {
   const [dayData, setDayData] = useState<any[]>([]);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [profileUri, setProfileUri] = useState<string | null>(null);
-
+  const [fontsLoaded] = useFonts({
+  Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
+});
 useEffect(() => {
   (async () => {
     try {
@@ -287,9 +290,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     color: "#1B3100",
-    fontWeight: "700",
+    fontFamily: "Plante",
     marginBottom: 16,
-    marginLeft: 24,
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 15,
@@ -343,9 +346,9 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   progressHeader: {
-    fontSize: 18,
+    fontSize: 26,
     color: "#507050",
-    fontWeight: "600",
+    fontFamily: "Biro",
     marginBottom: 24,
   },
   modalOverlay: {

@@ -13,6 +13,7 @@ import { useLocalSearchParams, router } from "expo-router";
 import Timer from "../../../src/components/Timer";
 import { saveSession } from "../../../src/hooks/useSessionStorage";
 import { useMood } from "../../../src/context/MoodContext";
+import { useFonts } from 'expo-font';
 
 export const unstable_settings = {
   headerShown: false,
@@ -22,7 +23,9 @@ export default function DoExercise() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams();
   const { mood } = useMood();
-
+const [fontsLoaded] = useFonts({
+    Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
+  });
   // Normalize handle (string | string[]) values
   const norm = (v: any, fallback = "") =>
     Array.isArray(v) ? (v[0] ?? fallback) : (v ?? fallback);
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
   exerciseTitle: {
     fontSize: 28,
     color: "#403F3A",
-    fontWeight: "800",
+    fontFamily: "Plante",
     marginBottom: 8,
     paddingTop: 60,
     textAlign: "center",

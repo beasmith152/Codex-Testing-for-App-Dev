@@ -12,6 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useMood } from "../../../src/context/MoodContext";
+import { useFonts } from 'expo-font';
 
 export const unstable_settings = {
   headerShown: false,
@@ -152,6 +153,9 @@ const moodToExerciseGroup: Record<string, keyof typeof exerciseLibrary> = {
 export default function ExerciseChoice() {
   const insets = useSafeAreaInsets();
   const { mood } = useMood();
+  const [fontsLoaded] = useFonts({
+    Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
+  });
 
   const normalizedMood = mood?.toLowerCase() || "baseline";
 const mappedMood = moodToExerciseGroup[normalizedMood] || "Baseline";
@@ -243,11 +247,11 @@ const styles = StyleSheet.create({
     alignItems: "",
   },
   title: {
-    fontSize: 30,
-    fontWeight: "700",
+    fontSize: 25,
+    fontFamily: "Plante",
     color: "#1B3100",
     marginBottom: 24,
-    textAlign: "left",
+    textAlign: "center",
   },
  emojiFrame: {
   width: 72,
