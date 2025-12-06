@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#EAD8CA",
         "foregroundImage": "./assets/images/Soma.png",
         "backgroundImage": "./assets/images/somaload.png",
         "monochromeImage": "./assets/images/Soma.png"
@@ -24,7 +24,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/Soma.png"
     },
     "plugins": [
       "expo-router",
