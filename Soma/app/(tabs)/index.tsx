@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     color: "#1B3100",
-    marginBottom: 0,
+    marginBottom: 12,
     textAlign: "left",
     fontFamily: 'Biro',
   },
