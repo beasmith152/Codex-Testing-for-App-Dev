@@ -4,7 +4,7 @@
     "slug": "Soma",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/somaicon.png",
     "scheme": "soma",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,9 +14,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#EAD8CA",
-        "foregroundImage": "./assets/images/Soma.png",
-        "backgroundImage": "./assets/images/somaload.png",
-        "monochromeImage": "./assets/images/Soma.png"
+        "foregroundImage": "./assets/images/somaicon.png",
+        "backgroundImage": "./assets/images/somaicon.png",
+        "monochromeImage": "./assets/images/mono.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -31,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/soma-bg.png.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
