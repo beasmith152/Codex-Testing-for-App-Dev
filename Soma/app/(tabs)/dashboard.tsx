@@ -18,10 +18,12 @@ import { moodColors } from "../../src/hooks/useMoodStats";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const colors = useThemeColors();
  const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
@@ -162,14 +164,14 @@ export default function Dashboard() {
 
   return (
     <ScrollView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: colors.somaBackground }]}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
       <ImageBackground
-      source={require("../../assets/images/soma-bg.png")}
+      
       style={{ flex: 1 }}
-      imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40, height: '100%'  }}
+      
     >
       {/* Summary Section */}
         <Image
@@ -195,30 +197,30 @@ export default function Dashboard() {
           <Text style={styles.editText}>✏️</Text>
         </View>
       </Pressable>
-<Text style={styles.note}>
+<Text style={[styles.note, { color: colors.somaTextMuted }]}>
                         Change profile picture by tapping on the avatar.
                       </Text>
-      <Text style={styles.title}>Dashboard</Text>
+      <Text style={[styles.title, { color: colors.somaText }]}>Dashboard</Text>
       <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{stats.totalExercises}</Text>
-          <Text style={styles.statLabel}>Exercises</Text>
+        <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
+          <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.totalExercises}</Text>
+          <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Exercises</Text>
         </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>
+        <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
+          <Text style={[styles.statNumber, { color: colors.somaText }]}>
             {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
           </Text>
-          <Text style={styles.statLabel}>Time Spent</Text>
+          <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Time Spent</Text>
         </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{stats.avgMood}</Text>
-          <Text style={styles.statLabel}>Avg Mood</Text>
+        <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
+          <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.avgMood}</Text>
+          <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Avg Mood</Text>
         </View>
       </View>
 
       {/* 🌿 Last Completed Section */}
-      <Animated.View style={[styles.exerciseCard, { opacity: fadeAnim }]}>
-        <Text style={styles.sectionHeader}>Last Completed</Text>
+      <Animated.View style={[styles.exerciseCard, { backgroundColor: colors.somaSearch, opacity: fadeAnim }]}>
+        <Text style={[styles.sectionHeader, { color: colors.somaText }]}>Last Completed</Text>
 
         {exerciseOfTheDay ? (
           <Pressable
@@ -256,8 +258,8 @@ export default function Dashboard() {
             </View>
           </Pressable>
         ) : (
-          <Text style={styles.noExerciseText}>
-            You haven’t completed any exercises yet 🌿
+          <Text style={[styles.noExerciseText, { color: colors.somaTextMuted }]}>
+            You haven't completed any exercises yet 🌿
           </Text>
         )}
       </Animated.View>

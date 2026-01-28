@@ -4,12 +4,14 @@ import { View, StyleSheet, Animated, Easing } from "react-native";
 import { HapticTab } from "@/components/haptic-tab";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const activeColor = "#403F3A"; // dark brown highlight
-  const inactiveColor = "#9B8F87"; // soft muted brown
-  const bgColor = "#F6EDE3"; // Soma beige background
+  const colors = useThemeColors();
+  const activeColor = colors.somaSecondary; // dark brown highlight
+  const inactiveColor = colors.somaTertiary; // soft muted brown
+  const bgColor = colors.somaBackground; // Soma beige background
 
   return (
     <Tabs

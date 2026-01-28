@@ -17,27 +17,29 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
     // Soma theme light colors
-    somaBackground: '#F6EDE3',
+    somaBackground: '#fff6e1',
     somaPrimary: '#E07A5F',
     somaSecondary: '#403F3A',
     somaTertiary: '#9B8F87',
     somaText: '#1B3100',
     somaTextMuted: '#80776F',
+    somaSearch: '#ffffff',
   },
   dark: {
     text: '#ECEDEE',
-    background: '#151718',
+    background: '#3a291e',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     // Soma theme dark colors - complementary dark version
-    somaBackground: '#2A2420',
+    somaBackground: '#4b3d35',
     somaPrimary: '#E07A5F',
     somaSecondary: '#D4CCC1',
     somaTertiary: '#8B7E77',
     somaText: '#E8E4DE',
     somaTextMuted: '#A39E96',
+    somaSearch: '#5c4e45',
   },
 };
 

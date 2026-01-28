@@ -4,6 +4,7 @@ import { View, Text, Pressable, StyleSheet, Image, ImageBackground, SafeAreaView
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 /**
  * TEST_MODE:
@@ -18,6 +19,7 @@ export default function Welcome() {
   const [fontsLoaded] = useFonts({
   Plante: require("../assets/fonts/Plante.ttf"), // <-- update path if different
 });
+  const colors = useThemeColors();
   const [checking, setChecking] = useState(true);
 
 
@@ -50,20 +52,20 @@ export default function Welcome() {
   if (checking) return null;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.somaBackground }]}>
         <ImageBackground
               source={require("../assets/images/soma-bg.png")}
               style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%" }}
               imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
             >
-        <Text style={styles.title}>Welcome to</Text>
+        <Text style={[styles.title, { color: colors.somaText }]}>Welcome to</Text>
      <Image
                     source={require("../assets/images/soma-logo.png")}
                      style={styles.logo}
                      resizeMode="contain"
                    />
         
-        <Text style={styles.body}>
+        <Text style={[styles.body, { color: colors.somaText }]}>
           Feel Grounded Again
         </Text>
 
@@ -86,7 +88,7 @@ export default function Welcome() {
 </Pressable>
         )}
         {!HIDE_SIGNUP && !HIDE_SIGNIN && (
-<Text style={styles.body2}>
+<Text style={[styles.body2, { color: colors.somaTextMuted }]}>
           Already have an account?
         </Text>
         )}
@@ -104,7 +106,7 @@ export default function Welcome() {
 </Pressable>
   )}
   {!HIDE_SIGNIN && !HIDE_SIGNUP && (
-<Text style={styles.body3}>
+<Text style={[styles.body3, { color: colors.somaTextMuted }]}>
           OR
         </Text>
   )}

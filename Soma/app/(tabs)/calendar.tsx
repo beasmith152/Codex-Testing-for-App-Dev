@@ -18,6 +18,7 @@ import CircularProgress from "../../src/components/CircularProgress"; // ✅ imp
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -45,6 +46,7 @@ export default function CalendarScreen() {
   const [dayData, setDayData] = useState<any[]>([]);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [profileUri, setProfileUri] = useState<string | null>(null);
+  const colors = useThemeColors();
   const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
@@ -131,14 +133,12 @@ useEffect(() => {
   return (
      
     <ScrollView
-      style={styles.scrollContainer}
+      style={[styles.scrollContainer, { backgroundColor: colors.somaBackground }]}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
        <ImageBackground
-      source={require("../../assets/images/soma-bg.png")}
-      style={{ flex: 1 }}
-      imageStyle={{ resizeMode: "cover", opacity: 0.3, marginTop: -40 }}
+     
     >
       <View style={styles.innerContainer}>
           <Pressable
@@ -160,22 +160,22 @@ useEffect(() => {
                             style={styles.logo}
                             resizeMode="contain"
                           />
-        <Text style={styles.title}>Mood Chart</Text>
+        <Text style={[styles.title, { color: colors.somaText }]}>Mood Chart</Text>
 
         {/* Summary cards */}
         <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>{stats.totalExercises}</Text>
-            <Text style={styles.statLabel}>Exercises</Text>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+            <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.totalExercises}</Text>
+            <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Exercises</Text>
           </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+            <Text style={[styles.statNumber, { color: colors.somaText }]}>
               {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
             </Text>
-            <Text style={styles.statLabel}>Time Spent</Text>
+            <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Time Spent</Text>
           </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>{stats.avgMood}</Text>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+            <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.avgMood}</Text>
             <Text style={styles.statLabel}>Avg Mood</Text>
           </View>
         </View>

@@ -69,9 +69,9 @@ export default function SettingsScreen() {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.somaBackground }]}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../assets/images/soma-bg.png")}
+          
           style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%" }}
-          imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
+          
         >
           <Pressable
             onPress={() => {

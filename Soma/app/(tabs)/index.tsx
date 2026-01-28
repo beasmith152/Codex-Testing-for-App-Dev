@@ -16,6 +16,7 @@ import MoodSelector from "../../src/components/MoodSelector";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -101,6 +102,7 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const { setMood } = useMood();
   const insets = useSafeAreaInsets();
+  const colors = useThemeColors();
   const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
@@ -129,11 +131,11 @@ useEffect(() => {
 
   return (
     
-    <SafeAreaView style={[styles.safeArea, { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" }]}>
+    <SafeAreaView style={[styles.safeArea, { paddingBottom: insets.bottom || 16, backgroundColor: colors.somaBackground }]}>
        <ImageBackground
-      source={require("../../assets/images/soma-bg.png")}
+      
       style={{ flex: 1 }}
-      imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
+      
     >
        <Pressable
   style={styles.avatarWrap}
@@ -155,14 +157,14 @@ useEffect(() => {
                 style={styles.logo}
                 resizeMode="contain"
               />
-      <Text style={styles.title}>Welcome, how are you?</Text>
+      <Text style={[styles.title, { color: colors.somaText }]}>Welcome, how are you?</Text>
 
       {/* 🔍 Search Bar */}
       <View style={styles.searchContainer}>
         <TextInput
-          style={styles.searchBar}
+          style={[styles.searchBar, { color: colors.somaSecondary, backgroundColor: colors.somaSearch }]}
           placeholder="Search exercises or moods..."
-          placeholderTextColor="#7A7A7A"
+          placeholderTextColor={colors.somaTertiary}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -171,14 +173,14 @@ useEffect(() => {
             onPress={() => setSearchQuery("")}
             style={styles.clearButton}
           >
-            <Text style={styles.clearText}>×</Text>
+            <Text style={[styles.clearText, { color: colors.somaSecondary }]}>×</Text>
           </Pressable>
         )}
       </View>
 
       {/* 🔎 Floating Overlay for Search Results */}
       {searchQuery.length > 0 && (
-        <View style={styles.overlay}>
+        <View style={[styles.overlay, { backgroundColor: colors.somaBackground }]}>
           <ScrollView
             contentContainerStyle={styles.resultsContainer}
             showsVerticalScrollIndicator={false}
@@ -197,12 +199,12 @@ useEffect(() => {
                     router.push("/(tabs)/exercise-flow");
                   }}
                 >
-                  <Text style={styles.resultLabel}>{ex.label}</Text>
-                  <Text style={styles.resultSub}>{ex.mood}</Text>
+                  <Text style={[styles.resultLabel, { color: colors.somaSecondary }]}>{ex.label}</Text>
+                  <Text style={[styles.resultSub, { color: colors.somaTertiary }]}>{ex.mood}</Text>
                 </Pressable>
               ))
             ) : (
-              <Text style={styles.noResults}>No results found</Text>
+              <Text style={[styles.noResults, { color: colors.somaSecondary }]}>No results found</Text>
             )}
           </ScrollView>
         </View>
