@@ -16,6 +16,13 @@ export const Colors = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
+    // Soma theme light colors
+    somaBackground: '#F6EDE3',
+    somaPrimary: '#E07A5F',
+    somaSecondary: '#403F3A',
+    somaTertiary: '#9B8F87',
+    somaText: '#1B3100',
+    somaTextMuted: '#80776F',
   },
   dark: {
     text: '#ECEDEE',
@@ -24,6 +31,13 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+    // Soma theme dark colors - complementary dark version
+    somaBackground: '#2A2420',
+    somaPrimary: '#E07A5F',
+    somaSecondary: '#D4CCC1',
+    somaTertiary: '#8B7E77',
+    somaText: '#E8E4DE',
+    somaTextMuted: '#A39E96',
   },
 };
 

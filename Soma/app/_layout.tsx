@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { MoodProvider } from "../src/context/MoodContext";
+import { ThemeProvider as SomaThemeProvider } from "../src/context/ThemeContext";
 import { View, ImageBackground } from "react-native";
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -17,24 +18,26 @@ const fallbackBg = colorScheme === "dark" ? "#F6EDE3" : "#F6EDE3";
 
  return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <MoodProvider>
-      <ImageBackground
-  source={require("../assets/images/soma-bg.png")}
-  style={{ flex: 1 }}
-  imageStyle={{ resizeMode: "cover" }}
->
-  <View style={{ flex: 1, backgroundColor: "transparent" }}>
-    <Stack>
-      <Stack.Screen name="welcome" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="settings" options={{ headerShown: false }} />
-      <Stack.Screen name="signin" options={{ headerShown: false }} />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
-    </Stack>
-  </View>
-</ImageBackground>
-      </MoodProvider>
+      <SomaThemeProvider>
+        <MoodProvider>
+          <ImageBackground
+            source={require("../assets/images/soma-bg.png")}
+            style={{ flex: 1 }}
+            imageStyle={{ resizeMode: "cover" }}
+          >
+            <View style={{ flex: 1, backgroundColor: "transparent" }}>
+              <Stack>
+                <Stack.Screen name="welcome" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="settings" options={{ headerShown: false }} />
+                <Stack.Screen name="signin" options={{ headerShown: false }} />
+                <Stack.Screen name="signup" options={{ headerShown: false }} />
+                <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+              </Stack>
+            </View>
+          </ImageBackground>
+        </MoodProvider>
+      </SomaThemeProvider>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
