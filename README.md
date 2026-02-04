@@ -1,9 +1,9 @@
-# 🌿 Soma — Feel Grounded Again
+#  Soma — Feel Grounded Again
 *A mindful somatic exercise app designed to help users reconnect with their bodies through simple, guided movements and awareness-based practices.*
 
 ---
 
-## 🧘 About Soma
+##  About Soma
 **Soma** was designed with one goal: to help people feel grounded again.  
 Through short exercises and mood-based practices, users can release tension, improve focus, and rebuild a healthy connection between mind and body.
 
@@ -11,15 +11,19 @@ The UI is built to feel calm and welcoming — minimal, warm, and organic — st
 
 ---
 
-## 🎨 Design Philosophy
+##  Design Philosophy
 - **Minimal & Organic:** Inspired by nature and calm tones, Soma avoids clutter and distraction.  
 - **Body Awareness First:** Progress is felt, not measured. Soma promotes embodied presence over productivity.  
 - **Accessible & Gentle:** High-contrast text, soft visuals, and touch-friendly controls for all users.  
 - **Figma-Driven Development:** Every screen mirrors the prototype created in Figma for consistent visuals.
 
 ---
+### **Design Token System Explanation**
+**Token System:** The token system is semantically named after the parts where each goes, somaButtonText, goes for buttons; somaBackground goes for bg etc. I did the same thing with my type. Nothing too special in regards to naming. The goal is once the complete refactor is done, and functional I can get more specific; the way I have my system layed out allows me to maintain the same semantic names while changing overall themes. 
+**Design Notes:** I did add a new system theme button into this version to allow the user to choose default state on top of dark/light
+---
 
-## 🧩 Core Features
+##  Core Features
 - 🧭 **Mood Check-In:** Select your mood and receive curated grounding practices.  
 - 💨 **Somatic Exercises:** Simple, guided practices for breath, movement, and awareness.  
 - 🗓️ **Mood Tracker Dashboard:** Visualize your daily and weekly patterns.  
@@ -28,7 +32,7 @@ The UI is built to feel calm and welcoming — minimal, warm, and organic — st
 
 ---
 
-## ⚙️ Roadmap
+##  Roadmap
 
 ### **Phase 1 — Setup & Layout (Current)**
 - [x] Figma prototype completed  
