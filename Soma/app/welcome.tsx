@@ -54,7 +54,6 @@ export default function Welcome() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.somaBackground }]}>
         <ImageBackground
-              source={require("../assets/images/soma-bg.png")}
               style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%" }}
               imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
             >
@@ -111,7 +110,7 @@ export default function Welcome() {
         </Text>
   )}
         <Pressable style={styles.button} onPress={() => onContinue()}>
-          <Text style={styles.buttonText}>Touch here {"\n"} to get Started!</Text>
+          <Text style={[styles.buttonText, {color: colors.somaText}]}>Touch here {"\n"} to get Started!</Text>
         </Pressable>
 
         {TEST_MODE ? (
@@ -121,15 +120,15 @@ export default function Welcome() {
           </Text>
         ) : (
           <Pressable
-            style={[styles.button, styles.tertiary]}
+            style={[styles.button, styles.tertiary, { backgroundColor: colors.somaPrimary, color: colors.somaButtonText }]}
             onPress={() => onContinue({ persist: true })}
           >
-            <Text style={[styles.buttonText, styles.tertiaryText]}>
+            <Text style={[styles.buttonText, styles.tertiaryText, { color: colors.somaButtonText }]}>
               Continue & Don't Show Again
             </Text>
           </Pressable>
         )}
-      <Text style={styles.note}>
+      <Text style={[styles.note, { color: colors.somaTextMuted }]}>
                              All data will be currently stored locally on your device. Account function coming soon. Thank you for your patience!
                             </Text>
       </ImageBackground>

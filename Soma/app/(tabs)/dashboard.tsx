@@ -127,8 +127,23 @@ export default function Dashboard() {
 
   if (!stats) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title2}>Complete your first exercise to unlock your dashboard</Text>
+      <View style={[styles.container, { alignItems: "center", backgroundColor: colors.somaBackground }]}>
+        <Text style={[styles.title2, { color: colors.somaText }]}>Complete your first exercise to unlock your dashboard</Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.settingsButton, { marginTop:450 },
+            { backgroundColor: colors.somaPrimary, borderColor: colors.somaPrimary },
+            pressed && { opacity: 0.85 },
+          ]}
+          onPress={() => router.push("/settings")}
+          accessibilityRole="button"
+          accessibilityLabel="Open settings"
+        >
+          <Text style={styles.settingsText}>Settings</Text>
+        </Pressable>
+        <Text style={[styles.note, { color: colors.somaTextMuted }]}>
+                  Note: Change your color scheme here.
+                </Text>
       </View>
     );
   }

@@ -243,10 +243,10 @@ useEffect(() => {
               imageStyle={{ borderRadius: 16 }}
             >
               <View style={styles.exerciseOverlay}>
-                <Text style={[styles.exerciseTitle, { color: colors.somaTertiary + 'FF' }]}>
+                <Text style={[styles.exerciseTitle, { color: colors.somaCardText }]}>
                   {exerciseOfTheDay.label}
                 </Text>
-                <Text style={[styles.exerciseVibe, { color: colors.somaTertiary + 'FF' }]}>
+                <Text style={[styles.exerciseVibe, { color: colors.somaCardText }]}>
                   {exerciseOfTheDay.vibe}
                 </Text>
                 <Text style={styles.exerciseDefinition}>

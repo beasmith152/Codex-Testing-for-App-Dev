@@ -88,8 +88,7 @@ const [fontsLoaded] = useFonts({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.centerWrapper}>
-          {/* Title */}
-          <Text style={[styles.exerciseTitle, { color: colors.somaText }]}>{exerciseTitle}</Text>
+          
 
           {/* Context */}
           <View style={[styles.infoBox, { backgroundColor: colors.somaCard, borderRadius: 16, shadowColor: colors.somaSecondary }]}> 
@@ -128,7 +127,7 @@ const [fontsLoaded] = useFonts({
 
           {/* Exit */}
           <Pressable style={[styles.dislike, { backgroundColor: colors.somaPrimary }]} onPress={handleStop}>
-            <Text style={[styles.dislikeText, { color: colors.somaText }]}>I don’t like this</Text>
+            <Text style={[styles.dislikeText, { color: colors.somaButtonText}]}>I don’t like this</Text>
           </Pressable>
         </View>
       </ScrollView>

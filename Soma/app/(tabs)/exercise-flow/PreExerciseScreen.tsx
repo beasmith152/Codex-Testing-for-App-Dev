@@ -60,7 +60,7 @@ const [fontsLoaded] = useFonts({
         <Text style={[styles.message, { color: colors.somaTextMuted }]}>"Do what feels okay; skip any movement that hurts."</Text>
 
         <Pressable style={[styles.button, { backgroundColor: colors.somaPrimary }]} onPress={handleContinue}>
-          <Text style={[styles.buttonText, { color: colors.somaText }]}>Continue</Text>
+          <Text style={[styles.buttonText, { color: colors.somaButtonText }]}>Continue</Text>
         </Pressable>
       </Animated.View>
     </View>

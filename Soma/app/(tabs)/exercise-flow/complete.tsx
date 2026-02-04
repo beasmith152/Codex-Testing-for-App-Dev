@@ -54,7 +54,7 @@ export default function Complete() {
         style={[styles.secondaryButton, { backgroundColor: colors.somaPrimary }]}
         onPress={() => router.push("/(tabs)/calendar")}
       >
-        <Text style={[styles.secondaryText, { color: colors.somaText }]}>View Calendar</Text>
+        <Text style={[styles.secondaryText, { color: colors.somaButtonText }]}>View Calendar</Text>
       </Pressable>
     </SafeAreaView>
   );
