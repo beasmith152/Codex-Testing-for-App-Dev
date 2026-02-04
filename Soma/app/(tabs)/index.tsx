@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -157,12 +158,12 @@ useEffect(() => {
                 style={styles.logo}
                 resizeMode="contain"
               />
-      <Text style={[styles.title, { color: colors.somaText }]}>Welcome, how are you?</Text>
+      <Text style={[Typography.subtitle, { color: colors.somaText }]}>Welcome, how are you?</Text>
 
       {/* 🔍 Search Bar */}
       <View style={styles.searchContainer}>
         <TextInput
-          style={[styles.searchBar, { color: colors.somaSecondary, backgroundColor: colors.somaSearch }]}
+          style={[styles.searchBar, { color: colors.somaButtonText, backgroundColor: colors.somaSearch }]}
           placeholder="Search exercises or moods..."
           placeholderTextColor={colors.somaTertiary}
           value={searchQuery}

@@ -49,15 +49,13 @@ export const Colors = {
   },
 };
 
-export const Fonts = Platform.select({
+export const Fonts = {
+  plante: 'Plante',
+  biro: 'Biro',
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {
@@ -72,4 +70,18 @@ export const Fonts = Platform.select({
     rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
-});
+};
+export const Typography = {
+  title: {
+    fontFamily: Fonts.plante,
+    fontSize: 32,
+    textAlign: 'center',
+    paddingBottom: 10,
+  },
+  subtitle: {
+    fontFamily: Fonts.biro,
+    fontSize: 22,
+    fontWeight: '600',
+  },
+  // Add more as needed
+};

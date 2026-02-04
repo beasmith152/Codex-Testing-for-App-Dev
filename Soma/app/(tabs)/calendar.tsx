@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography} from '@/constants/theme';
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -82,8 +83,8 @@ useEffect(() => {
   if (!stats) {
     return (
       <View style={[styles.container, { backgroundColor: colors.somaBackground }]}>
-        <Text style={[styles.title2, { color: colors.somaText }]}>Mood Tracker</Text>
-        <Text style={[styles.subtitle, { color: colors.somaTextMuted }]}>No data yet — start a session and come back to track your progress!</Text>
+        <Text style={[Typography.title, { color: colors.somaText }]}>Mood Tracker</Text>
+        <Text style={[Typography.subtitle, { color: colors.somaTextMuted }]}>No data yet — start a session and come back to track your progress!</Text>
       </View>
     );
   }

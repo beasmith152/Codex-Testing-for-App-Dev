@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -215,7 +216,7 @@ export default function Dashboard() {
 <Text style={[styles.note, { color: colors.somaTextMuted }]}>
                         Change profile picture by tapping on the avatar.
                       </Text>
-      <Text style={[styles.title, { color: colors.somaText }]}>Dashboard</Text>
+      <Text style={[Typography.title, { color: colors.somaText, }]}>Dashboard</Text>
       <View style={styles.statsRow}>
         <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
           <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.totalExercises}</Text>
