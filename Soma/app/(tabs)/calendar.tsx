@@ -181,7 +181,7 @@ useEffect(() => {
           </View>
         </View>
 
-        <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim, color: colors.somaTextMuted }]}>
+        <Animated.Text style={[Typography.body, { opacity: fadeAnim, color: colors.somaTextMuted }]}>
           {getMoodMessage(stats.avgMood)}
         </Animated.Text>
 

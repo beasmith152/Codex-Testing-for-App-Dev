@@ -5,6 +5,7 @@ import React, { useRef, useState, useEffect } from "react";
 import ConfettiCannon from "react-native-confetti-cannon";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 // 👇 Hide top header (keeps bottom tabs visible)
 export const unstable_settings = {
@@ -47,8 +48,8 @@ export default function Complete() {
         />
       )}
 
-      <Text style={[styles.title, { color: colors.somaText }]}>Great Job!</Text>
-      <Text style={[styles.subtitle, { color: colors.somaTextMuted }]}>Take a moment to notice how you feel.</Text>
+      <Text style={[Typography.title, { color: colors.somaText }]}>Great Job!</Text>
+      <Text style={[Typography.subtitle, { color: colors.somaTextMuted }]}>Take a moment to notice how you feel.</Text>
 
       <Pressable
         style={[styles.secondaryButton, { backgroundColor: colors.somaPrimary }]}

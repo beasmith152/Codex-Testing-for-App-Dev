@@ -15,11 +15,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "@/src/context/ThemeContext";
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 const HIDE_SIGNUP = true;
 const HIDE_SIGNIN = true;
 export default function SettingsScreen() {
   const { isDarkMode, toggleTheme } = useTheme();
+  // Set theme to system default
+  const setDefaultTheme = async () => {
+    try {
+      await AsyncStorage.removeItem('soma_theme_mode');
+      // Reload app theme from system
+      // Optionally, you can force a reload or update context
+      Alert.alert('Theme set to system default', 'Theme will now follow your device settings.');
+    } catch (e) {
+      console.warn('Error resetting theme', e);
+    }
+  };
   const colors = useThemeColors();
 
   const onSignup = () => {
@@ -92,8 +104,8 @@ export default function SettingsScreen() {
             <Text style={styles.backText}>←</Text>
           </Pressable>
           
-          <Text style={[styles.title, { color: colors.somaText }]}>Settings</Text>
-
+          <Text style={[Typography.title, { color: colors.somaText }]}>Settings</Text>
+            <Text style={[Typography.bodyTitle, { color: colors.somaTextMuted, marginBottom: 20 }]}> Theme Settings </Text>
           {/* Dark Mode Toggle */}
           <Pressable
             style={[styles.themeToggle, { backgroundColor: colors.somaTertiary }]}
@@ -109,6 +121,19 @@ export default function SettingsScreen() {
               {isDarkMode ? "Dark Mode" : "Light Mode"}
             </Text>
           </Pressable>
+          {/* System Default Theme Button */}
+          <Pressable
+            style={[styles.themeToggle, { backgroundColor: colors.somaSecondary, marginBottom: 24 }]}
+            onPress={setDefaultTheme}
+          >
+            <MaterialCommunityIcons
+              name="cellphone"
+              size={20}
+              color="#fff"
+              style={{ marginRight: 8 }}
+            />
+            <Text style={styles.themeToggleText}>Use System Theme</Text>
+          </Pressable>
 {!HIDE_SIGNUP && (
         <Pressable style={styles.primary} onPress={onSignup}>
           <Text style={styles.primaryText}>Create account</Text>
@@ -123,12 +148,13 @@ export default function SettingsScreen() {
         <Pressable style={styles.primary} onPress={onSignin}>
           <Text style={styles.primaryText}>Sign in</Text>
         </Pressable>
-)}
-
+)} 
+        <Text style={[Typography.bodyTitle, { color: colors.somaTextMuted, marginTop: 10 }]}> Account Settings </Text>
+        
         <Pressable style={styles.destructive} onPress={onDeleteAccount}>
           <Text style={styles.destructiveText}>Delete account</Text>
         </Pressable>
-        <Text style={[styles.note, { color: colors.somaTextMuted }]}>
+        <Text style={[Typography.caption, { paddingTop: 20, color: colors.somaTextMuted }]}>
           Note: All the data is currently stored locally on your device. Deleting your account will remove all data associated with it from this device. Account function coming soon.
         </Text>
 

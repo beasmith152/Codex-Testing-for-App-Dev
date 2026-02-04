@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 /**
  * TEST_MODE:
@@ -57,7 +58,7 @@ export default function Welcome() {
               style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%" }}
               imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
             >
-        <Text style={[styles.title, { color: colors.somaText }]}>Welcome to</Text>
+        <Text style={[Typography.title, { color: colors.somaText }]}>Welcome to</Text>
      <Image
                     source={require("../assets/images/soma-logo.png")}
                      style={styles.logo}
@@ -128,7 +129,7 @@ export default function Welcome() {
             </Text>
           </Pressable>
         )}
-      <Text style={[styles.note, { color: colors.somaTextMuted }]}>
+      <Text style={[Typography.caption, { color: colors.somaTextMuted }]}>
                              All data will be currently stored locally on your device. Account function coming soon. Thank you for your patience!
                             </Text>
       </ImageBackground>

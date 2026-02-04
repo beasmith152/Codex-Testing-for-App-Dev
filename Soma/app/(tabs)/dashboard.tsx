@@ -213,7 +213,7 @@ export default function Dashboard() {
           <Text style={styles.editText}>✏️</Text>
         </View>
       </Pressable>
-<Text style={[styles.note, { color: colors.somaTextMuted }]}>
+<Text style={[Typography.caption, { color: colors.somaTextMuted }]}>
                         Change profile picture by tapping on the avatar.
                       </Text>
       <Text style={[Typography.title, { color: colors.somaText, }]}>Dashboard</Text>

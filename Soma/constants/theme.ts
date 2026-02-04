@@ -48,7 +48,7 @@ export const Colors = {
     somaButtonText: '#fffef9',
   },
 };
-
+// Typography styles and font families & spacing
 export const Fonts = {
   plante: 'Plante',
   biro: 'Biro',
@@ -80,8 +80,29 @@ export const Typography = {
   },
   subtitle: {
     fontFamily: Fonts.biro,
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '600',
+    textAlign: 'center',
+    paddingBottom: 10,
+  },
+  body: {
+    fontFamily: Fonts.mono,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  bodyTitle: {
+    fontFamily: Fonts.mono,
+    fontSize: 18,
+    fontWeight: '100',
+    lineHeight: 28,
+    textAlign: 'center',
+  },
+  caption: {
+    fontFamily: Fonts.mono,
+    fontSize: 8,
+    lineHeight: 16,
+    textAlign: 'center',
   },
   // Add more as needed
 };
