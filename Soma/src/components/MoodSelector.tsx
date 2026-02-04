@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../context/MoodContext";
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 const moods = [
   { label: "😊", name: "Happy" },
@@ -26,6 +27,7 @@ export default function MoodSelector() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [confirmedMood, setConfirmedMood] = useState<string | null>(null);
   const { setMood } = useMood();
+  const colors = useThemeColors();
 
   const screenWidth = Dimensions.get("window").width;
   const totalSpacing = 80;
@@ -116,8 +118,9 @@ export default function MoodSelector() {
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Moods</Text>
+      <View style={[styles.container, { backgroundColor: colors.somaBackground }]}
+      >
+        <Text style={[styles.title, { color: colors.somaText }]}>Moods</Text>
 
         <View style={styles.row}>
           {moods.map((mood, index) => {
@@ -134,7 +137,8 @@ export default function MoodSelector() {
                   style={[
                     styles.moodButton,
                     { width: buttonWidth },
-                    isSelected && styles.selected,
+                    { backgroundColor: colors.somaSearch, shadowColor: colors.somaSecondary },
+                    isSelected && [styles.selected, { backgroundColor: colors.somaPrimary, shadowColor: colors.somaSecondary }],
                   ]}
                   onPress={() => handlePress(mood.name)}
                 >
@@ -145,6 +149,7 @@ export default function MoodSelector() {
                         {
                           transform: [{ scale: pulseScale }],
                           opacity: pulseOpacity,
+                          backgroundColor: colors.somaPrimary,
                         },
                       ]}
                     />
@@ -153,7 +158,8 @@ export default function MoodSelector() {
                   <Text
                     style={[
                       styles.moodLabel,
-                      isSelected && styles.selectedLabel,
+                      { color: colors.somaSecondary },
+                      isSelected && [styles.selectedLabel, { color: colors.somaBackground }],
                     ]}
                     numberOfLines={1}
                   >
@@ -167,9 +173,8 @@ export default function MoodSelector() {
 
         <Animated.View style={{ opacity: messageFade }}>
           {selectedMood && (
-            <Text style={styles.confirm}>
-              Tap <Text style={styles.moodName}>{selectedMood}</Text> again to
-              begin 🌿
+            <Text style={[styles.confirm, { color: colors.somaSecondary }]}>
+              Tap <Text style={[styles.moodName, { color: colors.somaPrimary }]}>{selectedMood}</Text> again to begin 🌿
             </Text>
           )}
         </Animated.View>
@@ -181,14 +186,12 @@ export default function MoodSelector() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "",
-    backgroundColor: "transparent",
     flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 24,
   },
   title: {
     fontSize: 20,
-    color: "#1B3100",
     fontWeight: "700",
     marginBottom: 20,
     marginLeft:40,
@@ -204,13 +207,11 @@ const styles = StyleSheet.create({
   },
   moodButton: {
     height: 48,
-    backgroundColor: "#ffffffff",
     borderRadius: 68,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 6,
     overflow: "hidden",
-    shadowColor: "#000",
     shadowOpacity: 0.95,
     shadowRadius: 10,
     shadowOffset: { width: 3, height: 10 },
@@ -219,22 +220,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "100%",
-    backgroundColor: "#efb120ff",
     borderRadius: 18,
   },
   emoji: { fontSize: 36, marginBottom: 0, paddingBottom: 0 },
-  moodLabel: { fontSize: 13, color: "#403F3A", marginTop: 4, display: "none" },
+  moodLabel: { fontSize: 13, marginTop: 4, display: "none" },
   selected: {
-    backgroundColor: "#b6ad9dff",
-    shadowColor: "#343332ff",
     shadowOpacity: 0.95,
     shadowRadius: 10,
   },
-  selectedLabel: { color: "#F6EDE3", fontWeight: "700" },
+  selectedLabel: { fontWeight: "700" },
   confirm: {
     fontSize: 18,
     marginTop: 4,
-    color: "#507050",
     textAlign: "center",
     paddingHorizontal: 16,
   },

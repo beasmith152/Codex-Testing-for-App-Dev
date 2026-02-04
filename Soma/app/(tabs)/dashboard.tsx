@@ -219,7 +219,7 @@ export default function Dashboard() {
       </View>
 
       {/* 🌿 Last Completed Section */}
-      <Animated.View style={[styles.exerciseCard, { backgroundColor: colors.somaSearch, opacity: fadeAnim }]}>
+      <Animated.View style={[styles.exerciseCard, { backgroundColor: colors.somaCard, opacity: fadeAnim }]}>
         <Text style={[styles.sectionHeader, { color: colors.somaText }]}>Last Completed</Text>
 
         {exerciseOfTheDay ? (
@@ -268,6 +268,7 @@ export default function Dashboard() {
         <Pressable
           style={({ pressed }) => [
             styles.settingsButton,
+            { backgroundColor: colors.somaPrimary, borderColor: colors.somaPrimary },
             pressed && { opacity: 0.85 },
           ]}
           onPress={() => router.push("/settings")}

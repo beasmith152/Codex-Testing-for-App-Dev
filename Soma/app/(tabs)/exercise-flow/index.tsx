@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useMood } from "../../../src/context/MoodContext";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 export const unstable_settings = {
   headerShown: false,
@@ -156,6 +157,7 @@ export default function ExerciseChoice() {
   const [fontsLoaded] = useFonts({
     Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
   });
+  const colors = useThemeColors();
 
   const normalizedMood = mood?.toLowerCase() || "baseline";
 const mappedMood = moodToExerciseGroup[normalizedMood] || "Baseline";
@@ -166,15 +168,10 @@ const capitalizedMood =
   normalizedMood.charAt(0).toUpperCase() + normalizedMood.slice(1);
 
   return (
-     
     <SafeAreaView
-      style={[
-        styles.safeArea,
-        { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
-      ]}
+      style={[styles.safeArea, { paddingBottom: insets.bottom || 16, backgroundColor: colors.somaBackground }]}
     >
       <ImageBackground
-      source={require("../../../assets/images/soma-bg.png")}
       style={{ flex: 1 }}
       imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
     >
@@ -183,24 +180,25 @@ const capitalizedMood =
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>
+        <Text style={[styles.title, { color: colors.somaText }]}>
           {mood
             ? `${mood.charAt(0).toUpperCase() + mood.slice(1)} Exercises `
             : "Pick your practice "}
         </Text>
-       {mood ? (
-  <View style={styles.emojiFrame} accessibilityLabel={`${capitalizedMood} emoji`}>
-    <Text style={styles.emojiText}>{emoji}</Text>
-  </View>
-) : (
-  <Text style={styles.title2}>Pick your practice 🌿</Text>
-)}
+        {mood ? (
+          <View style={[styles.emojiFrame, { backgroundColor: colors.somaSearch, shadowColor: colors.somaSecondary }]} accessibilityLabel={`${capitalizedMood} emoji`}>
+            <Text style={[styles.emojiText, { color: colors.somaPrimary }]}>{emoji}</Text>
+          </View>
+        ) : (
+          <Text style={[styles.title2, { color: colors.somaText }]}>Pick your practice 🌿</Text>
+        )}
 
         {Object.entries(moodExercises).map(([type, ex]) => (
           <Pressable
             key={type}
             style={({ pressed }) => [
               styles.card,
+              { backgroundColor: colors.somaCard, shadowColor: colors.somaSecondary },
               pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 },
             ]}
             onPress={() =>
@@ -220,14 +218,14 @@ const capitalizedMood =
             }
           >
             <Image source={{ uri: ex.gif }} style={styles.preview} />
-            <Text style={styles.label}>
+            <Text style={[styles.label, { color: colors.somaText }]}>
               {type === "micro" ? "Micro Exercise" : "Regular Exercise"}: {ex.label}
             </Text>
-            <Text style={styles.concept}>{ex.concept}</Text>
-            <Text style={styles.duration}>{ex.duration} seconds</Text>
+            <Text style={[styles.concept, { color: colors.somaTextMuted }]}>{ex.concept}</Text>
+            <Text style={[styles.duration, { color: colors.somaSecondary }]}>{ex.duration} seconds</Text>
 
             <Pressable onPress={() => Linking.openURL(ex.link)}>
-              <Text style={styles.link}>Learn More ↗</Text>
+              <Text style={[styles.link, { color: colors.somaPrimary }]}>Learn More ↗</Text>
             </Pressable>
           </Pressable>
         ))}
@@ -239,7 +237,7 @@ const capitalizedMood =
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "transparent" },
+  safeArea: { flex: 1 },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
@@ -249,7 +247,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontFamily: "Plante",
-    color: "#1B3100",
     marginBottom: 24,
     textAlign: "center",
   },
@@ -257,13 +254,10 @@ const styles = StyleSheet.create({
   width: 72,
   height: 72,
   borderRadius: 36,
-  backgroundColor: "#fafafaff", // dark circle color — change to match theme
   alignSelf: "center",
   alignItems: "center",
   justifyContent: "center",
   marginBottom: 18,
-  // subtle elevation / shadow
-  shadowColor: "#000",
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.48,
   shadowRadius: 8,
@@ -271,17 +265,14 @@ const styles = StyleSheet.create({
 },
 emojiText: {
   fontSize: 34,
-  color: "#FFFFFF", // white emoji for contrast
   lineHeight: 36,
 },
   card: {
-    backgroundColor: "#fff6f0ff",
     borderRadius: 20,
     padding: 16,
     marginBottom: 20,
     alignItems: "center",
     width: "100%",
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -291,11 +282,10 @@ emojiText: {
   label: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#403F3A",
     marginBottom: 6,
     textAlign: "center",
   },
-  concept: { fontSize: 14, color: "#403F3A", marginBottom: 8, textAlign: "center" },
-  duration: { color: "#507050", fontSize: 13, marginBottom: 6 },
-  link: { color: "#507050", fontSize: 13, textDecorationLine: "underline" },
+  concept: { fontSize: 14, marginBottom: 8, textAlign: "center" },
+  duration: { fontSize: 13, marginBottom: 6 },
+  link: { fontSize: 13, textDecorationLine: "underline" },
 });

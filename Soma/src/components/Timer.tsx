@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 const Timer = forwardRef(
   (
@@ -73,10 +74,17 @@ const Timer = forwardRef(
     };
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.label}>Time Remaining</Text>
-        <Text style={styles.time}>{formatTime(seconds)}</Text>
-      </View>
+        <View style={styles.container}>
+          {(() => {
+            const colors = useThemeColors();
+            return (
+              <>
+                <Text style={[styles.label, { color: colors.somaText }]}>Time Remaining</Text>
+                <Text style={[styles.time, { color: colors.somaSecondary }]}>{formatTime(seconds)}</Text>
+              </>
+            );
+          })()}
+        </View>
     );
   }
 );
@@ -85,6 +93,6 @@ export default Timer;
 
 const styles = StyleSheet.create({
   container: { alignItems: "center", marginVertical: 16 },
-  label: { fontSize: 18, color: "#403F3A", fontWeight: "600" },
-  time: { fontSize: 48, fontWeight: "700", color: "#507050", marginTop: 8 },
+  label: { fontSize: 18, fontWeight: "600" },
+  time: { fontSize: 48, fontWeight: "700", marginTop: 8 },
 });

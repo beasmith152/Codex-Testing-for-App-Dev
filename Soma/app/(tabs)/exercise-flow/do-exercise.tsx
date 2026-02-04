@@ -14,6 +14,7 @@ import Timer from "../../../src/components/Timer";
 import { saveSession } from "../../../src/hooks/useSessionStorage";
 import { useMood } from "../../../src/context/MoodContext";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 export const unstable_settings = {
   headerShown: false,
@@ -26,6 +27,7 @@ export default function DoExercise() {
 const [fontsLoaded] = useFonts({
     Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
   });
+  const colors = useThemeColors();
   // Normalize handle (string | string[]) values
   const norm = (v: any, fallback = "") =>
     Array.isArray(v) ? (v[0] ?? fallback) : (v ?? fallback);
@@ -79,10 +81,7 @@ const [fontsLoaded] = useFonts({
 
   return (
     <SafeAreaView
-      style={[
-        styles.container,
-        { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
-      ]}
+      style={[styles.container, { paddingBottom: insets.bottom || 16, backgroundColor: colors.somaBackground }]}
     >
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -90,32 +89,32 @@ const [fontsLoaded] = useFonts({
       >
         <View style={styles.centerWrapper}>
           {/* Title */}
-          <Text style={styles.exerciseTitle}>{exerciseTitle}</Text>
+          <Text style={[styles.exerciseTitle, { color: colors.somaText }]}>{exerciseTitle}</Text>
 
           {/* Context */}
-          <View style={styles.infoBox}>
-            <Text style={styles.sectionTitle}>Definition</Text>
-            <Text style={styles.sectionText}>
+          <View style={[styles.infoBox, { backgroundColor: colors.somaCard, borderRadius: 16, shadowColor: colors.somaSecondary }]}> 
+            <Text style={[styles.sectionTitle, { color: colors.somaText }]} >Definition</Text>
+            <Text style={[styles.sectionText, { color: colors.somaTextMuted }]}>
               {definition || "No definition provided."}
             </Text>
 
-            <Text style={styles.sectionTitle}>Vibe</Text>
-            <Text style={styles.sectionText}>
+            <Text style={[styles.sectionTitle, { color: colors.somaText }]}>Vibe</Text>
+            <Text style={[styles.sectionText, { color: colors.somaTextMuted }]}>
               {vibe || "No vibe description provided."}
             </Text>
 
-            <Text style={styles.sectionTitle}>What to Do</Text>
-            <Text style={styles.sectionText}>
+            <Text style={[styles.sectionTitle, { color: colors.somaText }]}>What to Do</Text>
+            <Text style={[styles.sectionText, { color: colors.somaTextMuted }]}>
               {concept || "No instructions available."}
             </Text>
           </View>
 
           {/* Visual */}
           {gif ? (
-            <Image source={{ uri: gif }} style={styles.gif} />
+            <Image source={{ uri: gif }} style={[styles.gif, { shadowColor: colors.somaSecondary }]} />
           ) : (
-            <View style={[styles.gif, { justifyContent: "center" }]}>
-              <Text style={{ color: "#403F3A" }}>No image provided.</Text>
+            <View style={[styles.gif, { justifyContent: "center", shadowColor: colors.somaSecondary }]}> 
+              <Text style={{ color: colors.somaText }}>No image provided.</Text>
             </View>
           )}
 
@@ -128,8 +127,8 @@ const [fontsLoaded] = useFonts({
           />
 
           {/* Exit */}
-          <Pressable style={styles.dislike} onPress={handleStop}>
-            <Text style={styles.dislikeText}>I don’t like this</Text>
+          <Pressable style={[styles.dislike, { backgroundColor: colors.somaPrimary }]} onPress={handleStop}>
+            <Text style={[styles.dislikeText, { color: colors.somaText }]}>I don’t like this</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -138,7 +137,7 @@ const [fontsLoaded] = useFonts({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F6EDE3", },
+  container: { flex: 1 },
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
@@ -153,27 +152,23 @@ const styles = StyleSheet.create({
   },
   exerciseTitle: {
     fontSize: 28,
-    color: "#403F3A",
     fontFamily: "Plante",
     marginBottom: 8,
     paddingTop: 60,
     textAlign: "center",
   },
   infoBox: {
-    backgroundColor: "#EAD8CA",
     borderRadius: 16,
     padding: 16,
     width: "100%",
     marginBottom: 24,
   },
   sectionTitle: {
-    color: "#403F3A",
     fontWeight: "700",
     marginBottom: 4,
     marginTop: 8,
   },
   sectionText: {
-    color: "#507050",
     fontSize: 14,
     lineHeight: 20,
   },
@@ -182,20 +177,17 @@ const styles = StyleSheet.create({
     height: 160,
     borderRadius: 12,
     marginBottom: 24,
-    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
   },
   dislike: {
-    backgroundColor: "#fdc52aff",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 0,
   },
   dislikeText: {
-    color: "#ffffffff",
     fontWeight: "700",
     fontSize: 15,
   },

@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import React, { useRef, useState, useEffect } from "react";
 import ConfettiCannon from "react-native-confetti-cannon";
 import { useFonts } from 'expo-font';
+import { useThemeColors } from "@/hooks/use-theme-colors";
 
 // 👇 Hide top header (keeps bottom tabs visible)
 export const unstable_settings = {
@@ -18,6 +19,7 @@ export default function Complete() {
   const [fontsLoaded] = useFonts({
   Plante: require("../../../assets/fonts/Plante.ttf"), Biro: require("../../../assets/fonts/biro.otf")   // <-- update path if different
 });
+  const colors = useThemeColors();
 
     useEffect(() => {
     // small delay to ensure layout is ready, then mount confetti so it reliably plays
@@ -31,35 +33,28 @@ export default function Complete() {
   }, []);
   return (
     <SafeAreaView
-      style={[
-        styles.container,
-        { paddingBottom: insets.bottom || 16, backgroundColor: "#F6EDE3" },
-      ]}
+      style={[styles.container, { paddingBottom: insets.bottom || 16, backgroundColor: colors.somaBackground }]}
     >
-        {showConfetti && (
-    <ConfettiCannon
-      ref={confetti}
-      key={String(showConfetti)} // forces mount when toggled
-      count={140}
-      origin={{ x: width / 2, y: 0 }}
-      fadeOut={true}
-      fallSpeed={3000}
-      colors={["#E07A5F", "#F6EDE3", "#403F3A", "#c18c24ff"]}
-    />
-  )}
+      {showConfetti && (
+        <ConfettiCannon
+          ref={confetti}
+          key={String(showConfetti)} // forces mount when toggled
+          count={140}
+          origin={{ x: width / 2, y: 0 }}
+          fadeOut={true}
+          fallSpeed={3000}
+          colors={[colors.somaPrimary, colors.somaBackground, colors.somaSecondary, colors.somaTertiary]}
+        />
+      )}
 
-      <Text style={styles.title}>Great Job!</Text>
-      <Text style={styles.subtitle}>Take a moment to notice how you feel.</Text>
-
-      {/* ✅ Fixed route path so it correctly returns to Home */}
-      
-       
+      <Text style={[styles.title, { color: colors.somaText }]}>Great Job!</Text>
+      <Text style={[styles.subtitle, { color: colors.somaTextMuted }]}>Take a moment to notice how you feel.</Text>
 
       <Pressable
-        style={styles.secondaryButton}
+        style={[styles.secondaryButton, { backgroundColor: colors.somaPrimary }]}
         onPress={() => router.push("/(tabs)/calendar")}
       >
-        <Text style={styles.secondaryText}>View Calendar</Text>
+        <Text style={[styles.secondaryText, { color: colors.somaText }]}>View Calendar</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -68,26 +63,22 @@ export default function Complete() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F6EDE3",
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
   },
   title: {
     fontSize: 48,
-    color: "#1B3100",
     marginBottom: 15,
     fontFamily: 'Plante',
     textAlign: "center",
   },
   subtitle: {
     fontSize: 24,
-    color: "#362214ff",
     marginBottom: 38,
     textAlign: "center",
     paddingHorizontal: 20,
     fontFamily: 'Biro',
-    
   },
   primaryButton: {
     backgroundColor: "#c18c24ff",
@@ -106,13 +97,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   secondaryButton: {
-    backgroundColor: "#fcc53aff",
     paddingVertical: 12,
     paddingHorizontal: 28,
     borderRadius: 10,
   },
   secondaryText: {
-    color: "#ffffffff",
     fontWeight: "600",
     fontSize: 15,
   },

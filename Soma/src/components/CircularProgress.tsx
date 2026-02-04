@@ -8,6 +8,8 @@ interface CircularProgressProps {
   progress: number; // 0 to 100
   totalMinutes: number;
   color?: string;
+  textColor?: string;
+  labelColor?: string;
 }
 
 export default function CircularProgress({
@@ -16,6 +18,8 @@ export default function CircularProgress({
   progress,
   totalMinutes,
   color = "#ffb92eff",
+  textColor = "#403F3A",
+  labelColor = "#507050",
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -46,8 +50,8 @@ export default function CircularProgress({
           origin={`${size / 2}, ${size / 2}`}
         />
       </Svg>
-      <Text style={styles.minutesText}>{totalMinutes}</Text>
-      <Text style={styles.label}>Minutes</Text>
+      <Text style={[styles.minutesText, { color: textColor }]}>{totalMinutes}</Text>
+      <Text style={[styles.label, { color: labelColor }]}>Minutes</Text>
     </View>
   );
 }
@@ -60,11 +64,9 @@ const styles = StyleSheet.create({
   minutesText: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#403F3A",
   },
   label: {
     fontSize: 18,
-    color: "#507050",
     marginTop: -4,
   },
 });

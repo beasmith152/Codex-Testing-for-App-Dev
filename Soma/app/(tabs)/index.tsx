@@ -219,7 +219,7 @@ useEffect(() => {
         <MoodSelector />
 
         <View style={styles.exerciseContainer}>
-          <Text style={styles.dailyHeader}>Exercise of the Day</Text>
+          <Text style={[styles.dailyHeader, { color: colors.somaText }]}>Exercise of the Day</Text>
 
           <Pressable
             onPress={() =>
@@ -243,10 +243,10 @@ useEffect(() => {
               imageStyle={{ borderRadius: 16 }}
             >
               <View style={styles.exerciseOverlay}>
-                <Text style={styles.exerciseTitle}>
+                <Text style={[styles.exerciseTitle, { color: colors.somaTertiary + 'FF' }]}>
                   {exerciseOfTheDay.label}
                 </Text>
-                <Text style={styles.exerciseVibe}>
+                <Text style={[styles.exerciseVibe, { color: colors.somaTertiary + 'FF' }]}>
                   {exerciseOfTheDay.vibe}
                 </Text>
                 <Text style={styles.exerciseDefinition}>

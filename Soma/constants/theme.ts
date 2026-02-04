@@ -6,7 +6,7 @@
 import { Platform } from 'react-native';
 
 const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const tintColorDark = '#4d4c4c';
 
 export const Colors = {
   light: {
@@ -17,29 +17,31 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
     // Soma theme light colors
-    somaBackground: '#fff6e1',
+    somaBackground: '#ffece1',
     somaPrimary: '#E07A5F',
-    somaSecondary: '#403F3A',
+    somaSecondary: '#363531',
     somaTertiary: '#9B8F87',
-    somaText: '#1B3100',
+    somaText: '#677557',
     somaTextMuted: '#80776F',
     somaSearch: '#ffffff',
+    somaCard: '#f2ded2',
   },
   dark: {
     text: '#ECEDEE',
     background: '#3a291e',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#bec6cc',
+    tabIconDefault: '#d4dae0',
     tabIconSelected: tintColorDark,
     // Soma theme dark colors - complementary dark version
-    somaBackground: '#4b3d35',
+    somaBackground: '#72665e',
     somaPrimary: '#E07A5F',
     somaSecondary: '#D4CCC1',
     somaTertiary: '#8B7E77',
     somaText: '#E8E4DE',
     somaTextMuted: '#A39E96',
     somaSearch: '#5c4e45',
+    somaCard: '#615750',
   },
 };
 

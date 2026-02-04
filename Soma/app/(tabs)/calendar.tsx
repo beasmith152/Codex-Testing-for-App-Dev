@@ -81,9 +81,9 @@ useEffect(() => {
 
   if (!stats) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title2}>Mood Tracker</Text>
-        <Text style={styles.subtitle}>No data yet — start a session and come back to track your progress!</Text>
+      <View style={[styles.container, { backgroundColor: colors.somaBackground }]}>
+        <Text style={[styles.title2, { color: colors.somaText }]}>Mood Tracker</Text>
+        <Text style={[styles.subtitle, { color: colors.somaTextMuted }]}>No data yet — start a session and come back to track your progress!</Text>
       </View>
     );
   }
@@ -150,7 +150,7 @@ useEffect(() => {
   {profileUri ? (
     <Image source={{ uri: profileUri }} style={styles.avatarSmall} />
   ) : (
-    <View style={[styles.avatarSmall, styles.avatarFallback]}>
+    <View style={[styles.avatarSmall, styles.avatarFallback, { backgroundColor: colors.somaPrimary }]}>
       <Text style={styles.avatarEmoji}>🙂</Text>
     </View>
   )}
@@ -164,23 +164,23 @@ useEffect(() => {
 
         {/* Summary cards */}
         <View style={styles.statsRow}>
-          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
             <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.totalExercises}</Text>
             <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Exercises</Text>
           </View>
-          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
             <Text style={[styles.statNumber, { color: colors.somaText }]}>
               {Math.floor(stats.totalTime / 60)}m {stats.totalTime % 60}s
             </Text>
             <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Time Spent</Text>
           </View>
-          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+          <View style={[styles.statCard, { backgroundColor: colors.somaTertiary + '100' }]}>
             <Text style={[styles.statNumber, { color: colors.somaText }]}>{stats.avgMood}</Text>
-            <Text style={styles.statLabel}>Avg Mood</Text>
+            <Text style={[styles.statLabel, { color: colors.somaTextMuted }]}>Avg Mood</Text>
           </View>
         </View>
 
-        <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim }]}>
+        <Animated.Text style={[styles.moodMessageFull, { opacity: fadeAnim, color: colors.somaTextMuted }]}>
           {getMoodMessage(stats.avgMood)}
         </Animated.Text>
 
@@ -198,28 +198,33 @@ useEffect(() => {
           theme={{
             backgroundColor: "transparent",
             calendarBackground: "transparent",
-            textSectionTitleColor: "#403F3A",
-            selectedDayBackgroundColor: "#EFAF2E",
-            todayTextColor: "#EFAF2E",
-            dayTextColor: "#403F3A",
-            monthTextColor: "#403F3A",
-            arrowColor: "#403F3A",
+            textSectionTitleColor: colors.somaSecondary,
+            selectedDayBackgroundColor: colors.somaPrimary,
+            todayTextColor: colors.somaPrimary,
+            dayTextColor: colors.somaSecondary,
+            monthTextColor: colors.somaSecondary,
+            arrowColor: colors.somaSecondary,
             borderRadius: 10,
           }}
         />
 
         {/* 🌿 Circular progress BELOW calendar */}
         <View style={styles.progressContainer}>
-          <Text style={styles.progressHeader}>Time spent maintaining peace!</Text>
-          <CircularProgress progress={progress} totalMinutes={totalMinutes} />
+          <Text style={[styles.progressHeader, { color: colors.somaSecondary }]}>Time spent maintaining peace!</Text>
+          <CircularProgress 
+            progress={progress} 
+            totalMinutes={totalMinutes}
+            textColor={colors.somaSecondary}
+            labelColor={colors.somaSecondary}
+          />
         </View>
       </View>
 
       {/* 🌙 Scrollable modal */}
       <Modal visible={!!selectedDay} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>
+        <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+          <View style={[styles.modalContainer, { backgroundColor: colors.somaBackground }]}>
+            <Text style={[styles.modalTitle, { color: colors.somaText }]}>
               {selectedDay &&
                 fixUTCOffset(selectedDay).toLocaleDateString(undefined, {
                   weekday: "short",
@@ -237,14 +242,14 @@ useEffect(() => {
               showsVerticalScrollIndicator={false}
             >
               {dayData.length === 0 ? (
-                <Text style={styles.modalText}>No sessions recorded 🌿</Text>
+                <Text style={[styles.modalText, { color: colors.somaText }]}>No sessions recorded 🌿</Text>
               ) : (
                 dayData.map((s, i) => (
-                  <View key={i} style={styles.modalCard}>
-                    <Text style={styles.modalText}>
+                  <View key={i} style={[styles.modalCard, { backgroundColor: colors.somaTertiary + '20' }]}>
+                    <Text style={[styles.modalText, { color: colors.somaText }]}>
                       Mood: {s.mood} | {s.exercise}
                     </Text>
-                    <Text style={styles.modalSubText}>
+                    <Text style={[styles.modalSubText, { color: colors.somaTextMuted }]}>
                       Duration: {s.duration}s
                     </Text>
                   </View>
@@ -254,9 +259,9 @@ useEffect(() => {
 
             <Pressable
               onPress={() => setSelectedDay(null)}
-              style={styles.modalButton}
+              style={[styles.modalButton, { backgroundColor: colors.somaPrimary }]}
             >
-              <Text style={styles.modalButtonText}>Close</Text>
+              <Text style={[styles.modalButtonText, { color: '#fff' }]}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -269,7 +274,6 @@ useEffect(() => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    backgroundColor: "#F6EDE3",
   },
    logo: {
     width: 100,
@@ -289,14 +293,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    color: "#1B3100",
     fontFamily: "Plante",
     marginBottom: 16,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 15,
-    color: "#403F3A",
     marginBottom: 24,
   },
    dotsRow: {
@@ -321,15 +323,13 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#403F3A",
   },
-  statLabel: { color: "#507050", fontSize: 13 },
+  statLabel: { fontSize: 13 },
   moodMessageFull: {
     marginBottom: 6,
     marginTop: 10,
     paddingHorizontal: 24,
     fontSize: 14,
-    color: "#507050",
     textAlign: "center",
     fontStyle: "italic",
     lineHeight: 20,
@@ -347,7 +347,6 @@ const styles = StyleSheet.create({
   },
   progressHeader: {
     fontSize: 26,
-    color: "#507050",
     fontFamily: "Biro",
     marginBottom: 24,
   },
@@ -358,7 +357,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   modalContainer: {
-    backgroundColor: "#FFF",
     borderRadius: 12,
     padding: 20,
     width: "85%",
@@ -368,27 +366,23 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontWeight: "700",
     fontSize: 18,
-    color: "#403F3A",
     marginBottom: 12,
   },
   modalCard: {
-    backgroundColor: "transparent",
     borderRadius: 10,
     padding: 10,
     marginBottom: 8,
     width: "90%",
   },
-  modalText: { color: "#403F3A", fontSize: 18, marginBottom: 4 },
-  modalSubText: { color: "#507050", fontSize: 13 },
+  modalText: { fontSize: 18, marginBottom: 4 },
+  modalSubText: { fontSize: 13 },
   modalButton: {
     marginTop: 10,
-    backgroundColor: "#EFAF2E",
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 8,
   },
   modalButtonText: {
-    color: "#403F3A",
     fontWeight: "700",
   },
     avatarWrap: {
@@ -409,7 +403,6 @@ avatarSmall: {
 avatarFallback: {
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#E07A5F",
 },
 avatarEmoji: {
   fontSize: 20,
@@ -418,17 +411,14 @@ container: {
   flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F6EDE3",
   },
   title2:{
     fontSize: 28,
     fontWeight: "700",
-    color: "#1B3100",
     marginBottom: 16,
   },
   subtitle: {
     fontSize: 15,
-    color: "#403F3A",
     marginBottom: 24,
     justifyContent: "center",
     alignItems: "center",
