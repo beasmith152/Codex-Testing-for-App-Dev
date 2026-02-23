@@ -14,10 +14,10 @@ import {
   ScrollView,
   ActivityIndicator,
   ImageBackground,
-    Image,
   Alert,
 } from "react-native";
 import { router } from "expo-router";
+import SomaLogo from "../assets/images/soma-logo.svg";
 
 /**
  * signIn stub: replace with real auth call later (return token/user).
@@ -83,11 +83,9 @@ export default function SignInScreen() {
             contentContainerStyle={styles.scrollContent}
             keyboardShouldPersistTaps="handled"
           >
-             <Image
-                                            source={require("../assets/images/soma-logo.png")}
-                                             style={styles.logo}
-                                             resizeMode="contain"
-                                           />
+             <View style={styles.logo}>
+               <SomaLogo width="100%" height="100%" />
+             </View>
             <View style={styles.card}>
               <Text style={styles.header}>Welcome back</Text>
               <Text style={styles.sub}>Sign in to continue to Soma.</Text>

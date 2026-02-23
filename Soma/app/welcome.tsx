@@ -1,11 +1,12 @@
 // app/welcome.tsx
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, StyleSheet, Image, ImageBackground, SafeAreaView } from "react-native";
+import { View, Text, Pressable, StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
+import SomaLogo from "../assets/images/soma-logo.svg";
 
 /**
  * TEST_MODE:
@@ -59,11 +60,9 @@ export default function Welcome() {
               imageStyle={{ resizeMode: "cover", opacity: 0.3 }}
             >
         <Text style={[Typography.title, { color: colors.somaText }]}>Welcome to</Text>
-     <Image
-                    source={require("../assets/images/soma-logo.png")}
-                     style={styles.logo}
-                     resizeMode="contain"
-                   />
+     <View style={styles.logo}>
+       <SomaLogo width="100%" height="100%" />
+     </View>
         
         <Text style={[styles.body, { color: colors.somaText }]}>
           Feel Grounded Again

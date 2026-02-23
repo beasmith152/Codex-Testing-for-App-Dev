@@ -1,8 +1,9 @@
 import { useLocalSearchParams, router } from "expo-router";
 import React, { useEffect, useRef, useMemo } from "react";
-import { View, Text, StyleSheet, Pressable, Animated, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Animated } from "react-native";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import SomaLogo from "../../../assets/images/soma-logo.svg";
 export default function PreExerciseScreen() {
   // keep Animated.Value stable across renders
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -44,11 +45,9 @@ const [fontsLoaded] = useFonts({
   return (
     <View style={[styles.container, { backgroundColor: colors.somaBackground }]}> 
       <Animated.View style={{ opacity: fadeAnim, alignItems: "center" }}>
-        <Image
-          source={require("../../../assets/images/soma-logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <View style={styles.logo}>
+          <SomaLogo width="100%" height="100%" />
+        </View>
         <Text style={[styles.tagline, { color: colors.somaText }]}>Feel Grounded Again.</Text>
 
         <View style={styles.dotsRow}>

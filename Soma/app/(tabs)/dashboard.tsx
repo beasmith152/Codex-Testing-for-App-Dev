@@ -20,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
+import SomaLogo from "../../assets/images/soma-logo.svg";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -190,11 +191,9 @@ export default function Dashboard() {
       
     >
       {/* Summary Section */}
-        <Image
-        source={require("../../assets/images/soma-logo.png")}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <View style={styles.logo}>
+        <SomaLogo width="100%" height="100%" />
+      </View>
 
       <Pressable
         style={styles.profileContainer}

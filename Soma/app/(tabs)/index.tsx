@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
+import SomaLogo from "../../assets/images/soma-logo.svg";
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -153,11 +154,9 @@ useEffect(() => {
   )}
 </Pressable>
     <View style={styles.container}>
-          <Image
-               source={require("../../assets/images/soma-logo.png")}
-                style={styles.logo}
-                resizeMode="contain"
-              />
+          <View style={styles.logo}>
+            <SomaLogo color={colors.somaText} width="175%" height="175%" />
+          </View>
       <Text style={[Typography.subtitle, { color: colors.somaText }]}>Welcome, how are you?</Text>
 
       {/* 🔍 Search Bar */}
@@ -277,8 +276,9 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 65,
-    marginTop:0,
-    marginBottom: 1,
+    marginTop:-20,
+    marginBottom: 10,
+    marginLeft: -50,
   },
   title: {
     fontSize: 24,

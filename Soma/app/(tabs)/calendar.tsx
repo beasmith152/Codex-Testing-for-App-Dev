@@ -20,6 +20,7 @@ import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography} from '@/constants/theme';
+import SomaLogo from "../../assets/images/soma-logo.svg";
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -156,11 +157,9 @@ useEffect(() => {
     </View>
   )}
 </Pressable>
-        <Image
-                           source={require("../../assets/images/soma-logo.png")}
-                            style={styles.logo}
-                            resizeMode="contain"
-                          />
+        <View style={styles.logo}>
+          <SomaLogo width="100%" height="100%" />
+        </View>
         <Text style={[styles.title, { color: colors.somaText }]}>Mood Chart</Text>
 
         {/* Summary cards */}
