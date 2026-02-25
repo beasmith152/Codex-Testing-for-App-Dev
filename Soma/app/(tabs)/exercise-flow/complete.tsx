@@ -48,7 +48,7 @@ export default function Complete() {
         />
       )}
 
-      <Text style={[Typography.title, { color: colors.somaText }]}>Great Job!</Text>
+      <Text style={[Typography.title, { color: colors.somaCardText }]}>Great Job!</Text>
       <Text style={[Typography.subtitle, { color: colors.somaTextMuted }]}>Take a moment to notice how you feel.</Text>
 
       <Pressable

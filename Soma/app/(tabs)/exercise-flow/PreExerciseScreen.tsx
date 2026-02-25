@@ -46,7 +46,7 @@ const [fontsLoaded] = useFonts({
     <View style={[styles.container, { backgroundColor: colors.somaBackground }]}> 
       <Animated.View style={{ opacity: fadeAnim, alignItems: "center" }}>
         <View style={styles.logo}>
-          <SomaLogo width="100%" height="100%" />
+          <SomaLogo color={colors.somaLogo} width="175%" height="175%" />
         </View>
         <Text style={[styles.tagline, { color: colors.somaText }]}>Feel Grounded Again.</Text>
 
@@ -76,8 +76,9 @@ const styles = StyleSheet.create({
   logo: {
     width: 230,
     height: 170,
-    marginTop: 20,
-    marginBottom: 0,
+    marginTop: 0,
+    marginBottom: 10,
+    marginLeft: -220,
   },
   tagline: {
     fontSize: 16,

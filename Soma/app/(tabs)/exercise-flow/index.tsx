@@ -186,7 +186,7 @@ const capitalizedMood =
             : "Pick your practice "}
         </Text>
         {mood ? (
-          <View style={[styles.emojiFrame, { backgroundColor: colors.somaSearch, shadowColor: colors.somaSecondary }]} accessibilityLabel={`${capitalizedMood} emoji`}>
+          <View style={[styles.emojiFrame, { backgroundColor: colors.somaMoodBg, shadowColor: colors.somaSecondary }]} accessibilityLabel={`${capitalizedMood} emoji`}>
             <Text style={[styles.emojiText, { color: colors.somaPrimary }]}>{emoji}</Text>
           </View>
         ) : (
@@ -218,7 +218,7 @@ const capitalizedMood =
             }
           >
             <Image source={{ uri: ex.gif }} style={styles.preview} />
-            <Text style={[styles.label, { color: colors.somaText }]}>
+            <Text style={[styles.label, { color: colors.somaCardOutText }]}>
               {type === "micro" ? "Micro Exercise" : "Regular Exercise"}: {ex.label}
             </Text>
             <Text style={[styles.concept, { color: colors.somaTextMuted }]}>{ex.concept}</Text>

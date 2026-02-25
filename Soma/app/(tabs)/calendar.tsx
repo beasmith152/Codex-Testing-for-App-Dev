@@ -158,8 +158,8 @@ useEffect(() => {
   )}
 </Pressable>
         <View style={styles.logo}>
-          <SomaLogo width="100%" height="100%" />
-        </View>
+            <SomaLogo color={colors.somaLogo} width="175%" height="175%" />
+          </View>
         <Text style={[styles.title, { color: colors.somaText }]}>Mood Chart</Text>
 
         {/* Summary cards */}
@@ -180,7 +180,7 @@ useEffect(() => {
           </View>
         </View>
 
-        <Animated.Text style={[Typography.body, { opacity: fadeAnim, color: colors.somaTextMuted }]}>
+        <Animated.Text style={[Typography.body, { opacity: fadeAnim, color: colors.somaSecondary }]}>
           {getMoodMessage(stats.avgMood)}
         </Animated.Text>
 
@@ -199,11 +199,11 @@ useEffect(() => {
             backgroundColor: "transparent",
             calendarBackground: "transparent",
             textSectionTitleColor: colors.somaSecondary,
-            selectedDayBackgroundColor: colors.somaPrimary,
-            todayTextColor: colors.somaPrimary,
-            dayTextColor: colors.somaSecondary,
+            selectedDayBackgroundColor: colors.somaText,
+            todayTextColor: colors.somaLogo,
+            dayTextColor: colors.somaTextMuted,
             monthTextColor: colors.somaSecondary,
-            arrowColor: colors.somaSecondary,
+            arrowColor: colors.somaLogo,
             borderRadius: 10,
           }}
         />
@@ -278,9 +278,9 @@ const styles = StyleSheet.create({
    logo: {
     width: 100,
     height: 65,
-    marginTop:0,
+    marginTop:-20,
     marginBottom: 15,
-    marginLeft: 20,
+    marginLeft: -25,
   },
   scrollContent: {
     alignItems: "center",

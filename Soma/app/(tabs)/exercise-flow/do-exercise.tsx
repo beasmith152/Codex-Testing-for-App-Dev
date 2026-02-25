@@ -88,7 +88,21 @@ const [fontsLoaded] = useFonts({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.centerWrapper}>
-          
+           {/* Timer */}
+          <Timer
+            key={timerKey} // forces remount/reset when runId changes
+            ref={timerRef}
+            initialSeconds={parsedDuration}
+            onComplete={handleComplete}
+          />
+          {/* Visual */}
+          {gif ? (
+            <Image source={{ uri: gif }} style={[styles.gif, { shadowColor: colors.somaSecondary }]} />
+          ) : (
+            <View style={[styles.gif, { justifyContent: "center", shadowColor: colors.somaSecondary }]}> 
+              <Text style={{ color: colors.somaText }}>No image provided.</Text>
+            </View>
+          )}
 
           {/* Context */}
           <View style={[styles.infoBox, { backgroundColor: colors.somaCard, borderRadius: 16, shadowColor: colors.somaSecondary }]}> 
@@ -108,22 +122,7 @@ const [fontsLoaded] = useFonts({
             </Text>
           </View>
 
-          {/* Visual */}
-          {gif ? (
-            <Image source={{ uri: gif }} style={[styles.gif, { shadowColor: colors.somaSecondary }]} />
-          ) : (
-            <View style={[styles.gif, { justifyContent: "center", shadowColor: colors.somaSecondary }]}> 
-              <Text style={{ color: colors.somaText }}>No image provided.</Text>
-            </View>
-          )}
-
-          {/* Timer */}
-          <Timer
-            key={timerKey} // forces remount/reset when runId changes
-            ref={timerRef}
-            initialSeconds={parsedDuration}
-            onComplete={handleComplete}
-          />
+         
 
           {/* Exit */}
           <Pressable style={[styles.dislike, { backgroundColor: colors.somaPrimary }]} onPress={handleStop}>
@@ -160,7 +159,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     width: "100%",
-    marginBottom: 24,
+    marginBottom: 30,
+    marginTop: 30,
   },
   sectionTitle: {
     fontWeight: "700",
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     width: 260,
     height: 160,
     borderRadius: 12,
-    marginBottom: 24,
+    marginBottom: 16,
+    marginTop: 20,
     shadowOpacity: 0.1,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },

@@ -137,8 +137,8 @@ export default function MoodSelector() {
                   style={[
                     styles.moodButton,
                     { width: buttonWidth },
-                    { backgroundColor: colors.somaSearch, shadowColor: colors.somaSecondary },
-                    isSelected && [styles.selected, { backgroundColor: colors.somaPrimary, shadowColor: colors.somaSecondary }],
+                    { backgroundColor: colors.somaMoodBg, shadowColor: colors.somaSecondary },
+                    isSelected && [styles.selected, { backgroundColor: colors.somaMoodSelBg, shadowColor: colors.somaSecondary }],
                   ]}
                   onPress={() => handlePress(mood.name)}
                 >

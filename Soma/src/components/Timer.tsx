@@ -80,7 +80,7 @@ const Timer = forwardRef(
             return (
               <>
                 <Text style={[styles.label, { color: colors.somaText }]}>Time Remaining</Text>
-                <Text style={[styles.time, { color: colors.somaSecondary }]}>{formatTime(seconds)}</Text>
+                <Text style={[styles.time, { color: colors.somaTime }]}>{formatTime(seconds)}</Text>
               </>
             );
           })()}

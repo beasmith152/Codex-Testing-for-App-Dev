@@ -96,7 +96,7 @@ export default function SettingsScreen() {
             style={({ pressed }) => [
               styles.backButton,
               pressed && { opacity: 0.8 },
-              { backgroundColor: `rgba(${isDarkMode ? '212,204,193' : '64,63,58'},0.85)` }
+              { backgroundColor: colors.somaCard },
             ]}
             accessibilityRole="button"
             accessibilityLabel="Back to dashboard"
@@ -108,7 +108,7 @@ export default function SettingsScreen() {
             <Text style={[Typography.bodyTitle, { color: colors.somaTextMuted, marginBottom: 20 }]}> Theme Settings </Text>
           {/* Dark Mode Toggle */}
           <Pressable
-            style={[styles.themeToggle, { backgroundColor: colors.somaTertiary }]}
+            style={[styles.themeToggle, { backgroundColor: colors.somaMode }]}
             onPress={toggleTheme}
           >
             <MaterialCommunityIcons
@@ -123,7 +123,7 @@ export default function SettingsScreen() {
           </Pressable>
           {/* System Default Theme Button */}
           <Pressable
-            style={[styles.themeToggle, { backgroundColor: colors.somaSecondary, marginBottom: 24 }]}
+            style={[styles.themeToggle, { backgroundColor: colors.somaCard, marginBottom: 24 }]}
             onPress={setDefaultTheme}
           >
             <MaterialCommunityIcons
@@ -149,7 +149,7 @@ export default function SettingsScreen() {
           <Text style={styles.primaryText}>Sign in</Text>
         </Pressable>
 )} 
-        <Text style={[Typography.bodyTitle, { color: colors.somaTextMuted, marginTop: 10 }]}> Account Settings </Text>
+        <Text style={[Typography.bodyTitle, { color: colors.somaTextMuted, marginTop: 0 }]}> Account Settings </Text>
         
         <Pressable style={styles.destructive} onPress={onDeleteAccount}>
           <Text style={styles.destructiveText}>Delete account</Text>

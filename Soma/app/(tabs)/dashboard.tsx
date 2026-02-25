@@ -191,9 +191,9 @@ export default function Dashboard() {
       
     >
       {/* Summary Section */}
-      <View style={styles.logo}>
-        <SomaLogo width="100%" height="100%" />
-      </View>
+     <View style={styles.logo}>
+            <SomaLogo color={colors.somaLogo} width="175%" height="175%" />
+          </View>
 
       <Pressable
         style={styles.profileContainer}
@@ -235,7 +235,7 @@ export default function Dashboard() {
 
       {/* 🌿 Last Completed Section */}
       <Animated.View style={[styles.exerciseCard, { backgroundColor: colors.somaCard, opacity: fadeAnim }]}>
-        <Text style={[styles.sectionHeader, { color: colors.somaText }]}>Last Completed</Text>
+        <Text style={[styles.sectionHeader, { color: colors.somaCardOutText }]}>Last Completed</Text>
 
         {exerciseOfTheDay ? (
           <Pressable
@@ -304,12 +304,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F6EDE3",
   },
-   logo: {
+    logo: {
     width: 100,
     height: 65,
-    marginTop:0,
+    marginTop:-15,
     marginBottom: 15,
-    marginLeft: 20,
+    marginLeft: -25,
   },
   scrollContent: {
     paddingTop: 70,

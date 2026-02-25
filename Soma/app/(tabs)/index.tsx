@@ -155,7 +155,7 @@ useEffect(() => {
 </Pressable>
     <View style={styles.container}>
           <View style={styles.logo}>
-            <SomaLogo color={colors.somaText} width="175%" height="175%" />
+            <SomaLogo color={colors.somaLogo} width="175%" height="175%" />
           </View>
       <Text style={[Typography.subtitle, { color: colors.somaText }]}>Welcome, how are you?</Text>
 
@@ -180,7 +180,7 @@ useEffect(() => {
 
       {/* 🔎 Floating Overlay for Search Results */}
       {searchQuery.length > 0 && (
-        <View style={[styles.overlay, { backgroundColor: colors.somaBackground }]}>
+        <View style={[styles.overlay, { backgroundColor: colors.somaTertiary }]}>
           <ScrollView
             contentContainerStyle={styles.resultsContainer}
             showsVerticalScrollIndicator={false}
@@ -246,10 +246,10 @@ useEffect(() => {
                 <Text style={[styles.exerciseTitle, { color: colors.somaCardText }]}>
                   {exerciseOfTheDay.label}
                 </Text>
-                <Text style={[styles.exerciseVibe, { color: colors.somaCardText }]}>
+                <Text style={[styles.exerciseVibe, { color: colors.somaButtonText }]}>
                   {exerciseOfTheDay.vibe}
                 </Text>
-                <Text style={styles.exerciseDefinition}>
+                <Text style={[styles.exerciseDefinition,{ color: colors.somaButtonText }]}>
                   {exerciseOfTheDay.definition}
                 </Text>
               </View>
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 65,
     marginTop:-20,
-    marginBottom: 10,
+    marginBottom: 15,
     marginLeft: -50,
   },
   title: {
@@ -359,6 +359,7 @@ avatarEmoji: {
     zIndex: 50,
     maxHeight: 220,
     opacity: 0.85,
+    padding: 12,
   },
   resultsContainer: { paddingVertical: 10 },
   resultCard: {
@@ -379,13 +380,13 @@ avatarEmoji: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 0,
+    marginTop: 5,
   },
   exerciseContainer: {
     width: "100%",
     alignItems: "left",
     marginTop: 0, // 👈 This actually controls spacing below the MoodSelector now
-    marginBottom: 35,
+    marginBottom: 40,
   },
   dailyHeader: {
     fontSize: 18,
