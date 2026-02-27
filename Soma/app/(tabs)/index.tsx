@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,9 +8,12 @@ import {
   Pressable,
   ImageBackground,
   Image,
-  SafeAreaView
+  SafeAreaView,
+  Animated,
+  Easing,
 } from "react-native";
 import { router } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 import { useMood } from "../../src/context/MoodContext";
 import MoodSelector from "../../src/components/MoodSelector";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +22,8 @@ import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
 import SomaLogo from "../../assets/images/soma-logo.svg";
+
+const DOT_COLORS = ["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"];
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -102,6 +107,7 @@ const exerciseLibrary = [
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
+  const sideDotsAnim = useRef(new Animated.Value(0)).current;
   const { setMood } = useMood();
   const insets = useSafeAreaInsets();
   const colors = useThemeColors();
@@ -121,6 +127,34 @@ useEffect(() => {
     }
   })();
 }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      sideDotsAnim.setValue(0);
+
+      const dotsAnimation = Animated.sequence([
+        Animated.delay(160),
+        Animated.timing(sideDotsAnim, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(sideDotsAnim, {
+          toValue: 0,
+          duration: 900,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ]);
+
+      dotsAnimation.start();
+
+      return () => {
+        dotsAnimation.stop();
+      };
+    }, [sideDotsAnim])
+  );
 
   const filteredExercises = exerciseList.filter((ex) =>
     ex.label.toLowerCase().includes(searchQuery.toLowerCase())
@@ -210,9 +244,36 @@ useEffect(() => {
         </View>
       )}
 <View style={styles.dotsRow}>
-                  {["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"].map((c, i) => (
-                    <View key={i} style={[styles.dot, { backgroundColor: c }]} />
-                  ))}
+                  {DOT_COLORS.map((c, i) => {
+                    const isAnimatedSideDot = i !== 2;
+
+                    if (!isAnimatedSideDot) {
+                      return <View key={i} style={[styles.dot, { backgroundColor: c }]} />;
+                    }
+
+                    const isLeftDot = i < 2;
+                    const isOuterDot = i === 0 || i === 4;
+                    const translateX = sideDotsAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, isLeftDot ? (isOuterDot ? -18 : -12) : (isOuterDot ? 18 : 12)],
+                    });
+
+                    const scale = sideDotsAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.1],
+                    });
+
+                    return (
+                      <Animated.View
+                        key={i}
+                        style={[
+                          styles.dot,
+                          { backgroundColor: c },
+                          { transform: [{ translateX }, { scale }] },
+                        ]}
+                      />
+                    );
+                  })}
                 </View>
       {/* 🌿 Mood Selector + Exercise of the Day (stacked) */}
       <View style={styles.bottomStack}>

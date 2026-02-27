@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -21,6 +21,8 @@ import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography} from '@/constants/theme';
 import SomaLogo from "../../assets/images/soma-logo.svg";
+
+const DOT_COLORS = ["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"];
 
 // 🌿 Supportive mood message function
 function getMoodMessage(mood: string) {
@@ -47,6 +49,7 @@ export default function CalendarScreen() {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [dayData, setDayData] = useState<any[]>([]);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const sideDotsAnim = useRef(new Animated.Value(0)).current;
   const [profileUri, setProfileUri] = useState<string | null>(null);
   const colors = useThemeColors();
   const [fontsLoaded] = useFonts({
@@ -67,18 +70,38 @@ useEffect(() => {
   useFocusEffect(
     useCallback(() => {
       const loadStats = async () => {
+        fadeAnim.setValue(0);
+        sideDotsAnim.setValue(0);
+
         const data = await getMoodStats();
         setStats(data);
 
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1200,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }).start();
+        Animated.parallel([
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1200,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.sequence([
+            Animated.delay(160),
+            Animated.timing(sideDotsAnim, {
+              toValue: 1,
+              duration: 900,
+              easing: Easing.inOut(Easing.sin),
+              useNativeDriver: true,
+            }),
+            Animated.timing(sideDotsAnim, {
+              toValue: 0,
+              duration: 900,
+              easing: Easing.inOut(Easing.sin),
+              useNativeDriver: true,
+            }),
+          ]),
+        ]).start();
       };
       loadStats();
-    }, [])
+    }, [fadeAnim, sideDotsAnim])
   );
 
   if (!stats) {
@@ -185,10 +208,37 @@ useEffect(() => {
         </Animated.Text>
 
           <View style={styles.dotsRow}>
-                  {["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"].map((c, i) => (
-                    <View key={i} style={[styles.dot, { backgroundColor: c }]} />
-                  ))}
-                </View>
+            {DOT_COLORS.map((c, i) => {
+              const isAnimatedSideDot = i !== 2;
+
+              if (!isAnimatedSideDot) {
+                return <View key={i} style={[styles.dot, { backgroundColor: c }]} />;
+              }
+
+              const isLeftDot = i < 2;
+              const isOuterDot = i === 0 || i === 4;
+              const translateX = sideDotsAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, isLeftDot ? (isOuterDot ? -24 : -16) : (isOuterDot ? 24 : 16)],
+              });
+
+              const scale = sideDotsAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 1.1],
+              });
+
+              return (
+                <Animated.View
+                  key={i}
+                  style={[
+                    styles.dot,
+                    { backgroundColor: c },
+                    { transform: [{ translateX }, { scale }] },
+                  ]}
+                />
+              );
+            })}
+          </View>
 
         {/* 🗓️ Calendar */}
         <Calendar

@@ -1,12 +1,18 @@
 import { useLocalSearchParams, router } from "expo-router";
-import React, { useEffect, useRef, useMemo } from "react";
-import { View, Text, StyleSheet, Pressable, Animated } from "react-native";
+import React, { useRef, useMemo } from "react";
+import { View, Text, StyleSheet, Pressable, Animated, Easing } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import SomaLogo from "../../../assets/images/soma-logo.svg";
+
+const DOT_COLORS = ["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"];
+
 export default function PreExerciseScreen() {
   // keep Animated.Value stable across renders
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const logoOpacityAnim = useRef(new Animated.Value(0)).current;
+  const logoScaleAnim = useRef(new Animated.Value(0.9)).current;
+  const dotOrbitAnims = useRef(DOT_COLORS.map(() => new Animated.Value(0))).current;
 const [fontsLoaded] = useFonts({
   Plante: require("../../../assets/fonts/Plante.ttf"),Biro: require("../../../assets/fonts/biro.otf")  // <-- update path if different
 });
@@ -18,13 +24,75 @@ const [fontsLoaded] = useFonts({
   // ensure we always have a unique runId for this flow (forward if provided)
   const runId = useMemo(() => (params.runId as string) || String(Date.now()), [params.runId]);
 
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, [fadeAnim]);
+  const orbitTurns = 2;
+  const orbitRadiusX = 112;
+  const orbitRadiusY = 82;
+  const orbitSamples = 64;
+
+  const orbitInputRange = useMemo(
+    () => Array.from({ length: orbitSamples + 1 }, (_, index) => index / orbitSamples),
+    [orbitSamples]
+  );
+
+  const orbitXOutputRange = useMemo(
+    () =>
+      orbitInputRange.map((progress) => {
+        const theta = Math.PI / 2 - progress * Math.PI * 2 * orbitTurns;
+        return Math.cos(theta) * orbitRadiusX;
+      }),
+    [orbitInputRange, orbitRadiusX, orbitTurns]
+  );
+
+  const orbitYOutputRange = useMemo(
+    () =>
+      orbitInputRange.map((progress) => {
+        const theta = Math.PI / 2 - progress * Math.PI * 2 * orbitTurns;
+        return Math.sin(theta) * orbitRadiusY - orbitRadiusY;
+      }),
+    [orbitInputRange, orbitRadiusY, orbitTurns]
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      logoOpacityAnim.setValue(0);
+      logoScaleAnim.setValue(0.9);
+      dotOrbitAnims.forEach((anim) => anim.setValue(0));
+
+      const entryAnimation = Animated.parallel([
+        Animated.timing(logoOpacityAnim, {
+          toValue: 1,
+          duration: 6800,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(logoScaleAnim, {
+          toValue: 1,
+          duration: 2600,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.sequence([
+          Animated.stagger(
+            260,
+            dotOrbitAnims.map((dotAnim) =>
+              Animated.timing(dotAnim, {
+                toValue: 1,
+                duration: 4200,
+                easing: Easing.inOut(Easing.sin),
+                useNativeDriver: true,
+              })
+            )
+          ),
+        ]),
+      ]);
+
+      entryAnimation.start();
+
+      return () => {
+        entryAnimation.stop();
+      };
+    }, [logoOpacityAnim, logoScaleAnim, dotOrbitAnims])
+  );
 
   const handleContinue = () => {
     router.replace({
@@ -44,16 +112,55 @@ const [fontsLoaded] = useFonts({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.somaBackground }]}> 
-      <Animated.View style={{ opacity: fadeAnim, alignItems: "center" }}>
-        <View style={styles.logo}>
+      <View style={{ alignItems: "center" }}>
+        <Animated.View
+          style={[
+            styles.logo,
+            {
+              opacity: logoOpacityAnim,
+              transform: [{ scale: logoScaleAnim }],
+            },
+          ]}
+        >
           <SomaLogo color={colors.somaLogo} width="175%" height="175%" />
-        </View>
+        </Animated.View>
         <Text style={[styles.tagline, { color: colors.somaText }]}>Feel Grounded Again.</Text>
 
         <View style={styles.dotsRow}>
-          {["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"].map((c, i) => (
-            <View key={i} style={[styles.dot, { backgroundColor: c }]} />
-          ))}
+          {DOT_COLORS.map((color, index) => {
+            const dotProgress = dotOrbitAnims[index];
+            const dotTranslateX = dotProgress.interpolate({
+              inputRange: orbitInputRange,
+              outputRange: orbitXOutputRange,
+            });
+
+            const dotTranslateY = dotProgress.interpolate({
+              inputRange: orbitInputRange,
+              outputRange: orbitYOutputRange,
+            });
+
+            const dotScale = dotProgress.interpolate({
+              inputRange: [0, 0.3, 0.7, 1],
+              outputRange: [1, 1.08, 1.05, 1],
+            });
+
+            return (
+              <Animated.View
+                key={index}
+                style={[
+                  styles.dot,
+                  { backgroundColor: color },
+                  {
+                    transform: [
+                      { translateX: dotTranslateX },
+                      { translateY: dotTranslateY },
+                      { scale: dotScale },
+                    ],
+                  },
+                ]}
+              />
+            );
+          })}
         </View>
 
         <Text style={[styles.message, { color: colors.somaTextMuted }]}>"Do what feels okay; skip any movement that hurts."</Text>
@@ -61,7 +168,7 @@ const [fontsLoaded] = useFonts({
         <Pressable style={[styles.button, { backgroundColor: colors.somaPrimary }]} onPress={handleContinue}>
           <Text style={[styles.buttonText, { color: colors.somaButtonText }]}>Continue</Text>
         </Pressable>
-      </Animated.View>
+      </View>
     </View>
   );
 }
