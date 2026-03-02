@@ -37,7 +37,7 @@ export const exerciseLibrary = {
       concept:
         "Inhale for 4s, hold for 4s, exhale for 4s, pause for 4s. Repeat 2–3 cycles slowly.",
       duration: 30,
-      gif: "https://boxbreathingexercise.com/wp-content/uploads/2025/09/5-4-5-4-Box-Breathing.gif",
+      gif: "https://opryshok.com/wp-content/uploads/2023/10/Box-Breathing-GIF-5.gif",
       link: "https://missionconnectionhealthcare.com/mental-health/anxiety/breathwork-and-grounding-techniques/",
     },
     regular: {
@@ -59,7 +59,7 @@ export const exerciseLibrary = {
       concept:
         "Shake arms, hands, and legs to let kinetic energy move through. Keep breathing steadily.",
       duration: 30,
-      gif: "https://static.wixstatic.com/media/95de45_57bfe9af1af54a3aa65830212e25dfe8~mv2.gif",
+      gif: "https://i.pinimg.com/originals/2d/90/ec/2d90ec7457d8c6274fa0ff1cabddf634.gif",
       link: "https://rickhanson.com/somatic-exercises-for-anxiety/",
     },
     regular: {
@@ -69,7 +69,7 @@ export const exerciseLibrary = {
       concept:
         "Press your feet firmly into the ground, wiggle your toes, and feel the weight settle.",
       duration: 60,
-      gif: "https://dropinblog.com/uploaded/blogs/34239387/files/PF_Exercises/Plantar_Fasciitis_1.gif",
+      gif: "https://anxietyunited.com/wp-content/uploads/2018/01/pushbutton.gif",
       link: "https://therapywisdom.com/somatic-exercises-anxiety-thai/",
     },
   },
@@ -81,7 +81,7 @@ export const exerciseLibrary = {
       concept:
         "Sit upright, gently arch back, roll shoulders up and down, then stretch your neck slowly.",
       duration: 30,
-      gif: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/11/400x400_SEATED-BACK_PAIN_STRETCHES_FOR_SENIORS_Seated_Ceiling_Reach_Stretch.gif",
+      gif: "https://i.pinimg.com/originals/7d/68/4a/7d684a2e801c55ae14c774b6c453387b.gif",
       link: "https://www.hopkinsmedicine.org/office-of-well-being/connection-support/somatic-self-care",
     },
     regular: {
