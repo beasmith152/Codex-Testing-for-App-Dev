@@ -7,9 +7,13 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  Animated,
+  Easing,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import Svg, { Rect, Text as SvgText, Path } from "react-native-svg";
 import Timer from "../../../src/components/Timer";
 import { saveSession } from "../../../src/hooks/useSessionStorage";
 import { useMood } from "../../../src/context/MoodContext";
@@ -19,6 +23,146 @@ import { useThemeColors } from "@/hooks/use-theme-colors";
 export const unstable_settings = {
   headerShown: false,
 };
+// Predefined wave Y positions for the breathing background
+
+const WAVE_Y_POSITIONS = [20, 54, 88, 122, 156, 190, 224, 258, 292, 326, 360];
+
+const buildWavePath = (y: number) =>
+  `M0 ${y} C40 ${y - 44}, 80 ${y + 44}, 120 ${y} S200 ${y - 44}, 240 ${y} S320 ${y + 44}, 360 ${y}`;
+
+function withAlpha(color: string, alpha: number) {
+  if (!color?.startsWith("#")) return color;
+
+  const raw = color.slice(1);
+  const hex =
+    raw.length === 3
+      ? raw
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : raw;
+
+  if (hex.length !== 6) return color;
+
+  const value = parseInt(hex, 16);
+  const red = (value >> 16) & 255;
+  const green = (value >> 8) & 255;
+  const blue = value & 255;
+
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function BreathWavesBackground({
+  colors,
+}: {
+  colors: ReturnType<typeof useThemeColors>;
+}) {
+  const waveAnims = useRef(
+    WAVE_Y_POSITIONS.map(() => new Animated.Value(0))
+  ).current;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      waveAnims.forEach((anim) => anim.setValue(0));
+
+      const timing = (value: Animated.Value, toValue: number) =>
+        Animated.timing(value, {
+          toValue,
+          duration: 1800,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        });
+
+      const inhale = Animated.stagger(
+        100,
+        waveAnims.map((value) => timing(value, 1))
+      );
+
+      const exhale = Animated.stagger(
+        100,
+        waveAnims.map((value) => timing(value, 0))
+      );
+
+      const breathLoop = Animated.loop(Animated.sequence([inhale, exhale]));
+      breathLoop.start();
+
+      return () => {
+        breathLoop.stop();
+      };
+    }, [waveAnims])
+  );
+
+  return (
+    <View pointerEvents="none" style={styles.breathBackground}>
+      <View style={styles.breathStage}>
+        <Svg width="100%" height="100%" viewBox="0 0 420 220">
+          <Rect
+            x="20"
+            y="20"
+            width="380"
+            height="180"
+            rx="18"
+            fill={colors.somaBackground}
+          />
+          <SvgText
+            x="210"
+            y="55"
+            textAnchor="middle"
+            fill={withAlpha(colors.somaText,1.0)}
+            fontSize="15"
+            fontWeight="700"
+            letterSpacing={3}
+          >
+            BREATHE
+          </SvgText>
+        </Svg>
+
+        <View style={styles.wavesOverlay}>
+          {WAVE_Y_POSITIONS.map((waveY, index) => {
+            const opacity = waveAnims[index].interpolate({
+              inputRange: [0, 1],
+              outputRange: [0.35, 0.95],
+            });
+
+            const translateY = waveAnims[index].interpolate({
+              inputRange: [0, 1],
+              outputRange: [8, 0],
+            });
+
+            return (
+              <Animated.View
+                key={index}
+                style={[
+                  styles.waveLayer,
+                  {
+                    opacity,
+                    transform: [{ translateY }],
+                  },
+                ]}
+              >
+                <Svg width="100%" height="100%" viewBox="0 0 360 420">
+                  <Path
+                    d={buildWavePath(waveY)}
+                    fill="none"
+                    stroke={
+                      index % 3 === 0
+                        ? withAlpha(colors.somaPrimary, 0.72)
+                        : index % 3 === 1
+                        ? withAlpha(colors.somaTime, 0.62)
+                        : withAlpha(colors.somaMode, 0.56)
+                    }
+                    strokeWidth={4}
+                    strokeLinecap="round"
+                  />
+                </Svg>
+              </Animated.View>
+            );
+          })}
+        </View>
+      </View>
+    </View>
+  );
+}
 
 export default function DoExercise() {
   const insets = useSafeAreaInsets();
@@ -83,6 +227,7 @@ const [fontsLoaded] = useFonts({
     <SafeAreaView
       style={[styles.container, { paddingBottom: insets.bottom || 16, backgroundColor: colors.somaBackground }]}
     >
+      <BreathWavesBackground colors={colors} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -136,6 +281,27 @@ const [fontsLoaded] = useFonts({
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  breathBackground: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 0,
+  },
+  breathStage: {
+    width: "145%",
+    maxWidth: 760,
+    height: 620,
+  },
+  wavesOverlay: {
+    position: "absolute",
+    left: 62,
+    right: 62,
+    top: 64,
+    bottom: 24,
+  },
+  waveLayer: {
+    ...StyleSheet.absoluteFillObject,
+  },
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",

@@ -196,7 +196,7 @@ useEffect(() => {
       {/* 🔍 Search Bar */}
       <View style={styles.searchContainer}>
         <TextInput
-          style={[styles.searchBar, { color: colors.somaButtonText, backgroundColor: colors.somaSearch }]}
+          style={[styles.searchBar, { color: colors.somaSecondary, backgroundColor: colors.somaSearch }]}
           placeholder="Search exercises or moods..."
           placeholderTextColor={colors.somaTertiary}
           value={searchQuery}
@@ -233,7 +233,7 @@ useEffect(() => {
                     router.push("/(tabs)/exercise-flow");
                   }}
                 >
-                  <Text style={[styles.resultLabel, { color: colors.somaSecondary }]}>{ex.label}</Text>
+                  <Text style={[styles.resultLabel, { color: colors.somaSearchText }]}>{ex.label}</Text>
                   <Text style={[styles.resultSub, { color: colors.somaTertiary }]}>{ex.mood}</Text>
                 </Pressable>
               ))
@@ -348,7 +348,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: 'Biro',
   },
-  searchContainer: { position: "relative", width: "100%" },
+  searchContainer: {
+    position: "relative",
+    width: "100%",
+    zIndex: 60,
+    elevation: 6,
+  },
   searchBar: {
     width: "100%",
     backgroundColor: "#ffffffff",
@@ -408,16 +413,17 @@ avatarEmoji: {
   clearText: { fontSize: 20, color: "#403F3A", fontWeight: "700" },
   overlay: {
     position: "absolute",
-    top: 150,
+    top: 140,
     left: 24,
     right: 24,
     backgroundColor: "#f2f1f0ff",
-    borderRadius: 12,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-    zIndex: 50,
+    zIndex: 20,
+    elevation: 2,
     maxHeight: 220,
     opacity: 0.85,
     padding: 12,
@@ -446,14 +452,14 @@ avatarEmoji: {
   exerciseContainer: {
     width: "100%",
     alignItems: "left",
-    marginTop: 0, // 👈 This actually controls spacing below the MoodSelector now
-    marginBottom: 40,
+    marginTop: 10, // 👈 This actually controls spacing below the MoodSelector now
+    marginBottom: 20,
   },
   dailyHeader: {
     fontSize: 18,
     fontWeight: "700",
     color: "#403F3A",
-    marginBottom: 12,
+    marginBottom: 10,
     textAlign: "left",
   },
   exerciseImage: {
@@ -465,7 +471,7 @@ avatarEmoji: {
   },
   exerciseOverlay: {
     backgroundColor: "rgba(0,0,0,0.45)",
-    padding: 12,
+    padding: 16,
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
   },

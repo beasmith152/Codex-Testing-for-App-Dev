@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { useTheme } from "@/src/context/ThemeContext";
 import { Typography} from '@/constants/theme';
 import SomaLogo from "../../assets/images/soma-logo.svg";
 
@@ -52,6 +53,7 @@ export default function CalendarScreen() {
   const sideDotsAnim = useRef(new Animated.Value(0)).current;
   const [profileUri, setProfileUri] = useState<string | null>(null);
   const colors = useThemeColors();
+  const { theme } = useTheme();
   const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
@@ -242,6 +244,7 @@ useEffect(() => {
 
         {/* 🗓️ Calendar */}
         <Calendar
+          key={`calendar-${theme}`}
           markedDates={markedDates}
           onDayPress={handleDayPress}
           style={styles.calendar}

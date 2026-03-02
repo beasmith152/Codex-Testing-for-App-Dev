@@ -33,6 +33,7 @@ export const Colors = {
     somaMoodSelBg: '#baa894',
     somaMode: '#b39a82',
     somaTime: '#b38f82',
+    somaSearchText: '#181512',
   },
   dark: {
     text: '#ECEDEE',
@@ -58,6 +59,7 @@ export const Colors = {
     somaMoodSelBg: '#7c6b57',
     somaMode: '#44392e',
     somaTime: '#ddbd9e',
+    somaSearchText: '#181512',
   },
 };
 // Typography styles and font families & spacing
