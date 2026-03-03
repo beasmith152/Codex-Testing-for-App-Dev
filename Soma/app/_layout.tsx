@@ -6,6 +6,8 @@ import { MoodProvider } from "../src/context/MoodContext";
 import { ThemeProvider as SomaThemeProvider } from "../src/context/ThemeContext";
 import { View, ImageBackground } from "react-native";
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useFonts } from 'expo-font';
+import { Jost_400Regular, Jost_600SemiBold } from '@expo-google-fonts/jost';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -13,8 +15,18 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [fontsLoaded] = useFonts({
+    Plante: require('../assets/fonts/Plante.ttf'),
+    Biro: require('../assets/fonts/biro.otf'),
+    Jost_400Regular,
+    Jost_600SemiBold,
+  });
 const bgSource = require("../assets/images/soma-bg.png"); // <- ensure file exists
 const fallbackBg = colorScheme === "dark" ? "#F6EDE3" : "#F6EDE3"; 
+
+ if (!fontsLoaded) {
+    return null;
+  }
 
  return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

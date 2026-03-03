@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#403F3A",
     marginBottom: 12,
+    textAlign: "center",
   },
   exerciseCard: {
     width: "90%",

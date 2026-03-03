@@ -133,7 +133,7 @@ function AuraRing({
       cy={cy}
       fill="none"
       stroke={color}
-      strokeWidth={1.6}
+      strokeWidth={4.6}
       animatedProps={animatedProps}
     />
   );
@@ -340,7 +340,7 @@ export default function Complete() {
         />
       )}
 
-      <Text style={[Typography.title, { color: colors.somaCardText }]}>Great Job!</Text>
+      <Text style={[Typography.title, { color: colors.somaCardOutText }]}>Great Job!</Text>
       <Text style={[Typography.subtitle, { color: colors.somaTextMuted }]}>Take a moment to notice how you feel.</Text>
 
       <Pressable

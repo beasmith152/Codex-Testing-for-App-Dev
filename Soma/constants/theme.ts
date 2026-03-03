@@ -26,13 +26,13 @@ export const Colors = {
     somaSearch: '#f7f5f4',
     somaCard: '#e8d4be',
     somaCardText: '#ffae00',
-    somaCardOutText: '#8e7f6d',
+    somaCardOutText: '#706250',
     somaButtonText: '#fffef9',
     somaLogo: '#434f36',
     somaMoodBg: '#d2b391',
     somaMoodSelBg: '#baa894',
     somaMode: '#b39a82',
-    somaTime: '#b38f82',
+    somaTime: '#a57969',
     somaSearchText: '#181512',
   },
   dark: {
@@ -66,6 +66,8 @@ export const Colors = {
 export const Fonts = {
   plante: 'Plante',
   biro: 'Biro',
+  jost: 'Jost_400Regular',
+  jostSemibold: 'Jost_600SemiBold',
   ios: {
     sans: 'system-ui',
     serif: 'ui-serif',
@@ -103,6 +105,19 @@ export const Typography = {
     fontFamily: Fonts.mono,
     fontSize: 16,
     lineHeight: 24,
+    textAlign: 'center',
+  },
+  bodyMood: {
+    fontFamily: Fonts.jost,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  bodyHeadingTitle: {
+    fontFamily: Fonts.jost,
+    fontSize: 20,
+    lineHeight: 24,
+    marginBottom: 10,
     textAlign: 'center',
   },
   bodyTitle: {

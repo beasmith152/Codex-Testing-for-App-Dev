@@ -13,6 +13,7 @@ import {
 import { router } from "expo-router";
 import { useMood } from "../context/MoodContext";
 import { useThemeColors } from "@/hooks/use-theme-colors";
+import { Typography } from '@/constants/theme';
 
 const moods = [
   { label: "😊", name: "Happy" },
@@ -120,7 +121,7 @@ export default function MoodSelector() {
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={[styles.container, { backgroundColor: colors.somaBackground }]}
       >
-        <Text style={[styles.title, { color: colors.somaText }]}>Moods</Text>
+        <Text style={[styles.title, Typography.bodyHeadingTitle,{ color: colors.somaText }]}>Moods</Text>
 
         <View style={styles.row}>
           {moods.map((mood, index) => {
@@ -189,13 +190,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 24,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "700",
-    marginBottom: 20,
-    marginTop: 10,
-    textAlign: "center",
   },
   row: {
     flexDirection: "row",

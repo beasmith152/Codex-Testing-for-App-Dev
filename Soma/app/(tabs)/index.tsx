@@ -280,7 +280,7 @@ useEffect(() => {
         <MoodSelector />
 
         <View style={styles.exerciseContainer}>
-          <Text style={[styles.dailyHeader, { color: colors.somaText }]}>Exercise of the Day</Text>
+          <Text style={[styles.dailyHeader, Typography.bodyHeadingTitle, { color: colors.somaText }]}>Exercise of the Day</Text>
 
           <Pressable
             onPress={() =>
@@ -417,7 +417,7 @@ avatarEmoji: {
     left: 24,
     right: 24,
     backgroundColor: "#f2f1f0ff",
-    borderRadius: 10,
+    borderRadius: 12,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -455,13 +455,7 @@ avatarEmoji: {
     marginTop: 10, // 👈 This actually controls spacing below the MoodSelector now
     marginBottom: 20,
   },
-  dailyHeader: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#403F3A",
-    marginBottom: 10,
-    textAlign: "center",
-  },
+ 
   exerciseImage: {
     width: "100%",
     height: 180,
