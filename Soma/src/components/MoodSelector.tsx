@@ -174,7 +174,7 @@ export default function MoodSelector() {
         <Animated.View style={{ opacity: messageFade }}>
           {selectedMood && (
             <Text style={[styles.confirm, { color: colors.somaSecondary }]}>
-              Tap <Text style={[styles.moodName, { color: colors.somaPrimary }]}>{selectedMood}</Text> again to begin 🌿
+              Tap <Text style={[styles.moodName, { color: colors.somaPrimary }]}>{selectedMood}</Text> again to begin.
             </Text>
           )}
         </Animated.View>
@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     marginBottom: 20,
-    marginLeft:40,
-    textAlign: "left"
+    marginTop: 10,
+    textAlign: "center",
   },
   row: {
     flexDirection: "row",
@@ -230,10 +230,9 @@ const styles = StyleSheet.create({
   },
   selectedLabel: { fontWeight: "700" },
   confirm: {
-    fontSize: 18,
-    marginTop: 4,
+    fontSize: 16,
     textAlign: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
   },
-  moodName: { fontWeight: "700" },
+  moodName: { fontWeight: "600" },
 });

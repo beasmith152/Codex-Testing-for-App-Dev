@@ -103,7 +103,7 @@ export const exerciseLibrary = {
       concept:
         "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste — reconnect to your senses.",
       duration: 30,
-      gif: "https://veteranbenefitsaustralia.com/wp-content/uploads/2023/10/6.gif",
+      gif: "https://media.glamourmagazine.co.uk/photos/665ddbce9ed407ccf05476c1/master/w_1600%2Cc_limit/GROUNDING%2520030624%2520GettyImages-1370912516.gif",
       link: "https://missionconnectionhealthcare.com/mental-health/anxiety/breathwork-and-grounding-techniques/",
     },
     regular: {

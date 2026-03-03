@@ -55,7 +55,7 @@ const exerciseLibrary = [
     definition: "Feeling tight, overwhelmed, or tense.",
     concept:
       "Inhale for 4 seconds, hold for 4, exhale for 4, and pause for 4. Repeat slowly.",
-    gif: "https://boxbreathingexercise.com/wp-content/uploads/2025/09/5-4-5-4-Box-Breathing.gif",
+    gif: "https://opryshok.com/wp-content/uploads/2023/10/Box-Breathing-GIF-5.gif",
     mood: "Stressed",
     duration: 30,
   },
@@ -66,7 +66,7 @@ const exerciseLibrary = [
     definition: "Feeling fidgety or full of buzzing energy.",
     concept:
       "Shake arms, hands, and legs to release energy while keeping your breath steady.",
-    gif: "https://static.wixstatic.com/media/95de45_57bfe9af1af54a3aa65830212e25dfe8~mv2.gif",
+    gif: "https://i.pinimg.com/originals/2d/90/ec/2d90ec7457d8c6274fa0ff1cabddf634.gif",
     mood: "Restless",
     duration: 30,
   },
@@ -77,7 +77,7 @@ const exerciseLibrary = [
     definition: "Feeling heavy, tired, or unmotivated.",
     concept:
       "Sit upright, gently arch back, roll shoulders, and stretch your neck slowly.",
-    gif: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/11/400x400_SEATED-BACK_PAIN_STRETCHES_FOR_SENIORS_Seated_Ceiling_Reach_Stretch.gif",
+    gif: "https://i.pinimg.com/originals/7d/68/4a/7d684a2e801c55ae14c774b6c453387b.gif",
     mood: "Drained",
     duration: 30,
   },
@@ -88,7 +88,7 @@ const exerciseLibrary = [
     definition: "Feeling scattered, distracted, or foggy.",
     concept:
       "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.",
-    gif: "https://veteranbenefitsaustralia.com/wp-content/uploads/2023/10/6.gif",
+    gif: "https://media.glamourmagazine.co.uk/photos/665ddbce9ed407ccf05476c1/master/w_1600%2Cc_limit/GROUNDING%2520030624%2520GettyImages-1370912516.gif",
     mood: "Distracted",
     duration: 60,
   },
@@ -460,7 +460,7 @@ avatarEmoji: {
     fontWeight: "700",
     color: "#403F3A",
     marginBottom: 10,
-    textAlign: "left",
+    textAlign: "center",
   },
   exerciseImage: {
     width: "100%",
