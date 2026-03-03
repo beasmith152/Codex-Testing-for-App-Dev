@@ -17,10 +17,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useMood } from "../../src/context/MoodContext";
 import MoodSelector from "../../src/components/MoodSelector";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
+import { useProfile } from "@/src/context/ProfileContext";
 import SomaLogo from "../../assets/images/soma-logo.svg";
 
 const DOT_COLORS = ["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"];
@@ -114,19 +114,7 @@ export default function HomeScreen() {
   const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
-  const [profileUri, setProfileUri] = useState<string | null>(null);
-  
-useEffect(() => {
-  (async () => {
-    try {
-      const saved = await AsyncStorage.getItem("profilePicUri");
-      if (saved) setProfileUri(saved);
-    } catch (e) {
-      // ignore load errors for now
-      console.warn("Could not load profile URI:", e);
-    }
-  })();
-}, []);
+  const { profileUri } = useProfile();
 
   useFocusEffect(
     useCallback(() => {

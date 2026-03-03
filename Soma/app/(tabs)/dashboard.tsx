@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -15,11 +15,11 @@ import { router } from "expo-router";
 import { getMoodStats } from "../../src/hooks/useMoodStats";
 import { exerciseLibrary } from "./exercise-flow"; // ✅ make sure this import path matches your folder
 import { moodColors } from "../../src/hooks/useMoodStats";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { Typography } from '@/constants/theme';
+import { useProfile } from "@/src/context/ProfileContext";
 import SomaLogo from "../../assets/images/soma-logo.svg";
 
 export default function Dashboard() {
@@ -30,19 +30,7 @@ export default function Dashboard() {
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
 // Profile picture state (persisted locally for now)
-  const [profileUri, setProfileUri] = useState<string | null>(null);
-
-  // load persisted profile URI when screen mounts
-  useEffect(() => {
-    (async () => {
-      try {
-        const saved = await AsyncStorage.getItem("profilePicUri");
-        if (saved) setProfileUri(saved);
-      } catch (e) {
-        // ignore load errors for now
-      }
-    })();
-  }, []);
+  const { profileUri, setProfileUri } = useProfile();
   
   // Stub: replace this with your backend upload logic when ready
   const uploadProfilePic = async (localUri: string) => {
@@ -94,13 +82,6 @@ export default function Dashboard() {
     if (!uri) return; // cancelled or unexpected shape
 
     setProfileUri(uri);
-
-    // persist locally (wrap in try/catch)
-    try {
-      await AsyncStorage.setItem("profilePicUri", uri);
-    } catch (e) {
-      console.warn("Unable to persist profile URI:", e);
-    }
 
     // call upload stub (replace with actual API)
     await uploadProfilePic(uri);

@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -15,11 +15,11 @@ import {
 import { Calendar } from "react-native-calendars";
 import { getMoodStats, moodColors } from "../../src/hooks/useMoodStats";
 import CircularProgress from "../../src/components/CircularProgress"; // ✅ import circular tracker
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useThemeColors } from "@/hooks/use-theme-colors";
 import { useTheme } from "@/src/context/ThemeContext";
+import { useProfile } from "@/src/context/ProfileContext";
 import { Typography} from '@/constants/theme';
 import SomaLogo from "../../assets/images/soma-logo.svg";
 
@@ -51,23 +51,12 @@ export default function CalendarScreen() {
   const [dayData, setDayData] = useState<any[]>([]);
   const [fadeAnim] = useState(new Animated.Value(0));
   const sideDotsAnim = useRef(new Animated.Value(0)).current;
-  const [profileUri, setProfileUri] = useState<string | null>(null);
+  const { profileUri } = useProfile();
   const colors = useThemeColors();
   const { theme } = useTheme();
   const [fontsLoaded] = useFonts({
   Plante: require("../../assets/fonts/Plante.ttf"),Biro: require("../../assets/fonts/biro.otf")  // <-- update path if different
 });
-useEffect(() => {
-  (async () => {
-    try {
-      const saved = await AsyncStorage.getItem("profilePicUri");
-      if (saved) setProfileUri(saved);
-    } catch (e) {
-      // ignore load errors for now
-      console.warn("Could not load profile URI:", e);
-    }
-  })();
-}, []);
 
   useFocusEffect(
     useCallback(() => {
