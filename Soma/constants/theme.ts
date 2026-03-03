@@ -54,7 +54,7 @@ export const Colors = {
     somaCardText: '#ebd5b4',
     somaButtonText: '#d3d1c7',
     somaCardOutText: '#d8c7b2',
-    somaLogo: '#f0daae',
+    somaLogo: '#ccc0ba',
     somaMoodBg: '#24201b',
     somaMoodSelBg: '#7c6b57',
     somaMode: '#44392e',
