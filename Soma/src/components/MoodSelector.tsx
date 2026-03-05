@@ -4,11 +4,11 @@ import {
   Text,
   Pressable,
   StyleSheet,
-  Dimensions,
   Animated,
   TouchableWithoutFeedback,
   Platform,
   Vibration,
+  type TextStyle,
 } from "react-native";
 import { router } from "expo-router";
 import { useMood } from "../context/MoodContext";
@@ -29,10 +29,6 @@ export default function MoodSelector() {
   const [confirmedMood, setConfirmedMood] = useState<string | null>(null);
   const { setMood } = useMood();
   const colors = useThemeColors();
-
-  const screenWidth = Dimensions.get("window").width;
-  const totalSpacing = 80;
-  const buttonWidth = (screenWidth - totalSpacing) / moods.length;
 
   const liftAnimations = useRef(moods.map(() => new Animated.Value(0))).current;
   const fadeAnimations = useRef(moods.map(() => new Animated.Value(1))).current;
@@ -119,9 +115,8 @@ export default function MoodSelector() {
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <View style={[styles.container, { backgroundColor: colors.somaBackground }]}
-      >
-        <Text style={[styles.title, Typography.bodyHeadingTitle,{ color: colors.somaText }]}>Moods</Text>
+      <View style={styles.container}>
+        <Text style={[styles.title, Typography.bodyHeadingTitle as TextStyle, { color: colors.somaText }]}>Moods</Text>
 
         <View style={styles.row}>
           {moods.map((mood, index) => {
@@ -137,7 +132,6 @@ export default function MoodSelector() {
                 <Pressable
                   style={[
                     styles.moodButton,
-                    { width: buttonWidth },
                     { backgroundColor: colors.somaMoodBg, shadowColor: colors.somaSecondary },
                     isSelected && [styles.selected, { backgroundColor: colors.somaMoodSelBg, shadowColor: colors.somaSecondary }],
                   ]}
@@ -186,20 +180,26 @@ export default function MoodSelector() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "",
-    flex: 1,
+    alignItems: "center",
+    width: "100%",
     paddingVertical: 10,
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 14,
+    textAlign: "center",
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     width: "100%",
     marginBottom: 28,
-    paddingHorizontal: 18,
+    paddingHorizontal: 8,
   },
   moodButton: {
+    width: 48,
     height: 48,
     borderRadius: 68,
     alignItems: "center",

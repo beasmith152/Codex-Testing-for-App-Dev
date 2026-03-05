@@ -24,6 +24,7 @@ import { useProfile } from "@/src/context/ProfileContext";
 import SomaLogo from "../../assets/images/soma-logo.svg";
 
 const DOT_COLORS = ["#F16C5B", "#D48EB0", "#A6C49F", "#79A9D1", "#97BA7A"];
+const CONTENT_CARD_WIDTH = "115%";
 
 // 🔍 Searchable list (moods + exercises)
 const exerciseList = [
@@ -265,7 +266,9 @@ export default function HomeScreen() {
                 </View>
       {/* 🌿 Mood Selector + Exercise of the Day (stacked) */}
       <View style={styles.bottomStack}>
-        <MoodSelector />
+        <View style={styles.moodCard}>
+          <MoodSelector />
+        </View>
 
         <View style={styles.exerciseContainer}>
           <Text style={[styles.dailyHeader, Typography.bodyHeadingTitle, { color: colors.somaText }]}>Exercise of the Day</Text>
@@ -325,8 +328,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 65,
-    marginTop:-20,
-    marginBottom: 15,
+    marginTop:-65,
+    marginBottom: 25,
     marginLeft: -50,
   },
   title: {
@@ -338,7 +341,8 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: "relative",
-    width: "100%",
+    width: CONTENT_CARD_WIDTH,
+    alignSelf: "center",
     zIndex: 60,
     elevation: 6,
   },
@@ -354,6 +358,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 1 },
+
   },
   clearButton: {
     position: "absolute",
@@ -365,7 +370,7 @@ const styles = StyleSheet.create({
   },
   avatarWrap: {
   marginRight: 24,
-  marginTop: 36,
+  marginTop: 82,
   position: "relative",
   alignContent: "center",
   justifyContent: "center",
@@ -391,6 +396,7 @@ avatarEmoji: {
     marginBottom: 0,
     marginTop: 24,
     justifyContent: "center",
+    paddingBottom:10,
   },
   dot: {
     width: 14,
@@ -437,11 +443,33 @@ avatarEmoji: {
     alignItems: "center",
     marginTop: 5,
   },
+  moodCard: {
+    width: CONTENT_CARD_WIDTH,
+    borderRadius: 22,
+     backgroundColor: "rgba(255, 255, 255, 0.05)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.15)",
+    shadowColor: "#ffffff",
+    shadowOpacity: 0.14,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    overflow: "hidden",
+  },
   exerciseContainer: {
-    width: "100%",
+    width: CONTENT_CARD_WIDTH,
     alignItems: "left",
     marginTop: 10, // 👈 This actually controls spacing below the MoodSelector now
     marginBottom: 20,
+     backgroundColor: "rgba(255, 255, 255, 0.05)",
+     borderRadius: 22,
+     borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.15)",
+    shadowColor: "#ffffff",
+    padding:10,
+    shadowOpacity: 0.34,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 16 },
+     overflow: "hidden",
   },
  
   exerciseImage: {
