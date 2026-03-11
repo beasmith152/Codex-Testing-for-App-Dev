@@ -407,7 +407,7 @@ avatarEmoji: {
   clearText: { fontSize: 20, color: "#403F3A", fontWeight: "700" },
   overlay: {
     position: "absolute",
-    top: 140,
+    top: 130,
     left: 24,
     right: 24,
     backgroundColor: "#f2f1f0ff",

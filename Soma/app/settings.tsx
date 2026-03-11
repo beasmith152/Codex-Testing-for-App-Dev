@@ -96,7 +96,7 @@ export default function SettingsScreen() {
             style={({ pressed }) => [
               styles.backButton,
               pressed && { opacity: 0.8 },
-              { backgroundColor: colors.somaCard },
+              { backgroundColor: colors.somaMode },
             ]}
             accessibilityRole="button"
             accessibilityLabel="Back to dashboard"
