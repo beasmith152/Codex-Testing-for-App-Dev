@@ -113,6 +113,7 @@ function AmbientBackdrop({
     const orbitX = (Math.cos(theta) - 1) * 210;
     const orbitY = Math.sin(theta) * 210;
     const floatY = Math.sin(global * 1.2) * 16;
+    const scale = interpolate(global, [0, 1, 2, 3, 4, 5], [1, 0.92, 0.8, 0.64, 0.5, 0.36], Extrapolation.CLAMP);
 
     return {
       opacity: interpolate(
@@ -121,7 +122,7 @@ function AmbientBackdrop({
         [0.08, 0.1, 0.07, 0.09, 0.07, 0.03, 0.005, 0],
         Extrapolation.CLAMP
       ),
-      transform: [{ translateX: orbitX }, { translateY: orbitY + floatY }],
+      transform: [{ translateX: orbitX }, { translateY: orbitY + floatY }, { scale }],
     };
   }, [sectionHeight]);
 
@@ -416,13 +417,14 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
     const layerOpacity = 0.16;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.25),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.96, 1.08], Extrapolation.CLAMP),
+          scale: interpolate(breath, [0, 1], [0.96, 1.08], Extrapolation.CLAMP) * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -442,13 +444,14 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0.6);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
     const layerOpacity = 0.14;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.22),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.95, 1.07], Extrapolation.CLAMP),
+          scale: interpolate(breath, [0, 1], [0.95, 1.07], Extrapolation.CLAMP) * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -468,13 +471,14 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.2);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
     const layerOpacity = 0.15;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.28),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.94, 1.06], Extrapolation.CLAMP),
+          scale: interpolate(breath, [0, 1], [0.94, 1.06], Extrapolation.CLAMP) * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -494,13 +498,14 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.8);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
     const layerOpacity = 0.13;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.24),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.93, 1.05], Extrapolation.CLAMP),
+          scale: interpolate(breath, [0, 1], [0.93, 1.05], Extrapolation.CLAMP) * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -520,13 +525,14 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 2.4);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
     const layerOpacity = 0.12;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.22),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.92, 1.04], Extrapolation.CLAMP),
+          scale: interpolate(breath, [0, 1], [0.92, 1.04], Extrapolation.CLAMP) * growth,
         },
       ],
       borderColor: colors.somaPrimary,
