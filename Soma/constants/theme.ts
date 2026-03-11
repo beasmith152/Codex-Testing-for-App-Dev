@@ -1,9 +1,31 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
+
+const systemFontFamilies =
+  Platform.select({
+    ios: {
+      sans: 'system-ui',
+      serif: 'ui-serif',
+      rounded: 'ui-rounded',
+      mono: 'ui-monospace',
+    },
+    web: {
+      sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+      serif: "Georgia, 'Times New Roman', serif",
+      rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+      mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    },
+    default: {
+      sans: 'normal',
+      serif: 'serif',
+      rounded: 'normal',
+      mono: 'monospace',
+    },
+  }) ?? {
+    sans: 'normal',
+    serif: 'serif',
+    rounded: 'normal',
+    mono: 'monospace',
+  };
 
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#4d4c4c';
@@ -16,122 +38,156 @@ export const Colors = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
-    // Soma theme light colors
-    somaBackground: '#f5e5d4',
-    somaPrimary: '#4d5a3e',
+    somaBackground: '#F6EDE3',
+    somaPrimary: '#4D5A3E',
     somaSecondary: '#363531',
     somaTertiary: '#9B8F87',
-    somaText: '#4b3634',
-    somaTextMuted: '#605145',
-    somaSearch: '#f7f5f4',
-    somaCard: '#e8d4be',
-    somaCardText: '#ffae00',
+    somaText: '#4B3634',
+    somaTextMuted: '#6C5B4E',
+    somaSearch: '#F7F5F4',
+    somaCard: '#E8D4BE',
+    somaCardText: '#FFAE00',
     somaCardOutText: '#706250',
-    somaButtonText: '#fffef9',
-    somaLogo: '#434f36',
-    somaMoodBg: '#d2b391',
-    somaMoodSelBg: '#baa894',
-    somaMode: '#b39a82',
-    somaTime: '#a57969',
+    somaButtonText: '#FFFEF9',
+    somaLogo: '#434F36',
+    somaMoodBg: '#D2B391',
+    somaMoodSelBg: '#BAA894',
+    somaMode: '#B39A82',
+    somaTime: '#A57969',
     somaSearchText: '#181512',
+    somaSurface: '#F2E6DA',
+    somaSurfaceStrong: '#E8D6C4',
+    somaOutline: '#D9C4AF',
+    somaAccent1: '#F16C5B',
+    somaAccent2: '#D48EB0',
+    somaAccent3: '#A6C49F',
+    somaAccent4: '#79A9D1',
+    somaAccent5: '#97BA7A',
   },
   dark: {
     text: '#ECEDEE',
-    background: '#3a291e',
+    background: '#3A291E',
     tint: tintColorDark,
-    icon: '#bec6cc',
-    tabIconDefault: '#d4dae0',
+    icon: '#BEC6CC',
+    tabIconDefault: '#D4DAE0',
     tabIconSelected: tintColorDark,
-    // Soma theme dark colors - complementary dark version
-    somaBackground: '#3c2f27',
-    somaPrimary: '#ce7f6a',
+    somaBackground: '#3C2F27',
+    somaPrimary: '#CE7F6A',
     somaSecondary: '#D4CCC1',
-    somaTertiary: '#bfb1aa',
-    somaText: '#d5cfbd',
-    somaTextMuted: '#b8b3aa',
-    somaSearch: '#7e6a5e',
+    somaTertiary: '#BFB1AA',
+    somaText: '#D5CFBD',
+    somaTextMuted: '#B8B3AA',
+    somaSearch: '#7E6A5E',
     somaCard: '#292019',
-    somaCardText: '#ebd5b4',
-    somaButtonText: '#d3d1c7',
-    somaCardOutText: '#d8c7b2',
-    somaLogo: '#ccc0ba',
-    somaMoodBg: '#24201b',
-    somaMoodSelBg: '#7c6b57',
-    somaMode: '#44392e',
-    somaTime: '#ddbd9e',
+    somaCardText: '#EBD5B4',
+    somaButtonText: '#D3D1C7',
+    somaCardOutText: '#D8C7B2',
+    somaLogo: '#CCC0BA',
+    somaMoodBg: '#24201B',
+    somaMoodSelBg: '#7C6B57',
+    somaMode: '#44392E',
+    somaTime: '#DDBD9E',
     somaSearchText: '#181512',
+    somaSurface: '#4A3A31',
+    somaSurfaceStrong: '#5A473C',
+    somaOutline: '#7A685D',
+    somaAccent1: '#F29B78',
+    somaAccent2: '#C89AB6',
+    somaAccent3: '#8DB094',
+    somaAccent4: '#7AA4C4',
+    somaAccent5: '#A9C68A',
   },
 };
-// Typography styles and font families & spacing
+
 export const Fonts = {
   plante: 'Plante',
   biro: 'Biro',
   jost: 'Jost_400Regular',
   jostSemibold: 'Jost_600SemiBold',
-  ios: {
-    sans: 'system-ui',
-    serif: 'ui-serif',
-    rounded: 'ui-rounded',
-    mono: 'ui-monospace',
+  sans: systemFontFamilies.sans,
+  serif: systemFontFamilies.serif,
+  rounded: systemFontFamilies.rounded,
+  mono: systemFontFamilies.mono,
+};
+
+export const Spacing = {
+  xs: 8,
+  sm: 12,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+  section: 72,
+};
+
+export const Radii = {
+  sm: 12,
+  md: 20,
+  lg: 28,
+  xl: 40,
+  pill: 999,
+};
+
+export const Shadows = {
+  soft: {
+    shadowColor: '#5A4633',
+    shadowOpacity: 0.12,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 14 },
+    elevation: 6,
   },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+  subtle: {
+    shadowColor: '#4B3634',
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 4,
   },
 };
+
 export const Typography = {
   title: {
     fontFamily: Fonts.plante,
     fontSize: 32,
-    textAlign: 'center',
+    textAlign: 'center' as const,
     paddingBottom: 10,
   },
   subtitle: {
     fontFamily: Fonts.biro,
     fontSize: 26,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: '600' as const,
+    textAlign: 'center' as const,
     paddingBottom: 10,
   },
   body: {
-    fontFamily: Fonts.mono,
+    fontFamily: Fonts.jost,
     fontSize: 16,
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   bodyMood: {
     fontFamily: Fonts.jost,
     fontSize: 16,
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   bodyHeadingTitle: {
-    fontFamily: Fonts.jost,
+    fontFamily: Fonts.jostSemibold,
     fontSize: 20,
     lineHeight: 24,
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   bodyTitle: {
-    fontFamily: Fonts.mono,
+    fontFamily: Fonts.jost,
     fontSize: 18,
-    fontWeight: '100',
     lineHeight: 28,
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   caption: {
-    fontFamily: Fonts.mono,
-    fontSize: 8,
+    fontFamily: Fonts.jost,
+    fontSize: 11,
     lineHeight: 16,
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
-  // Add more as needed
 };
