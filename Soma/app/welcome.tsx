@@ -657,7 +657,7 @@ function IntroSection({
           <View style={[styles.logoHalo, { backgroundColor: colors.somaSurfaceStrong }]} />
             <SomaLogo width="100%" height="100%" color={colors.somaLogo} />
         </Animated.View>
-        <Text style={[styles.heroTitle, { color: colors.somaText }]}>Swipe to Begin your Daily Peace.</Text>
+        <Text style={[styles.heroTitle, { color: colors.somaText }]}>Scroll to Begin your Daily Peace.</Text>
         <Text style={[styles.heroBody, { color: colors.somaTextMuted }]}>A soft check-in, one breath, and a calmer start.</Text>
         <View style={styles.introDotsRow}>
           {[colors.somaAccent1, colors.somaAccent2, colors.somaAccent3, colors.somaAccent4, colors.somaAccent5].map(
