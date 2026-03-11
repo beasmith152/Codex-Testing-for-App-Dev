@@ -97,11 +97,26 @@ function useSectionBlendStyle(
 
 function CactusBackdrop({
   colors,
+  scrollY,
+  sectionHeight,
 }: {
   colors: ReturnType<typeof useThemeColors>;
+  scrollY: SharedValue<number>;
+  sectionHeight: number;
 }) {
+  const cactusStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const scale = interpolate(global, [0, 1, 2, 3, 4, 5], [1, 0.9, 0.76, 0.62, 0.48, 0.34], Extrapolation.CLAMP);
+    const opacity = interpolate(global, [0, 1, 2, 3, 4, 5], [0.56, 0.5, 0.45, 0.4, 0.35, 0.32], Extrapolation.CLAMP);
+
+    return {
+      opacity,
+      transform: [{ scale }],
+    };
+  }, [sectionHeight]);
+
   return (
-    <View pointerEvents="none" style={styles.cactusLayer}>
+    <Animated.View pointerEvents="none" style={[styles.cactusLayer, cactusStyle]}>
       <Svg
         height="100%"
         preserveAspectRatio="xMidYMax meet"
@@ -112,6 +127,26 @@ function CactusBackdrop({
           d="M80 920 C120 870, 190 860, 240 890 C290 860, 355 875, 400 920 Z"
           fill={colors.somaPrimary}
           opacity={0.04}
+        />
+        <Path
+          d="M0 920 C42 884, 104 874, 164 896 C230 920, 312 922, 420 904 L420 920 Z"
+          fill={colors.somaPrimary}
+          opacity={0.03}
+        />
+        <Path
+          d="M0 920 C58 896, 118 900, 174 918 C254 944, 328 940, 420 922 L420 920 Z"
+          fill={colors.somaPrimary}
+          opacity={0.02}
+        />
+        <Path
+          d="M42 910 C54 902, 68 902, 80 910 C68 916, 54 916, 42 910 Z"
+          fill={colors.somaPrimary}
+          opacity={0.05}
+        />
+        <Path
+          d="M328 912 C340 902, 358 902, 370 912 C356 920, 342 920, 328 912 Z"
+          fill={colors.somaPrimary}
+          opacity={0.045}
         />
         <Path
           d="M210 900 C180 900, 166 870, 166 834 L166 262 C166 208, 184 178, 210 178 C236 178, 254 208, 254 262 L254 834 C254 870, 240 900, 210 900 Z"
@@ -153,7 +188,7 @@ function CactusBackdrop({
           strokeWidth={5}
         />
       </Svg>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -1156,7 +1191,7 @@ export default function Welcome() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.somaBackground }]}>
       <View style={styles.screen}>
-        <CactusBackdrop colors={colors} />
+        <CactusBackdrop colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
         <AmbientBackdrop colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
         <InterSectionAura colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
         <StoryDotsLayer colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
@@ -1206,7 +1241,6 @@ const styles = StyleSheet.create({
   cactusLayer: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 0,
-    opacity: 0.32,
   },
   storyDotsLayer: {
     ...StyleSheet.absoluteFillObject,
