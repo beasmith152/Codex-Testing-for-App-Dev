@@ -70,26 +70,91 @@ function useSectionProgress(
   }, [index, sectionHeight]);
 }
 
-function useSectionEntranceStyle(progress: SharedValue<number>) {
-  return useAnimatedStyle(() => ({
-    opacity: interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP),
-    transform: [
-      { translateY: interpolate(progress.value, [0, 1], [42, 0], Extrapolation.CLAMP) },
-      { scale: interpolate(progress.value, [0, 1], [0.96, 1], Extrapolation.CLAMP) },
-    ],
-  }));
+function useSectionBlendStyle(
+  scrollY: SharedValue<number>,
+  index: number,
+  sectionHeight: number
+) {
+  return useAnimatedStyle(() => {
+    const relative = scrollY.value / sectionHeight - index;
+
+    return {
+      opacity: interpolate(relative, [-0.68, -0.22, 0.18, 0.78], [0, 1, 1, 0], Extrapolation.CLAMP),
+      transform: [
+        {
+          translateY: interpolate(
+            relative,
+            [-0.68, -0.22, 0.18, 0.78],
+            [48, 0, -10, -40],
+            Extrapolation.CLAMP
+          ),
+        },
+        { scale: interpolate(relative, [-0.68, -0.22, 0.18, 0.78], [0.95, 1, 1, 0.96], Extrapolation.CLAMP) },
+      ],
+    };
+  }, [index, sectionHeight]);
 }
 
 function AmbientBackdrop({
   colors,
+  scrollY,
   sectionHeight,
 }: {
   colors: ReturnType<typeof useThemeColors>;
+  scrollY: SharedValue<number>;
   sectionHeight: number;
 }) {
+  const blobOneStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const loopProgress = clamp(global / 5.9, 0, 1);
+    const theta = loopProgress * Math.PI * 2;
+
+    // Full loop over the onboarding scroll; starts and ends at the original placement.
+    const orbitX = (Math.cos(theta) - 1) * 210;
+    const orbitY = Math.sin(theta) * 210;
+    const floatY = Math.sin(global * 1.2) * 16;
+
+    return {
+      opacity: interpolate(
+        global,
+        [0, 1, 2, 3, 4, 4.55, 4.85, 5.0],
+        [0.08, 0.1, 0.07, 0.09, 0.07, 0.03, 0.005, 0],
+        Extrapolation.CLAMP
+      ),
+      transform: [{ translateX: orbitX }, { translateY: orbitY + floatY }],
+    };
+  }, [sectionHeight]);
+
+  const blobTwoStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+
+    return {
+      opacity: interpolate(global, [0, 1, 2, 3, 4, 5], [0.06, 0.09, 0.1, 0.07, 0.08, 0.06], Extrapolation.CLAMP),
+      transform: [{ translateY: Math.cos(global * 1.05) * 18 }],
+    };
+  }, [sectionHeight]);
+
+  const blobThreeStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+
+    return {
+      opacity: interpolate(global, [0, 1, 2, 3, 4, 5], [0.05, 0.06, 0.09, 0.1, 0.08, 0.06], Extrapolation.CLAMP),
+      transform: [{ translateY: Math.sin(global * 0.9) * 16 }],
+    };
+  }, [sectionHeight]);
+
+  const blobFourStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+
+    return {
+      opacity: interpolate(global, [0, 1, 2, 3, 4, 5], [0.06, 0.07, 0.06, 0.09, 0.1, 0.08], Extrapolation.CLAMP),
+      transform: [{ translateY: Math.cos(global * 1.35) * 20 }],
+    };
+  }, [sectionHeight]);
+
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-      <View
+      <Animated.View
         style={[
           styles.backdropBlob,
           {
@@ -98,11 +163,11 @@ function AmbientBackdrop({
             height: 220,
             top: sectionHeight * 0.22,
             right: -80,
-            opacity: 0.08,
           },
+          blobOneStyle,
         ]}
       />
-      <View
+      <Animated.View
         style={[
           styles.backdropBlob,
           {
@@ -111,11 +176,11 @@ function AmbientBackdrop({
             height: 280,
             top: sectionHeight * 1.65,
             left: -120,
-            opacity: 0.08,
           },
+          blobTwoStyle,
         ]}
       />
-      <View
+      <Animated.View
         style={[
           styles.backdropBlob,
           {
@@ -124,11 +189,11 @@ function AmbientBackdrop({
             height: 240,
             top: sectionHeight * 3.2,
             right: -90,
-            opacity: 0.07,
           },
+          blobThreeStyle,
         ]}
       />
-      <View
+      <Animated.View
         style={[
           styles.backdropBlob,
           {
@@ -137,12 +202,375 @@ function AmbientBackdrop({
             height: 260,
             top: sectionHeight * 4.55,
             left: -100,
-            opacity: 0.06,
           },
+          blobFourStyle,
         ]}
       />
     </View>
   );
+}
+
+function StoryDot({
+  index,
+  color,
+  scrollY,
+  sectionHeight,
+}: {
+  index: number;
+  color: string;
+  scrollY: SharedValue<number>;
+  sectionHeight: number;
+}) {
+  const rowX = [-72, -36, 0, 36, 72][index] ?? 0;
+  const rowY = [-6, -2, 0, -2, -6][index] ?? 0;
+
+  const moodX = [0, 60, 38, -38, -60][index] ?? 0;
+  const moodY = [-66, -20, 52, 52, -20][index] ?? 0;
+
+  const durationX = [-66, -44, 0, 44, 66][index] ?? 0;
+  const durationY = [-16, 18, -6, 18, -16][index] ?? 0;
+
+  const breathX = [-72, -36, 0, 36, 72][index] ?? 0;
+  const breathY = [-20, 8, 24, 8, -20][index] ?? 0;
+
+  const scanX = [0, 0, 0, 0, 0][index] ?? 0;
+  const scanY = [-82, -40, 0, 40, 82][index] ?? 0;
+
+  const ctaX = [-22, -11, 0, 11, 22][index] ?? 0;
+  const ctaY = [60, 68, 74, 68, 60][index] ?? 0;
+
+  const style = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const local = 1 - Math.abs((global % 1) - 0.5) * 2;
+    const drift = Math.sin(global * Math.PI * 2 + index * 0.8);
+
+    const x = interpolate(
+      global,
+      [0, 1, 2, 3, 4, 5],
+      [rowX, moodX, durationX, breathX, scanX, ctaX],
+      Extrapolation.CLAMP
+    );
+
+    const y = interpolate(
+      global,
+      [0, 1, 2, 3, 4, 5],
+      [rowY, moodY, durationY, breathY, scanY, ctaY],
+      Extrapolation.CLAMP
+    );
+
+    const stageScale = interpolate(global, [0, 1, 2, 3, 4, 5], [1, 1.06, 0.98, 1.05, 0.96, 1], Extrapolation.CLAMP);
+    const stageOpacity = interpolate(global, [0, 1, 2, 3, 4, 5], [0.18, 0.3, 0.26, 0.32, 0.26, 0.22], Extrapolation.CLAMP);
+
+    return {
+      opacity: stageOpacity + local * 0.14,
+      transform: [
+        { translateX: x + drift * 4 },
+        { translateY: y + drift * 3 },
+        { scale: stageScale + local * 0.08 },
+      ],
+    };
+  }, [index, sectionHeight]);
+
+  const trailStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const local = 1 - Math.abs((global % 1) - 0.5) * 2;
+    const drift = Math.sin(global * Math.PI * 2 + index * 0.8);
+
+    const x = interpolate(
+      global,
+      [0, 1, 2, 3, 4, 5],
+      [rowX, moodX, durationX, breathX, scanX, ctaX],
+      Extrapolation.CLAMP
+    );
+
+    const y = interpolate(
+      global,
+      [0, 1, 2, 3, 4, 5],
+      [rowY, moodY, durationY, breathY, scanY, ctaY],
+      Extrapolation.CLAMP
+    );
+
+    const stageOpacity = interpolate(global, [0, 1, 2, 3, 4, 5], [0.12, 0.2, 0.18, 0.22, 0.18, 0.14], Extrapolation.CLAMP);
+
+    return {
+      opacity: stageOpacity + local * 0.08,
+      transform: [
+        { translateX: x - drift * 10 },
+        { translateY: y - drift * 8 },
+        { scale: 1.35 + local * 0.1 },
+      ],
+    };
+  }, [index, sectionHeight]);
+
+  return (
+    <>
+      <Animated.View style={[styles.storyDotTrail, { backgroundColor: color }, trailStyle]} />
+      <Animated.View style={[styles.storyDot, { backgroundColor: color }, style]} />
+    </>
+  );
+}
+
+function StoryDotsLayer({
+  colors,
+  scrollY,
+  sectionHeight,
+}: {
+  colors: ReturnType<typeof useThemeColors>;
+  scrollY: SharedValue<number>;
+  sectionHeight: number;
+}) {
+  const accentDots = [
+    colors.somaAccent1,
+    colors.somaAccent2,
+    colors.somaAccent3,
+    colors.somaAccent4,
+    colors.somaAccent5,
+  ];
+
+  const layerStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const edgeFade = interpolate(
+      global,
+      [0, 0.45, 1.0, 4.9, 5.35, 5.9],
+      [0, 0, 1, 1, 0.35, 0],
+      Extrapolation.CLAMP
+    );
+
+    return {
+      opacity:
+        interpolate(global, [0, 0.35, 0.72, 1.12], [0, 0, 0.45, 1], Extrapolation.CLAMP) * edgeFade,
+    };
+  }, [sectionHeight]);
+
+  return (
+    <Animated.View pointerEvents="none" style={[styles.storyDotsLayer, layerStyle]}>
+      {accentDots.map((dotColor, dotIndex) => (
+        <StoryDot
+          key={`${dotColor}-${dotIndex}`}
+          color={dotColor}
+          index={dotIndex}
+          scrollY={scrollY}
+          sectionHeight={sectionHeight}
+        />
+      ))}
+    </Animated.View>
+  );
+}
+
+function InterSectionAura({
+  colors,
+  scrollY,
+  sectionHeight,
+}: {
+  colors: ReturnType<typeof useThemeColors>;
+  scrollY: SharedValue<number>;
+  sectionHeight: number;
+}) {
+  const auraClock = useSharedValue(0);
+
+  useEffect(() => {
+    auraClock.value = withRepeat(withTiming(1, { duration: 22000, easing: Easing.linear }), -1, false);
+  }, [auraClock]);
+
+  const sharedEnvelope = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenVisibility = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.5, 0.58, 0.68, 0.76, 0.82],
+      Extrapolation.CLAMP
+    );
+    const bottomZone = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenVisibility * (1 - bottomZone) + bottomZone;
+    const edgeFade = interpolate(
+      global,
+      [0, 0.45, 1.0, 4.9, 5.35, 5.9],
+      [0, 0, 1, 1, 0.94, 0.9],
+      Extrapolation.CLAMP
+    );
+    const bottomBreath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.45);
+    const breathScale = interpolate(bottomBreath, [0, 1], [0.98, 1.12], Extrapolation.CLAMP);
+
+    return {
+      opacity: clamp(
+        edgeFade * visibility,
+        0,
+        0.94
+      ),
+      transform: [{ scale: interpolate(bottomZone, [0, 1], [1, breathScale], Extrapolation.CLAMP) }],
+    };
+  }, [sectionHeight, auraClock]);
+
+  const auraOuterStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenSections = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.72, 0.76, 0.82, 0.88, 0.92],
+      Extrapolation.CLAMP
+    );
+    const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
+    const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0);
+    const layerOpacity = 0.16;
+
+    return {
+      opacity: clamp(layerOpacity * visibility, 0, 0.25),
+      transform: [
+        {
+          scale: interpolate(breath, [0, 1], [0.96, 1.08], Extrapolation.CLAMP),
+        },
+      ],
+      borderColor: colors.somaPrimary,
+    };
+  }, [sectionHeight, colors, auraClock]);
+
+  const auraMidLargeStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenSections = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.7, 0.74, 0.8, 0.86, 0.9],
+      Extrapolation.CLAMP
+    );
+    const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
+    const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0.6);
+    const layerOpacity = 0.14;
+
+    return {
+      opacity: clamp(layerOpacity * visibility, 0, 0.22),
+      transform: [
+        {
+          scale: interpolate(breath, [0, 1], [0.95, 1.07], Extrapolation.CLAMP),
+        },
+      ],
+      borderColor: colors.somaPrimary,
+    };
+  }, [sectionHeight, colors, auraClock]);
+
+  const auraInnerStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenSections = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.72, 0.76, 0.82, 0.88, 0.92],
+      Extrapolation.CLAMP
+    );
+    const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
+    const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.2);
+    const layerOpacity = 0.15;
+
+    return {
+      opacity: clamp(layerOpacity * visibility, 0, 0.28),
+      transform: [
+        {
+          scale: interpolate(breath, [0, 1], [0.94, 1.06], Extrapolation.CLAMP),
+        },
+      ],
+      borderColor: colors.somaPrimary,
+    };
+  }, [sectionHeight, colors, auraClock]);
+
+  const auraMidSmallStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenSections = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.68, 0.72, 0.78, 0.84, 0.88],
+      Extrapolation.CLAMP
+    );
+    const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
+    const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.8);
+    const layerOpacity = 0.13;
+
+    return {
+      opacity: clamp(layerOpacity * visibility, 0, 0.24),
+      transform: [
+        {
+          scale: interpolate(breath, [0, 1], [0.93, 1.05], Extrapolation.CLAMP),
+        },
+      ],
+      borderColor: colors.somaPrimary,
+    };
+  }, [sectionHeight, colors, auraClock]);
+
+  const auraCoreStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = ((global % 1) + 1) % 1;
+    const between = 1 - Math.abs(phase - 0.5) * 2;
+    const betweenSections = interpolate(
+      between,
+      [0, 0.18, 0.45, 0.72, 1],
+      [0.72, 0.76, 0.82, 0.88, 0.92],
+      Extrapolation.CLAMP
+    );
+    const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
+    const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
+    const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 2.4);
+    const layerOpacity = 0.12;
+
+    return {
+      opacity: clamp(layerOpacity * visibility, 0, 0.22),
+      transform: [
+        {
+          scale: interpolate(breath, [0, 1], [0.92, 1.04], Extrapolation.CLAMP),
+        },
+      ],
+      borderColor: colors.somaPrimary,
+    };
+  }, [sectionHeight, colors, auraClock]);
+
+  return (
+    <Animated.View pointerEvents="none" style={[styles.interSectionAuraLayer, sharedEnvelope]}>
+      <Animated.View style={[styles.interSectionAuraOuter, auraOuterStyle]} />
+      <Animated.View style={[styles.interSectionAuraMidLarge, auraMidLargeStyle]} />
+      <Animated.View style={[styles.interSectionAuraInner, auraInnerStyle]} />
+      <Animated.View style={[styles.interSectionAuraMidSmall, auraMidSmallStyle]} />
+      <Animated.View style={[styles.interSectionAuraCore, auraCoreStyle]} />
+    </Animated.View>
+  );
+}
+
+function TransitionVeil({
+  colors,
+  scrollY,
+  sectionHeight,
+}: {
+  colors: ReturnType<typeof useThemeColors>;
+  scrollY: SharedValue<number>;
+  sectionHeight: number;
+}) {
+  const veilStyle = useAnimatedStyle(() => {
+    const global = scrollY.value / sectionHeight;
+    const phase = global % 1;
+    const distanceFromCenter = Math.abs(phase - 0.5) * 2;
+    const veil = interpolate(distanceFromCenter, [0, 0.45, 0.8, 1], [0, 0.02, 0.09, 0.14], Extrapolation.CLAMP);
+    const edgeFade = interpolate(
+      global,
+      [0, 0.45, 1.0, 4.9, 5.35, 5.9],
+      [0, 0, 1, 1, 0.45, 0],
+      Extrapolation.CLAMP
+    );
+
+    return {
+      opacity: veil * edgeFade,
+    };
+  }, [sectionHeight]);
+
+  return <Animated.View pointerEvents="none" style={[styles.transitionVeil, { backgroundColor: colors.somaBackground }, veilStyle]} />;
 }
 
 function IntroDot({
@@ -193,7 +621,7 @@ function IntroSection({
   sectionHeight: number;
 }) {
   const progress = useSectionProgress(scrollY, 0, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 0, sectionHeight);
   const float = useSharedValue(0);
 
   useEffect(() => {
@@ -280,7 +708,7 @@ function MoodDialSection({
   sectionHeight: number;
 }) {
   const progress = useSectionProgress(scrollY, 1, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 1, sectionHeight);
   const pulse = useSharedValue(0);
   const rotation = useSharedValue(0);
 
@@ -396,7 +824,7 @@ function DurationSection({
   sectionHeight: number;
 }) {
   const progress = useSectionProgress(scrollY, 2, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 2, sectionHeight);
 
   return (
     <View style={[styles.section, { minHeight: sectionHeight }]}>
@@ -460,7 +888,7 @@ function BreathSection({
   sectionHeight: number;
 }) {
   const progress = useSectionProgress(scrollY, 3, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 3, sectionHeight);
   const phase = useSharedValue(0);
 
   useEffect(() => {
@@ -528,7 +956,7 @@ function BodyScanSection({
   sectionHeight: number;
 }) {
   const progress = useSectionProgress(scrollY, 4, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 4, sectionHeight);
   const cycle = useSharedValue(0);
 
   useEffect(() => {
@@ -580,8 +1008,7 @@ function CTASection({
   sectionHeight: number;
   onContinue: () => Promise<void>;
 }) {
-  const progress = useSectionProgress(scrollY, 5, sectionHeight);
-  const sectionStyle = useSectionEntranceStyle(progress);
+  const sectionStyle = useSectionBlendStyle(scrollY, 5, sectionHeight);
 
   return (
     <View style={[styles.section, styles.ctaSection, { minHeight: sectionHeight * 0.92 }]}>
@@ -661,7 +1088,9 @@ export default function Welcome() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.somaBackground }]}>
       <View style={styles.screen}>
-        <AmbientBackdrop colors={colors} sectionHeight={sectionHeight} />
+        <AmbientBackdrop colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
+        <InterSectionAura colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
+        <StoryDotsLayer colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
         <Animated.ScrollView
           contentContainerStyle={{
             paddingBottom: Spacing.section,
@@ -681,6 +1110,7 @@ export default function Welcome() {
             <CTASection colors={colors} onContinue={onContinue} scrollY={scrollY} sectionHeight={sectionHeight} />
           </View>
         </Animated.ScrollView>
+        <TransitionVeil colors={colors} scrollY={scrollY} sectionHeight={sectionHeight} />
       </View>
     </SafeAreaView>
   );
@@ -703,6 +1133,76 @@ const styles = StyleSheet.create({
   backdropBlob: {
     position: 'absolute',
     borderRadius: 999,
+  },
+  storyDotsLayer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 0,
+  },
+  interSectionAuraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 0,
+  },
+  interSectionAuraOuter: {
+    position: 'absolute',
+    width: 340,
+    height: 340,
+    borderRadius: 999,
+    borderWidth: 26,
+    backgroundColor: 'transparent',
+  },
+  interSectionAuraInner: {
+    position: 'absolute',
+    width: 220,
+    height: 220,
+    borderRadius: 999,
+    borderWidth: 18,
+    backgroundColor: 'transparent',
+  },
+  interSectionAuraMidLarge: {
+    position: 'absolute',
+    width: 280,
+    height: 280,
+    borderRadius: 999,
+    borderWidth: 22,
+    backgroundColor: 'transparent',
+  },
+  interSectionAuraMidSmall: {
+    position: 'absolute',
+    width: 170,
+    height: 170,
+    borderRadius: 999,
+    borderWidth: 14,
+    backgroundColor: 'transparent',
+  },
+  interSectionAuraCore: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 999,
+    borderWidth: 12,
+    backgroundColor: 'transparent',
+  },
+  storyDot: {
+    position: 'absolute',
+    top: '50%',
+    width: 11,
+    height: 11,
+    borderRadius: 999,
+  },
+  storyDotTrail: {
+    position: 'absolute',
+    top: '50%',
+    width: 17,
+    height: 17,
+    borderRadius: 999,
+  },
+  transitionVeil: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
   },
   section: {
     justifyContent: 'center',
