@@ -514,14 +514,17 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0);
-    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.74, 0.9, 1.1, 1.48, 2.0], Extrapolation.CLAMP);
+    const bottomBreathBoost = interpolate(global, [0, 4.2, 5], [1, 1, 1.9], Extrapolation.CLAMP);
+    const baseBreathScale = interpolate(breath, [0, 1], [0.96, 1.08], Extrapolation.CLAMP);
+    const boostedBreathScale = 1 + (baseBreathScale - 1) * bottomBreathBoost;
     const layerOpacity = 0.16;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.25),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.96, 1.08], Extrapolation.CLAMP) * growth,
+          scale: boostedBreathScale * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -541,14 +544,17 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 0.6);
-    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.74, 0.9, 1.1, 1.48, 2.0], Extrapolation.CLAMP);
+    const bottomBreathBoost = interpolate(global, [0, 4.2, 5], [1, 1, 1.9], Extrapolation.CLAMP);
+    const baseBreathScale = interpolate(breath, [0, 1], [0.95, 1.07], Extrapolation.CLAMP);
+    const boostedBreathScale = 1 + (baseBreathScale - 1) * bottomBreathBoost;
     const layerOpacity = 0.14;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.22),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.95, 1.07], Extrapolation.CLAMP) * growth,
+          scale: boostedBreathScale * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -568,14 +574,17 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.2);
-    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.74, 0.9, 1.1, 1.48, 2.0], Extrapolation.CLAMP);
+    const bottomBreathBoost = interpolate(global, [0, 4.2, 5], [1, 1, 1.9], Extrapolation.CLAMP);
+    const baseBreathScale = interpolate(breath, [0, 1], [0.94, 1.06], Extrapolation.CLAMP);
+    const boostedBreathScale = 1 + (baseBreathScale - 1) * bottomBreathBoost;
     const layerOpacity = 0.15;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.28),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.94, 1.06], Extrapolation.CLAMP) * growth,
+          scale: boostedBreathScale * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -595,14 +604,17 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 1.8);
-    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.74, 0.9, 1.1, 1.48, 2.0], Extrapolation.CLAMP);
+    const bottomBreathBoost = interpolate(global, [0, 4.2, 5], [1, 1, 1.9], Extrapolation.CLAMP);
+    const baseBreathScale = interpolate(breath, [0, 1], [0.93, 1.05], Extrapolation.CLAMP);
+    const boostedBreathScale = 1 + (baseBreathScale - 1) * bottomBreathBoost;
     const layerOpacity = 0.13;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.24),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.93, 1.05], Extrapolation.CLAMP) * growth,
+          scale: boostedBreathScale * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -622,14 +634,17 @@ function InterSectionAura({
     const bottomPresence = interpolate(global, [4.6, 4.95, 5.9], [0, 1, 1], Extrapolation.CLAMP);
     const visibility = betweenSections * (1 - bottomPresence) + bottomPresence;
     const breath = 0.5 + 0.5 * Math.sin(auraClock.value * Math.PI * 2 * 0.5 + 2.4);
-    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.7, 0.78, 0.86, 0.94, 1], Extrapolation.CLAMP);
+    const growth = interpolate(global, [0, 1, 2, 3, 4, 5], [0.62, 0.74, 0.9, 1.1, 1.48, 2.0], Extrapolation.CLAMP);
+    const bottomBreathBoost = interpolate(global, [0, 4.2, 5], [1, 1, 1.9], Extrapolation.CLAMP);
+    const baseBreathScale = interpolate(breath, [0, 1], [0.92, 1.04], Extrapolation.CLAMP);
+    const boostedBreathScale = 1 + (baseBreathScale - 1) * bottomBreathBoost;
     const layerOpacity = 0.12;
 
     return {
       opacity: clamp(layerOpacity * visibility, 0, 0.22),
       transform: [
         {
-          scale: interpolate(breath, [0, 1], [0.92, 1.04], Extrapolation.CLAMP) * growth,
+          scale: boostedBreathScale * growth,
         },
       ],
       borderColor: colors.somaPrimary,
@@ -849,7 +864,7 @@ function MoodDialSection({
     <View style={[styles.section, { minHeight: sectionHeight }]}>
       <Animated.View style={[styles.sectionInner, sectionStyle]}>
         <Text style={[styles.sectionTitle, { color: colors.somaText }]}>Choose how you feel</Text>
-        <Text style={[styles.sectionBody, { color: colors.somaTextMuted }]}>A quiet orbit for emotional awareness before the exercise begins.</Text>
+        <Text style={[styles.sectionBody, { color: colors.somaTextMuted }]}>Choose from a variety of emotional states without overthinking it.</Text>
         <View style={styles.moodStage}>
           <View style={[styles.moodAuraLarge, { backgroundColor: colors.somaAccent4, opacity: 0.1 }]} />
           <View style={[styles.moodAuraSmall, { backgroundColor: colors.somaAccent3, opacity: 0.14 }]} />
